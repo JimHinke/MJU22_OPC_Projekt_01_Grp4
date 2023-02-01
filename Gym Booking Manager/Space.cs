@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Gym_Booking_Manager.Space;
 
 
 #if DEBUG
@@ -17,27 +18,27 @@ namespace Gym_Booking_Manager
     //
     // The current database class implementation uses SortedSet, and thus classes and objects that we want to store
     // in it should inherit the IComparable<T> interface.
-    internal class Space : IReservable, ICSVable, IComparable<Space> 
+    //
+    // As alluded to from previous paragraphs, implementing IComparable<T> is not exhaustive to cover all "comparisons".
+    // Refer to official C# documentation to determine what interface to implement to allow use with
+    // the class/method/operator that you want.
+    internal class Space : Resources, IReservable, ICSVable, IComparable<Space>
     {
-        private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
-        private Category category;
-        private String name;
-        private readonly Calendar calendar;
+        //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
+        private SpaceCategory spaceCategory;
 
-        public Space(Category category, string name)
+        public Space(string name, Calendar calendar, SpaceCategory spaceCategory) :base(name,calendar)
         {
-            this.category = category;
-            this.name = name;
-            this.calendar = new Calendar();
+            this.spaceCategory = spaceCategory;
         }
 
         // Every class T to be used for DbSet<T> needs a constructor with this parameter signature. Make sure the object is properly initialized.
         public Space(Dictionary<String, String> constructionArgs)
         {
             this.name = constructionArgs[nameof(name)];
-            if (!Category.TryParse(constructionArgs[nameof(category)], out this.category))
+            if (!SpaceCategory.TryParse(constructionArgs[nameof(spaceCategory)], out this.spaceCategory))
             {
-                throw new ArgumentException("Couldn't parse a valid Space.Category value.", nameof(category));
+                throw new ArgumentException("Couldn't parse a valid Space.Category value.", nameof(spaceCategory));
             }
 
             this.calendar = new Calendar();
@@ -48,7 +49,7 @@ namespace Gym_Booking_Manager
             // If other is not a valid object reference, this instance is greater.
             if (other == null) return 1;
             // Sort primarily on category.
-            if (this.category != other.category) return this.category.CompareTo(other.category);
+            if (this.spaceCategory != other.spaceCategory) return this.spaceCategory.CompareTo(other.spaceCategory);
             // When category is the same, sort on name.
             return this.name.CompareTo(other.name);
         }
@@ -61,9 +62,9 @@ namespace Gym_Booking_Manager
         // Every class C to be used for DbSet<C> should have the ICSVable interface and the following implementation.
         public string CSVify()
         {
-            return $"{nameof(category)}:{category.ToString()},{nameof(name)}:{name}";
+            return $"{nameof(spaceCategory)}:{spaceCategory.ToString()},{nameof(name)}:{name}";
         }
-        public enum Category
+        public enum SpaceCategory
         {
             Hall,
             Lane,
@@ -82,27 +83,30 @@ namespace Gym_Booking_Manager
 
         }
 
-        public void MakeReservation(IReservingEntity owner)
-        {
+        //public void MakeReservation(IReservingEntity owner)
+        //{
           
-        }
+        //}
 
         public void CancelReservation()
         {
 
         }
 
-        private static List<Tuple<Category, int>> InitializeHourlyCosts()
-        {
-            // TODO: fetch from "database"
-            var hourlyCosts = new List<Tuple<Category, int>>
-            {
-                Tuple.Create(Category.Hall, 500),
-                Tuple.Create(Category.Lane, 100),
-                Tuple.Create(Category.Studio, 400)
-            };
-            return hourlyCosts;
-        }
+        // Consider how and when to add a new Space to the database.
+        // Maybe define a method to persist it? Any other reasonable schemes?
+
+        //private static List<Tuple<Category, int>> InitializeHourlyCosts()
+        //{
+        //    // TODO: fetch from "database"
+        //    var hourlyCosts = new List<Tuple<Category, int>>
+        //    {
+        //        Tuple.Create(Category.Hall, 500),
+        //        Tuple.Create(Category.Lane, 100),
+        //        Tuple.Create(Category.Studio, 400)
+        //    };
+        //    return hourlyCosts;
+        //}
 
     }
 }
