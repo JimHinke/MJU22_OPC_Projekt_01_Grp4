@@ -15,7 +15,6 @@ namespace Gym_Booking_Manager
             Service gurra = new Service("Gurrovic", "0123-45678", "gurrovic@mölk.se");
             Console.WriteLine(gurra);            
         }
-
         // Static methods for the program
     }
 }
