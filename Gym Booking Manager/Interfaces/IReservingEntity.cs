@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gym_Booking_Manager
+namespace Gym_Booking_Manager.Interfaces
 {
-    internal class Reservation
-    {     
+    internal interface IReservingEntity
+    {
+        string owner { get; set; }
     }
 }

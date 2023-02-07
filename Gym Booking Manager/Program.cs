@@ -10,7 +10,10 @@ namespace Gym_Booking_Manager
     {
         static void Main(string[] args)
         {
-            User userContext;
+            //User userContext;
+
+            Service gurra = new Service("Gurrovic", "0123-45678", "gurrovic@mölk.se");
+            Console.WriteLine(gurra);            
         }
 
         // Static methods for the program

@@ -86,10 +86,10 @@ namespace Gym_Booking_Manager
 
         }
 
-        public void MakeReservation(IReservingEntity owner)
-        {
+        //public void MakeReservation(IReservingEntity owner)
+        //{
           
-        }
+        //}
 
         public void CancelReservation()
         {
