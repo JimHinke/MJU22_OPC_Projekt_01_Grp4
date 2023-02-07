@@ -21,13 +21,13 @@ namespace Gym_Booking_Manager
 		// Static methods for the program
 		public static void MainMenu()
 		{
-			Console.WriteLine("Choose user:");
-			
+			Console.WriteLine("------------Choose user-----------");
 			Console.WriteLine("1. Admin");
 			Console.WriteLine("2. Staff");
 			Console.WriteLine("3. Service");
 			Console.WriteLine("4. Customer");
 			Console.WriteLine("5. Quit");
+			Console.WriteLine("---------------------------------");
 			int command = int.Parse(Console.ReadLine());
 
 			// TODO: Exception for chars != int
