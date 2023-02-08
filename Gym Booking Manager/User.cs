@@ -289,6 +289,10 @@ namespace Gym_Booking_Manager
                     break;
                 case 6:
                     // TODO: Update group schedule
+                    PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare");
+                    PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
+                    Space space = new Space("Hall");
+                    Space.spaceList.Add(space);
                     break;
                 case 7:
                     // TODO: Make reservation
