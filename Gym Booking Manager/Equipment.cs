@@ -19,7 +19,7 @@ namespace Gym_Booking_Manager
         {
             Dumbells,
             Barbells,
-            Katlebells
+            Kettlebells
         }
     }
 }
