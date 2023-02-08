@@ -26,10 +26,16 @@ namespace Gym_Booking_Manager
     {
         //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
         private SpaceCategory spaceCategory;
+        private Availability availability;
 
-        public Space(string name, Calendar calendar, SpaceCategory spaceCategory) :base(name,calendar)
+		// Temp for testing NOTE: Too tired to battle with private atm
+		public static List<Space> spaceList = new List<Space>();
+
+
+		public Space(string name, SpaceCategory spaceCategory, Availability availability, Calendar calendar = null) :base(name,calendar)
         {
             this.spaceCategory = spaceCategory;
+            this.availability = availability;
         }
 
         // Every class T to be used for DbSet<T> needs a constructor with this parameter signature. Make sure the object is properly initialized.
@@ -70,6 +76,35 @@ namespace Gym_Booking_Manager
             Lane,
             Studio
         }
+        public enum Availability
+        {
+            Available,
+            Unavailable
+        }
+        public Availability SetAvailability(Availability availability)
+        {
+            return this.availability = availability;
+        }
+        public static void ShowAvailable()
+        {
+			foreach (var space in spaceList)
+			{
+				if (space.availability == Availability.Available)
+				{
+					Console.WriteLine(space);
+				}
+			}
+		}
+        public static void ShowUnavailable()
+        {
+			foreach (var space in spaceList)
+			{
+				if (space.availability == Availability.Unavailable)
+				{
+					Console.WriteLine(space);
+				}
+			}
+		}
 
         public void ViewTimeTable()
         {
