@@ -286,6 +286,11 @@ namespace Gym_Booking_Manager
                     break;
                 case 5:
                     // TODO: View group schedule
+                    PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare");
+                    PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
+                    Space space = new Space("Hall");
+                    Space.spaceList.Add(space);
+                    GroupSchedule.addActivity();
                     break;
                 case 6:
                     // TODO: Update group schedule
