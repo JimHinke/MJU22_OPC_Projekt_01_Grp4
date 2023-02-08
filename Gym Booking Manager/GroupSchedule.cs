@@ -25,6 +25,7 @@ namespace Gym_Booking_Manager
 
         public static void addActivity()
         {
+            Console.Clear();
             int index = 1;
             Console.Write("Whats the participant limit?");
             string limit = Console.ReadLine();

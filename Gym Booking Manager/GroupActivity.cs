@@ -28,6 +28,7 @@ namespace Gym_Booking_Manager
         }
         public override string ToString()
         {
+            Console.Clear();
             string participantNames = "";
             if (participants.Count > 0)
             {
@@ -47,7 +48,7 @@ namespace Gym_Booking_Manager
                 $"-----------------\n" +
                 $"Space: {space[0].name}\n" +
                 $"Equipment: {equipment}\n" +
-                $"Personal Trainer: {personalTrainer[0].name}";
+                $"Personal Trainer: {personalTrainer[0].name}\n";
         }
     }
 }

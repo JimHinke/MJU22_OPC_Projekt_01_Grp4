@@ -293,6 +293,7 @@ namespace Gym_Booking_Manager
                     PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
                     Space space = new Space("Hall");
                     Space.spaceList.Add(space);
+                    GroupSchedule.addActivity();
                     break;
                 case 7:
                     // TODO: Make reservation

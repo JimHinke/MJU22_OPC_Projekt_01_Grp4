@@ -31,8 +31,8 @@ namespace Gym_Booking_Manager
 		// Temp for testing NOTE: Too tired to battle with private atm
 		public static List<Space> spaceList = new List<Space>();
 
-
-		public Space(string name, SpaceCategory spaceCategory, Availability availability, Calendar calendar = null) :base(name,calendar)
+        
+		public Space(string name, SpaceCategory spaceCategory = 0, Availability availability = 0, Calendar calendar = null) :base(name,calendar)
         {
             this.spaceCategory = spaceCategory;
             this.availability = availability;
