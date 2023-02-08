@@ -72,7 +72,7 @@ namespace Gym_Booking_Manager
         }
         public enum SpaceCategory
         {
-            Hall,
+            Hall = 1,
             Lane,
             Studio
         }
