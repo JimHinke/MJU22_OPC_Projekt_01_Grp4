@@ -42,6 +42,11 @@ namespace Gym_Booking_Manager
     {
         public Customer(string name, string phone, string email) : base(name, phone, email)
         {
+            this.name = name;
+        }
+        public override string ToString()
+        {
+            return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}";
         }
     }
 

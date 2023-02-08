@@ -10,7 +10,8 @@ namespace Gym_Booking_Manager
     internal class PersonalTrainer : Resources
     {
         private TypeOfTrainerCategory typeOfTrainerCategory;
-        public PersonalTrainer(string name, Calendar calendar) : base(name, calendar)
+        public static List<PersonalTrainer> personalTrainers= new List<PersonalTrainer>();
+        public PersonalTrainer(string name, Calendar calendar = null) : base(name, calendar)
         {
 
         }

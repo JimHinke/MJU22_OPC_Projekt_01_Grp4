@@ -26,8 +26,9 @@ namespace Gym_Booking_Manager
     {
         //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
         private SpaceCategory spaceCategory;
+        public static List<Space> spaceList = new List<Space>();
 
-        public Space(string name, Calendar calendar, SpaceCategory spaceCategory) :base(name,calendar)
+        public Space(string name, Calendar calendar = null, SpaceCategory spaceCategory = 0) :base(name,calendar)
         {
             this.spaceCategory = spaceCategory;
         }
@@ -66,7 +67,7 @@ namespace Gym_Booking_Manager
         }
         public enum SpaceCategory
         {
-            Hall,
+            Hall = 1,
             Lane,
             Studio
         }
