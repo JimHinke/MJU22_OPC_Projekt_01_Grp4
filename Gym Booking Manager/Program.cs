@@ -63,13 +63,13 @@ namespace Gym_Booking_Manager
                     Service.ServiceMenu();					
 					break;
 				case 4:                   
-                    NonPayingNonMember.NonPayingNonMemberMenu();					
+                    Customer.NonPayingNonMemberMenu();					
                     break;
                 case 5:
-                    NonPayingDayPass.NonPayingDayPassMenu();
+                    Customer.PayingMemberMenu();
                     break;
                 case 6:
-                    PayingMember.PayingMemberMenu();
+                    Customer.PayingMemberMenu();
                     break;
                 case 7:
 					Console.WriteLine("\nExiting program...");
