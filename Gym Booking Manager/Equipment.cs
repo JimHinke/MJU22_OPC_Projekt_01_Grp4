@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static Gym_Booking_Manager.Space;
@@ -65,11 +66,20 @@ namespace Gym_Booking_Manager
 
         public static void ShowAvailable()
         {
-            foreach (var equipment in equipmentList)
+            int index = 1;
+            //foreach (var equipment in equipmentList)
+            //{
+            //    if (equipment.availability == Availability.Available)
+            //    {
+            //        Console.WriteLine(equipment);
+            //    }
+            //}
+            for (int i = 0; i < equipmentList.Count; i++)
             {
-                if (equipment.availability == Availability.Available)
+                if (equipmentList[i].availability == Availability.Available)
                 {
-                    Console.WriteLine(equipment);
+                    Console.WriteLine(index + " " + equipmentList[i].name);
+                    index++;
                 }
             }
         }

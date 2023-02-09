@@ -269,7 +269,6 @@ namespace Gym_Booking_Manager
             Console.WriteLine("11. Log out");
             Console.WriteLine("---------------------------------\n");
             int command = int.Parse(Console.ReadLine());
-
             switch (command)
             {
                 case 1:
@@ -285,14 +284,11 @@ namespace Gym_Booking_Manager
                     // TODO: Cancel reservation
                     break;
                 case 5:
-                    // TODO: View group schedule
+                    Console.Clear();
+                    GroupSchedule.showActivities();
                     break;
                 case 6:
                     // TODO: Update group schedule
-                    PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare");
-                    PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
-                    Space space = new Space("Hall");
-                    Space.spaceList.Add(space);
                     GroupSchedule.addActivity();
                     break;
                 case 7:

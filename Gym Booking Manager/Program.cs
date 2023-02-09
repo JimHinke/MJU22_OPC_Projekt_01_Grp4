@@ -42,8 +42,14 @@ namespace Gym_Booking_Manager
 			Space.spaceList[2].SetAvailability(Space.Availability.Unavailable);
 			Space.ShowUnavailable();
 
-			//User userContext;
-			while (true)
+            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare");
+            PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
+            Space space = new Space("Hall");
+            Space.spaceList.Add(space);
+
+
+            //User userContext;
+            while (true)
 			{
 				MainMenu();
 			}
