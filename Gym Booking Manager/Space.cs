@@ -105,6 +105,25 @@ namespace Gym_Booking_Manager
 			}
 		}
 
+        public static void RestrictSpace()
+        {
+			List<Space> temp = new List<Space>();
+			foreach (var space in spaceList)
+			{
+				if (space.spaceAvailability == Availability.Available)
+				{
+					temp.Add(space);
+				}
+			}
+			Console.Clear();
+			Console.WriteLine("Choose space");
+			Space.ShowAvailable();
+			int n = int.Parse(Console.ReadLine());
+
+            spaceList[n-1].spaceAvailability = Availability.Unavailable;
+            Console.WriteLine($"{spaceList[n-1].name} set to {spaceList[n - 1].spaceAvailability}");
+		}
+
         public void ViewTimeTable()
         {
             // Fetch
@@ -114,7 +133,6 @@ namespace Gym_Booking_Manager
             {
                // Do something?
             }
-
         }
 
         //public void MakeReservation(IReservingEntity owner)

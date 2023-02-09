@@ -17,36 +17,19 @@ namespace Gym_Booking_Manager
 			Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentCatagory.Kettlebells ,Equipment.Availability.Available));
 			Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
 			Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test4", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test5", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
 
 			Space.spaceList.Add(new Space("SpaceTest1", Space.SpaceCategory.Hall, Space.Availability.Available));
-			Space.spaceList.Add(new Space("SpaceTest2", Space.SpaceCategory.Hall, Space.Availability.Unavailable));
+			Space.spaceList.Add(new Space("SpaceTest2", Space.SpaceCategory.Hall, Space.Availability.Available));
 			Space.spaceList.Add(new Space("SpaceTest3", Space.SpaceCategory.Hall, Space.Availability.Available));
-
-			Console.WriteLine(Equipment.equipmentList);
-			Equipment.equipmentList[1].SetAvailability(Availability.Service);
-			Equipment.ShowAvailable();
-			Console.WriteLine();
-			Equipment.equipmentList[3].SetAvailability(Availability.PlannedPurchase);
-			Equipment.ShowPlannedPurchase();
-			Console.WriteLine();
-			Equipment.ShowService();
-			Console.WriteLine();
-			Console.WriteLine(Space.spaceList);
-			Console.WriteLine();
-			Space.ShowAvailable();
-			Console.WriteLine();
-			Space.ShowUnavailable();
-			Space.spaceList[2].SetAvailability(Space.Availability.Unavailable);
-			Space.ShowUnavailable();
+			
 
 			//User userContext;
 			while (true)
 			{
 				MainMenu();
 			}
-        }
+
+		}
 
 		// Static methods for the program
 		public static void MainMenu()

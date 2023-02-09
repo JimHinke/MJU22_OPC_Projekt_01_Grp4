@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace Gym_Booking_Manager
         }
 		public override string ToString()
 		{
-			return $"Namn: {name}, Category: {equipmentCategory} Avilability: {equipmentAvailability}";
+			return $"Namn: {name}, Category: {equipmentCategory}, Avilability: {equipmentAvailability}";
 		}
 
         public static void ShowService()
@@ -64,14 +65,53 @@ namespace Gym_Booking_Manager
 		}
         public static void ShowAvailable()
         {
+            int i = 1;
             foreach (var equipment in equipmentList)
             {
                 if (equipment.equipmentAvailability == Availability.Available)
                 {
-                    Console.WriteLine(equipment);
+                    Console.WriteLine($"{i}. {equipment}");
+                    i++;
                 }
             }
         }
+
+        public static void RestrictEquipment()
+        {
+			List<Equipment> temp = new List<Equipment>();
+			foreach (var equipment in equipmentList)
+			{
+				if (equipment.equipmentAvailability == Availability.Available)
+				{
+					temp.Add(equipment);
+				}
+			}
+			Console.Clear();
+			Console.WriteLine("Choose equipment");
+			Equipment.ShowAvailable();
+			int n = int.Parse(Console.ReadLine());
+	
+			Console.Clear();
+			Console.WriteLine("Choose restriction");
+			Console.WriteLine("1. Service");
+			Console.WriteLine("2. Planned Purchase");
+            int res = int.Parse(Console.ReadLine());
+
+            if (res == 1)
+            {
+			    equipmentList[n-1].SetAvailability(Availability.Service);
+			}
+            else if (res == 2)
+            {
+                equipmentList[n - 1].SetAvailability(Availability.PlannedPurchase);
+			}
+            else
+            {
+                Console.WriteLine("Not Valid");
+            }
+			Console.WriteLine($"{equipmentList[n - 1].name} - availability set to {equipmentList[n-1].equipmentAvailability}");
+
+		}
 
 	}
 }
