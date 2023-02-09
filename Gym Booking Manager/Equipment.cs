@@ -65,18 +65,50 @@ namespace Gym_Booking_Manager
 		}
         public static void ShowAvailable()
         {
-            int i = 1;
             foreach (var equipment in equipmentList)
             {
                 if (equipment.equipmentAvailability == Availability.Available)
                 {
-                    Console.WriteLine($"{i}. {equipment}");
-                    i++;
+                    Console.WriteLine($"{equipment}");
                 }
             }
         }
 
-        public static void RestrictEquipment()
+        public static void RepairEquipment()
+        {
+			// Catch when n is out of bounds
+			List<Equipment> temp = new List<Equipment>();
+			foreach (var equipment in equipmentList)
+			{
+				if (equipment.equipmentAvailability == Availability.Service)
+				{
+					temp.Add(equipment);
+				}
+			}
+			if (temp.Count > 0)
+			{
+				Console.Clear();
+				Console.WriteLine("Choose Equipment");
+				Equipment.ShowService();
+				int n = int.Parse(Console.ReadLine());
+				temp[n - 1].SetAvailability(Availability.Available);
+				Console.Clear();
+				Console.WriteLine($"{temp[n - 1].name} - availability set to {temp[n - 1].equipmentAvailability}");
+
+				Console.WriteLine("Press a button...");
+				Console.ReadLine();
+			}
+			else 
+			{ 
+				Console.WriteLine("No equipment in need of service!");
+				Console.WriteLine("Press enter to go back...");
+				Console.ReadLine();
+				Service.ServiceMenu();
+			}
+			
+
+		}
+		public static void RestrictEquipment()
         {
 			List<Equipment> temp = new List<Equipment>();
 			foreach (var equipment in equipmentList)
@@ -87,6 +119,9 @@ namespace Gym_Booking_Manager
 				}
 			}
 			Console.Clear();
+
+			if (temp.Count > 0) 
+			{ 
 			Console.WriteLine("Choose equipment");
 			Equipment.ShowAvailable();
 			int n = int.Parse(Console.ReadLine());
@@ -99,18 +134,29 @@ namespace Gym_Booking_Manager
 
             if (res == 1)
             {
-			    equipmentList[n-1].SetAvailability(Availability.Service);
+			    temp[n-1].SetAvailability(Availability.Service);
 			}
             else if (res == 2)
             {
-                equipmentList[n - 1].SetAvailability(Availability.PlannedPurchase);
+                temp[n - 1].SetAvailability(Availability.PlannedPurchase);
 			}
             else
             {
                 Console.WriteLine("Not Valid");
             }
-			Console.WriteLine($"{equipmentList[n - 1].name} - availability set to {equipmentList[n-1].equipmentAvailability}");
-
+			Console.Clear();
+			Console.WriteLine($"{temp[n - 1].name} - availability set to {temp[n-1].equipmentAvailability}");
+			Console.WriteLine("Press enter...");
+			Console.ReadLine();
+			Staff.RestrictItem();
+			}
+			else if (temp.Count <= 0) 
+			{
+				Console.WriteLine("No available equipment!");
+				Console.WriteLine("Press enter to go back...");
+				Console.ReadKey();
+				Staff.RestrictItem();
+			}
 		}
 
 	}

@@ -51,6 +51,8 @@ namespace Gym_Booking_Manager
             {
                 case 1:
                     // TODO: Item Repair
+                    Equipment.RepairEquipment();
+                    ServiceMenu();
                     break;
                 case 2:
                     Console.Clear();

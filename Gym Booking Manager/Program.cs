@@ -14,8 +14,8 @@ namespace Gym_Booking_Manager
 		static void Main(string[] args)
 		{
 			// FUL TESTAR!	
-			Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentCatagory.Kettlebells ,Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
+			Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentCatagory.Kettlebells ,Equipment.Availability.Service));
+			Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Service));
 			Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
 
 			Space.spaceList.Add(new Space("SpaceTest1", Space.SpaceCategory.Hall, Space.Availability.Available));

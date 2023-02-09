@@ -105,6 +105,7 @@ namespace Gym_Booking_Manager
 			}
 		}
 
+        // Perhaps a Unrestrict Space would be good?
         public static void RestrictSpace()
         {
 			List<Space> temp = new List<Space>();
@@ -116,12 +117,27 @@ namespace Gym_Booking_Manager
 				}
 			}
 			Console.Clear();
-			Console.WriteLine("Choose space");
-			Space.ShowAvailable();
-			int n = int.Parse(Console.ReadLine());
+            if (temp.Count > 0)
+            {
+                Console.WriteLine("Choose space");
+                Space.ShowAvailable();
+                int n = int.Parse(Console.ReadLine());
 
-            spaceList[n-1].spaceAvailability = Availability.Unavailable;
-            Console.WriteLine($"{spaceList[n-1].name} set to {spaceList[n - 1].spaceAvailability}");
+                Console.Clear();
+                spaceList[n - 1].spaceAvailability = Availability.Unavailable;
+                Console.WriteLine($"{spaceList[n - 1].name} - set to {spaceList[n - 1].spaceAvailability}");
+                Console.WriteLine("Press enter...");
+                Console.ReadLine();
+                Staff.RestrictItem();
+            }
+            else
+            {
+                Console.WriteLine("No available spaces!");
+                Console.WriteLine("Press enter to go back");
+                Console.ReadLine();
+                Staff.RestrictItem();
+            }
+            
 		}
 
         public void ViewTimeTable()
