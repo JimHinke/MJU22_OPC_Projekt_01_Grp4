@@ -104,6 +104,7 @@ namespace Gym_Booking_Manager
 
     internal class Customer : User
     {
+        private static List<string> logs = new List<string>();
         DateTime createdAt;
         string accessLevel { get; set; }
         public Customer(string name, string phone, string email, string accessLevel = "") : base(name, phone, email)
@@ -114,6 +115,32 @@ namespace Gym_Booking_Manager
         public override string ToString()
         {
             return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nAccount Created: {createdAt}";
+        }
+        public static void AddLog(string log)
+        {
+            logs.Add(log);
+        }
+        public static void ShowLogs()
+        {
+            Console.WriteLine("Logs:");
+            foreach (string log in logs)
+            {
+                Console.WriteLine(log);
+            }
+        }
+        public static void SendNotification(Customer customer, string message, bool useSMS)
+        {
+            string log = "Sending";
+            if (useSMS)
+            {
+                log += " SMS to " + customer.phone + ": " + message;
+            }
+            else
+            {
+                log += " email to " + customer.email + ": " + message;
+            }
+            Console.WriteLine(log);
+            Customer.AddLog(log);
         }
 
         public static void NonPayingNonMemberMenu()
@@ -136,7 +163,15 @@ namespace Gym_Booking_Manager
                     // TODO: Purchase daypass
                     break;
                 case 4:
-                    // TODO: Cancel reservation
+                    Console.WriteLine("Enter the customer's name: ");
+                    string name = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's phone number: ");
+                    string phone = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's email address: ");
+                    string email = Console.ReadLine();
+                    string message = "The Reservation was cancelled.";
+                    Customer customer = new Customer(name, phone, email);
+                    Customer.SendNotification(customer, message, false);
                     break;
                 case 5:
                     // TODO: View group schedule
