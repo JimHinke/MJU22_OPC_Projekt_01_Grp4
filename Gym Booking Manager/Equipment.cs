@@ -60,13 +60,13 @@ namespace Gym_Booking_Manager
 		}
         public static void ShowAvailable()
         {
-            foreach (var equipment in equipmentList)
-            {
-                if (equipment.equipmentAvailability == Availability.Available)
-                {
-                    Console.WriteLine($"{equipment}");
-                }
-            }
+			for (int i = 0; i <equipmentList.Count; i++)
+			{
+				if (equipmentList[i].equipmentAvailability == Availability.Available)
+				{
+					Console.WriteLine(i+1 + " " + equipmentList[i].name);
+				}
+			}
         }
 
         public static void RepairEquipment()
