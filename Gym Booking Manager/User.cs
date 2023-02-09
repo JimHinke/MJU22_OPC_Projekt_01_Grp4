@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +31,42 @@ namespace Gym_Booking_Manager
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
         }
+
+        public static void menu(string user = "")
+        {
+            List<string> menuOptions = new List<string>()
+            {
+                "View Logs",
+                "Purchase Membership",
+                "Manage Account (own only)",
+                "Purchase Day Pass",
+                "Cancel Reservation",
+                "View group Schedule",
+                "Update group schedule",
+                "Make Reservation",
+                "View Item",
+                "Restrict item",
+                "Add item",
+                "Log out"
+            };
+
+            if (user == "staff")
+            {
+                menuOptions.Remove("View Logs");
+            }
+            else if (user == "user")
+            {
+                menuOptions.Remove("View Logs");
+                menuOptions.Remove("Add item");
+                menuOptions.Remove("Restrict item");
+                menuOptions.Remove("Update group schedule");
+            }
+
+            for (int i = 0; i < menuOptions.Count; i++)
+            {
+                Console.WriteLine($"{i+1}. {menuOptions[i]}");
+            }
+        }
     }
 
     internal class Service : User
@@ -46,7 +83,7 @@ namespace Gym_Booking_Manager
             Console.WriteLine("2. Log out");
             Console.WriteLine("----------------------------------\n");
             int command = int.Parse(Console.ReadLine());
-
+                     
             switch (command)
             {
                 case 1:
@@ -58,42 +95,31 @@ namespace Gym_Booking_Manager
                     break;
                 default:
                     Console.WriteLine("Invalid input, type a number");
-                    break;
+                    break;            
             }
         }
     }
 
     internal class Customer : User
     {
-        public Customer(string name, string phone, string email) : base(name, phone, email)
+        DateTime createdAt;
+        string accessLevel { get; set; }
+        public Customer(string name, string phone, string email, string accessLevel = "") : base(name, phone, email)
         {
-            this.name = name;
+            this.createdAt = DateTime.Now;
+            accessLevel = accessLevel;
         }
         public override string ToString()
         {
-            return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}";
+            return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nAccount Created: {createdAt}";
         }
-    }
 
-    class NonPayingNonMember : Customer
-    {
-        public NonPayingNonMember(string name, string phone, string email) : base(name, phone, email)
-        {
-        }
-        
         public static void NonPayingNonMemberMenu()
         {
             Console.Clear();
             Console.WriteLine("-------------NonPayingNonMember-------------");
-            Console.WriteLine("1. Purchase Membership");
-            Console.WriteLine("2. Manage Account (own only)");
-            Console.WriteLine("3. Purchase Day Pass");
-            Console.WriteLine("4. Cancel Reservation");
-            Console.WriteLine("5. View Group Schedule");
-            Console.WriteLine("6. Make Reservation");
-            Console.WriteLine("7. View Item");
-            Console.WriteLine("8. Log out");
-            Console.WriteLine("--------------------------------------------\n");
+            menu("user");
+            Console.WriteLine("--------------------------------------------\n");            
             int command = int.Parse(Console.ReadLine());
 
             switch (command)
@@ -127,88 +153,14 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("Invalid input, type a number");
                     break;
             }
-        }
-    }
-
-    class NonPayingDayPass : Customer
-    {
-        public NonPayingDayPass(string name, string phone, string email) : base(name, phone, email)
-        {
-        }
-        
-        public static void NonPayingDayPassMenu()
-        {
-            Console.Clear(); 
-            Console.WriteLine("-------------NonPayingDayPass-------------");
-            Console.WriteLine("1. Purchase Membership");
-            Console.WriteLine("2. Manage Account (own only)");
-            Console.WriteLine("3. Purchase Day Pass");
-            Console.WriteLine("4. Cancel Reservation");
-            Console.WriteLine("5. View Group Schedule");
-            Console.WriteLine("6. Make Reservation");
-            Console.WriteLine("7. View Item");
-            Console.WriteLine("8. Log out");
-            Console.WriteLine("------------------------------------------\n");
-            int command = int.Parse(Console.ReadLine());
-
-            switch (command)
-            {
-                case 1:
-                    // TODO: Purchase membership
-                    break;
-                case 2:
-                    // TODO: Manage Account
-                    break;
-                case 3:
-                    // TODO: Purchase daypass
-                    break;
-                case 4:
-                    // TODO: Cancel reservation
-                    break;
-                case 5:
-                    // TODO: View group schedule
-                    break;
-                case 6:
-                    // TODO: Make reservation
-                    break;
-                case 7:
-                    // TODO: View items
-                    break;
-                case 8:
-                    Console.Clear();
-                    Program.MainMenu();
-                    break;
-                default:
-                    Console.WriteLine("Invalid input, type a number");
-                    break;
-            }
-        }
-    }
-
-    class PayingMember : Customer
-    {
-        public PayingMember(string name, string phone, string email) : base(name, phone, email)
-        {
-        }
-
-        public override string ToString()
-        {
-            return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
         }
 
         public static void PayingMemberMenu()
         {
             Console.Clear();
             Console.WriteLine("-------------PayingMember-------------");
-            Console.WriteLine("1. Purchase Membership");
-            Console.WriteLine("2. Manage Account (own only)");
-            Console.WriteLine("3. Purchase Day Pass");
-            Console.WriteLine("4. Cancel Reservation");
-            Console.WriteLine("5. View Group Schedule");
-            Console.WriteLine("6. Make Reservation");
-            Console.WriteLine("7. View Item");
-            Console.WriteLine("8. Log out");
-            Console.WriteLine("---------------------------------------\n");
+            menu("user");
+            Console.WriteLine("--------------------------------------");
             int command = int.Parse(Console.ReadLine());
 
             switch (command)
@@ -220,7 +172,12 @@ namespace Gym_Booking_Manager
                     // TODO: Manage Account
                     break;
                 case 3:
-                    // TODO: Purchase daypass
+                    Console.WriteLine("\nYou cannot buy a daypass for one of the following two reasons: ");
+                    Console.WriteLine("1. You already have a daypass.");
+                    Console.WriteLine("2. You are a paying member.\n");
+                    Console.WriteLine("Press Enter to continue.");
+                    Console.ReadLine();
+                    Console.Clear();
                     break;
                 case 4:
                     // TODO: Cancel reservation
@@ -239,12 +196,11 @@ namespace Gym_Booking_Manager
                     Program.MainMenu();
                     break;
                 default:
-                    Console.WriteLine("Invalid input, type a number");
+                    Console.WriteLine("Invalid input, type a number.");
                     break;
             }
         }
     }
-
 
     internal class Staff : User
     {
@@ -256,17 +212,7 @@ namespace Gym_Booking_Manager
         {
             Console.Clear();
             Console.WriteLine("--------------Staff-------------");
-            Console.WriteLine("1.  Purchase membership");
-            Console.WriteLine("2.  Manage account");
-            Console.WriteLine("3.  Purchase daypass");
-            Console.WriteLine("4.  Cancel reservation");
-            Console.WriteLine("5.  View group schedule");
-            Console.WriteLine("6.  Update group schedule");
-            Console.WriteLine("7.  Make reservation");
-            Console.WriteLine("8.  View item");
-            Console.WriteLine("9.  Restrict item");
-            Console.WriteLine("10. Add item");
-            Console.WriteLine("11. Log out");
+            menu("staff");
             Console.WriteLine("---------------------------------\n");
             int command = int.Parse(Console.ReadLine());
 
@@ -329,18 +275,7 @@ namespace Gym_Booking_Manager
         {
             Console.Clear();
             Console.WriteLine("--------------Admin-------------");
-            Console.WriteLine("1.  View Logs");
-            Console.WriteLine("2.  Purchase membership");
-            Console.WriteLine("3.  Manage account");
-            Console.WriteLine("4.  Purchase daypass");
-            Console.WriteLine("5.  Cancel reservation");
-            Console.WriteLine("6.  View group schedule");
-            Console.WriteLine("7.  Update group schedule");
-            Console.WriteLine("8.  Make reservation");
-            Console.WriteLine("9.  View item");
-            Console.WriteLine("10. Restrict item");
-            Console.WriteLine("11. Add item");
-            Console.WriteLine("12. Log out");
+            menu();
             Console.WriteLine("---------------------------------\n");
             int command = int.Parse(Console.ReadLine());
 
