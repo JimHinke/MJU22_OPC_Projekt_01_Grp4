@@ -34,7 +34,6 @@ namespace Gym_Booking_Manager
 			{
 				MainMenu();
 			}
-
 		}
 
 		// Static methods for the program
