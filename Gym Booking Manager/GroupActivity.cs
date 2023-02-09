@@ -11,24 +11,34 @@ namespace Gym_Booking_Manager
         public int activtyId { get; set; }
         public int participantLimit { get; set; }
         public string timeSlot { get; set; }
-        public List<Customer> participants;
-        public List<PersonalTrainer> personalTrainer;
+        public List<Customer> participants { get; set; }
+        public List<PersonalTrainer> personalTrainer { get; set; }
         public List<Space> space { get; set; }
         public List<Equipment> equipment { get; set; }
+        public string typeOfActivity { get; set; }
 
-        public GroupActivity(List<PersonalTrainer> personalTrainer, int activtyId = 0, int participantLimit = 0, string timeSlot = "", List<Customer> participants = null, List<Space> spaces = null, List<Equipment> equipment = null)
+        public GroupActivity(
+            List<PersonalTrainer> personalTrainer, 
+            string typeOfActivity = "", 
+            int activtyId = 0, 
+            int participantLimit = 0, 
+            string timeSlot = "", 
+            List<Customer> participants = null, 
+            List<Space> spaces = null, 
+            Equipment equipment = null)
         {
+            this.typeOfActivity = typeOfActivity;
             this.activtyId = activtyId;
             this.participantLimit = participantLimit;
             this.timeSlot = timeSlot;
             this.participants = new List<Customer>();
             this.personalTrainer = new List<PersonalTrainer>();
-            this.space = spaces = new List<Space>();
-            this.equipment = equipment;
+            this.space = new List<Space>();
+            this.equipment = new List<Equipment>();
         }
         public override string ToString()
         {
-            Console.Clear();
+
             string participantNames = "";
             if (participants.Count > 0)
             {
@@ -39,7 +49,9 @@ namespace Gym_Booking_Manager
             }
             else
                 participantNames = "No one is booked for this activity\n";
-            return $"Activity ID: {activtyId}\n" +
+            return $"---------------------------------------------\n" +
+                $"Type Of Activity: {typeOfActivity}\n" +
+                $"Activity ID: {activtyId}\n" +
                 $"Perticipant Limit: {participantLimit}\n" +
                 $"Timeslot: {timeSlot}\n" +
                 $"Participants:\n" +
@@ -47,8 +59,9 @@ namespace Gym_Booking_Manager
                 $"{participantNames}" +
                 $"-----------------\n" +
                 $"Space: {space[0].name}\n" +
-                $"Equipment: {equipment}\n" +
-                $"Personal Trainer: {personalTrainer[0].name}\n";
+                $"Equipment: {equipment[0].name}\n" +
+                $"Personal Trainer: {personalTrainer[0].name}\n" +
+                $"---------------------------------------------\n";
         }
     }
 }

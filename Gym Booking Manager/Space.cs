@@ -78,7 +78,8 @@ namespace Gym_Booking_Manager
         public enum Availability
         {
             Available,
-            Unavailable
+            Unavailable,
+            Reserved
         }
         public Availability SetAvailability(Availability availability)
         {
@@ -105,6 +106,41 @@ namespace Gym_Booking_Manager
 			}
 		}
 
+        // Perhaps a Unrestrict Space would be good?
+        public static void RestrictSpace()
+        {
+			List<Space> temp = new List<Space>();
+			foreach (var space in spaceList)
+			{
+				if (space.spaceAvailability == Availability.Available)
+				{
+					temp.Add(space);
+				}
+			}
+			Console.Clear();
+            if (temp.Count > 0)
+            {
+                Console.WriteLine("Choose space");
+                Space.ShowAvailable();
+                int n = int.Parse(Console.ReadLine());
+
+                Console.Clear();
+                spaceList[n - 1].spaceAvailability = Availability.Unavailable;
+                Console.WriteLine($"{spaceList[n - 1].name} - set to {spaceList[n - 1].spaceAvailability}");
+                Console.WriteLine("Press enter...");
+                Console.ReadLine();
+                Staff.RestrictItem();
+            }
+            else
+            {
+                Console.WriteLine("No available spaces!");
+                Console.WriteLine("Press enter to go back");
+                Console.ReadLine();
+                Staff.RestrictItem();
+            }
+            
+		}
+
         public void ViewTimeTable()
         {
             // Fetch
@@ -114,7 +150,6 @@ namespace Gym_Booking_Manager
             {
                // Do something?
             }
-
         }
 
         //public void MakeReservation(IReservingEntity owner)
