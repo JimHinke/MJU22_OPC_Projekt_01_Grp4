@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Gym_Booking_Manager.Space;
+﻿using static Gym_Booking_Manager.Space;
 
 namespace Gym_Booking_Manager
 {
-    internal class Equipment : Resources
-    {
+	internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>
+	{
         private EquipmentCatagory equipmentCategory;
         private Availability equipmentAvailability;
 		private static List<Equipment> _equipmentList = new List<Equipment>();
@@ -31,7 +25,8 @@ namespace Gym_Booking_Manager
         {
             Available,
             Service,
-            PlannedPurchase
+            PlannedPurchase,
+			Reserved
         }
 
         public Availability SetAvailability(Availability availability)
@@ -158,6 +153,55 @@ namespace Gym_Booking_Manager
 				Staff.RestrictItem();
 			}
 		}
+		public int CompareTo(Equipment? other)
+		{
+			// If other is not a valid object reference, this instance is greater.
+			if (other == null) return 1;
+			if (this.equipmentCategory != other.equipmentCategory) return this.equipmentCategory.CompareTo(other.equipmentCategory);
+			return this.name.CompareTo(other.name);
+		}
+
+		// Every class C to be used for DbSet<C> should have the ICSVable interface and the following implementation.
+		public string CSVify()
+		{
+			return $"{nameof(equipmentCategory)}:{equipmentCategory.ToString()},{nameof(name)}:{name}";
+		}
+
+		public void ViewTimeTable()
+		{
+			// Fetch
+			List<Reservation> tableSlice = this.calendar.GetSlice();
+			// Show?
+			foreach (Reservation reservation in tableSlice)
+			{
+				// Do something?
+			}
+		}
+
+		//public void MakeReservation(IReservingEntity owner)
+		//{
+
+		//}
+
+		public void CancelReservation()
+		{
+
+		}
+
+		// Consider how and when to add a new Space to the database.
+		// Maybe define a method to persist it? Any other reasonable schemes?
+
+		//private static List<Tuple<Category, int>> InitializeHourlyCosts()
+		//{
+		//    // TODO: fetch from "database"
+		//    var hourlyCosts = new List<Tuple<Category, int>>
+		//    {
+		//        Tuple.Create(Category.Hall, 500),
+		//        Tuple.Create(Category.Lane, 100),
+		//        Tuple.Create(Category.Studio, 400)
+		//    };
+		//    return hourlyCosts;
+		//}
 
 	}
 }

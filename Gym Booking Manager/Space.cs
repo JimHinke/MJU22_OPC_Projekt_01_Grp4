@@ -78,7 +78,8 @@ namespace Gym_Booking_Manager
         public enum Availability
         {
             Available,
-            Unavailable
+            Unavailable,
+            Reserved
         }
         public Availability SetAvailability(Availability availability)
         {
