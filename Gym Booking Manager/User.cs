@@ -51,6 +51,8 @@ namespace Gym_Booking_Manager
             {
                 case 1:
                     // TODO: Item Repair
+                    Equipment.RepairEquipment();
+                    ServiceMenu();
                     break;
                 case 2:
                     Console.Clear();
@@ -299,6 +301,7 @@ namespace Gym_Booking_Manager
                     break;
                 case 9:
                     // TODO: Restrict item
+                    RestrictItem();
                     break;
                 case 10:
                 // TODO: Add item
@@ -311,6 +314,31 @@ namespace Gym_Booking_Manager
                     break;
             }
         }
+
+        public static void RestrictItem()
+        {
+            Console.Clear();
+            Console.WriteLine("----------Restrict Item---------");
+			Console.WriteLine("1. Equipment");
+            Console.WriteLine("2. Space");
+            Console.WriteLine("3. Go back");
+			Console.WriteLine("--------------------------------");
+            int command = int.Parse(Console.ReadLine());
+
+            switch (command)
+            {
+                case 1:
+                    Equipment.RestrictEquipment();
+					break;
+                case 2:
+                    Space.RestrictSpace();
+                    break;
+                case 3:
+                    StaffMenu();
+                    break;
+            }
+
+		}
     }
 
     internal class Admin : Staff
