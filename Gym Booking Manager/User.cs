@@ -282,6 +282,7 @@ namespace Gym_Booking_Manager
                 case 3:
                     StaffMenu();
                     break;
+
             }
 
 		}
