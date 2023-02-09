@@ -26,16 +26,15 @@ namespace Gym_Booking_Manager
     {
         //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
         private SpaceCategory spaceCategory;
-        private Availability availability;
-
-		// Temp for testing NOTE: Too tired to battle with private atm
-		public static List<Space> spaceList = new List<Space>();
+        private Availability spaceAvailability;
+		private static List<Space> _spaceList = new List<Space>();
+        public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
 
         
 		public Space(string name, SpaceCategory spaceCategory = 0, Availability availability = 0, Calendar calendar = null) :base(name,calendar)
         {
             this.spaceCategory = spaceCategory;
-            this.availability = availability;
+            this.spaceAvailability = availability;
         }
 
         // Every class T to be used for DbSet<T> needs a constructor with this parameter signature. Make sure the object is properly initialized.
@@ -62,7 +61,7 @@ namespace Gym_Booking_Manager
 
         public override string ToString()
         {
-            return this.CSVify(); // TODO: Don't use CSVify. Make it more readable.
+            return $"Namn: {name}, Category: {spaceCategory}, Availability: {spaceAvailability}"; // TODO: Don't use CSVify. Make it more readable.
         }
 
         // Every class C to be used for DbSet<C> should have the ICSVable interface and the following implementation.
@@ -83,13 +82,13 @@ namespace Gym_Booking_Manager
         }
         public Availability SetAvailability(Availability availability)
         {
-            return this.availability = availability;
+            return this.spaceAvailability = availability;
         }
         public static void ShowAvailable()
         {
 			foreach (var space in spaceList)
 			{
-				if (space.availability == Availability.Available)
+				if (space.spaceAvailability == Availability.Available)
 				{
 					Console.WriteLine(space);
 				}
@@ -99,7 +98,7 @@ namespace Gym_Booking_Manager
         {
 			foreach (var space in spaceList)
 			{
-				if (space.availability == Availability.Unavailable)
+				if (space.spaceAvailability == Availability.Unavailable)
 				{
 					Console.WriteLine(space);
 				}

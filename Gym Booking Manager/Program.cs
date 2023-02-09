@@ -13,17 +13,16 @@ namespace Gym_Booking_Manager
 
 		static void Main(string[] args)
 		{
-			// FUL TESTAR!		
-			Equipment.equipmentList.Add(new Equipment("Test1", Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test2", Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test3", Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test4", Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test5", Equipment.Availability.Available));
+			// FUL TESTAR!	
+			Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentCatagory.Kettlebells ,Equipment.Availability.Available));
+			Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
+			Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
+			Equipment.equipmentList.Add(new Equipment("Test4", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
+			Equipment.equipmentList.Add(new Equipment("Test5", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
 
 			Space.spaceList.Add(new Space("SpaceTest1", Space.SpaceCategory.Hall, Space.Availability.Available));
 			Space.spaceList.Add(new Space("SpaceTest2", Space.SpaceCategory.Hall, Space.Availability.Unavailable));
 			Space.spaceList.Add(new Space("SpaceTest3", Space.SpaceCategory.Hall, Space.Availability.Available));
-
 
 			Console.WriteLine(Equipment.equipmentList);
 			Equipment.equipmentList[1].SetAvailability(Availability.Service);
