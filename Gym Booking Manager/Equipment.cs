@@ -40,21 +40,21 @@ namespace Gym_Booking_Manager
 
         public static void ShowService()
         {
-			foreach (var equipment in equipmentList)
+			for (int i = 0; i < equipmentList.Count; i++)
 			{
-				if (equipment.equipmentAvailability == Availability.Service)
+				if (equipmentList[i].equipmentAvailability == Availability.Service)
 				{
-					Console.WriteLine(equipment);
+					Console.WriteLine(i + 1 + " " + equipmentList[i].name);
 				}
 			}
 		}
         public static void ShowPlannedPurchase()
         {
-			foreach (var equipment in equipmentList)
+			for (int i = 0; i < equipmentList.Count; i++)
 			{
-				if (equipment.equipmentAvailability == Availability.PlannedPurchase)
+				if (equipmentList[i].equipmentAvailability == Availability.PlannedPurchase)
 				{
-					Console.WriteLine(equipment);
+					Console.WriteLine(i + 1 + " " + equipmentList[i].name);
 				}
 			}
 		}

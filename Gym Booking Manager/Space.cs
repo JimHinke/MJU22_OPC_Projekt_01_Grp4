@@ -87,21 +87,21 @@ namespace Gym_Booking_Manager
         }
         public static void ShowAvailable()
         {
-			foreach (var space in spaceList)
+			for (int i = 0; i < spaceList.Count; i++)
 			{
-				if (space.spaceAvailability == Availability.Available)
+				if (spaceList[i].spaceAvailability == Availability.Available)
 				{
-					Console.WriteLine(space);
+					Console.WriteLine(i + 1 + " " + spaceList[i].name);
 				}
 			}
 		}
         public static void ShowUnavailable()
         {
-			foreach (var space in spaceList)
+			for (int i = 0; i < spaceList.Count; i++)
 			{
-				if (space.spaceAvailability == Availability.Unavailable)
+				if (spaceList[i].spaceAvailability == Availability.Unavailable)
 				{
-					Console.WriteLine(space);
+					Console.WriteLine(i + 1 + " " + spaceList[i].name);
 				}
 			}
 		}
