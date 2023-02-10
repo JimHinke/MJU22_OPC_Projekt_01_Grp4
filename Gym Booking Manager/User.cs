@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,6 +68,25 @@ namespace Gym_Booking_Manager
                 Console.WriteLine($"{i+1}. {menuOptions[i]}");
             }
         }
+
+        public static void ReserveMenu(string user = "")
+        {
+			Console.WriteLine("What would you like to reserve?");
+			List<string> reservationOptions = new List<string>()
+            {
+                "Equipment",
+                "Space",
+                "Personal Trainer",
+                "Group Activity",
+                "Go Back"
+            };
+
+			for (int i = 0; i < reservationOptions.Count; i++)
+			{
+				Console.WriteLine($"{i + 1}. {reservationOptions[i]}");
+			}
+
+		}
     }
 
     internal class Service : User
@@ -189,6 +209,7 @@ namespace Gym_Booking_Manager
                     break;
                 case 6:
                     // TODO: Make reservation
+                    PayingMemberReservation();
                     break;
                 case 7:
                     // TODO: View items
@@ -201,7 +222,43 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("Invalid input, type a number.");
                     break;
             }
+
+            static void PayingMemberReservation()
+            {
+				while (true) 
+                {
+                    Console.Clear();
+				    ReserveMenu("user");
+				    int n = int.Parse(Console.ReadLine());
+				    switch (n)
+				    {
+					    case 1:
+                            // Equipment
+                            Equipment myEquipment = new Equipment();
+                            myEquipment.MakeReservation("user");
+						    break;
+					    case 2:
+						    // Space
+						    Space mySpace = new Space();
+						    mySpace.MakeReservation("user");
+						    break;
+					    case 3:
+						    // Personal Trainer
+						    break;
+					    case 4:
+						    // Group Activity
+						    break;
+					    case 5:
+						    // Go Back
+                            PayingMemberMenu();
+						    break;
+                    }
+				}
+			}
         }
+
+
+
     }
 
     internal class Staff : User
