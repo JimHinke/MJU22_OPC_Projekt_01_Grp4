@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace Gym_Booking_Manager
         private Availability spaceAvailability;
 		private static List<Space> _spaceList = new List<Space>();
         public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
+        public static int index = 0;
 
         
 		public Space(string name, SpaceCategory spaceCategory = 0, Availability availability = 0, Calendar calendar = null) :base(name,calendar)
@@ -88,7 +90,9 @@ namespace Gym_Booking_Manager
         }
         public static void ShowAvailable()
         {
-			for (int i = 0; i < spaceList.Count; i++)
+            spaceList = spaceList.OrderBy(x => x.spaceAvailability != Availability.Available).ToList();
+            index = 0;
+            for (int i = 0; i < spaceList.Count; i++)
 			{
 				if (spaceList[i].spaceAvailability == Availability.Available)
 				{

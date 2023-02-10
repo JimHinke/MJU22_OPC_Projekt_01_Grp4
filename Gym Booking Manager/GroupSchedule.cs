@@ -60,6 +60,7 @@ namespace Gym_Booking_Manager
             int timeSlotChoice = Convert.ToInt32(input("What time slot would you like to use?\n>"));
 
             //Personal Trainer
+
             Console.Clear();
             for (int i = 0; i < PersonalTrainer.personalTrainers.Count; i++)
             {
@@ -67,10 +68,11 @@ namespace Gym_Booking_Manager
                 index++;
             }
             index = 1;
-            int InstructorChoice = Convert.ToInt32(input("Whos the instructor for this session?\n>"));
+            int InstructorChoice = Convert.ToInt32(input("Who is the instructor for this session?\n>"));
 
             //What space is used
             Console.Clear();
+
             Space.ShowAvailable();
             int LocationChoice = Convert.ToInt32(input("Where is the location for this session?\n>"));
 
