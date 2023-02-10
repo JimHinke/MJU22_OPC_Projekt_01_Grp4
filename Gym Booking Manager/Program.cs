@@ -19,6 +19,13 @@ namespace Gym_Booking_Manager
 			Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
 			Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
 
+
+            Customer CurrentCustomer = new Customer("Current Customer", "0987321", "CurrentCustomer@test.se");
+            Customer testCustomer1 = new Customer("TestCustomer 1", "1234", "test1@gmail.com");
+            Customer testCustomer2 = new Customer("TestCustomer 2", "1234", "test2@gmail.com");
+            Customer testCustomer3 = new Customer("TestCustomer 3", "1234", "test3@gmail.com");
+
+
             //Space.spaceList.Add(new Space("SpaceTest1", Space.SpaceCategory.Hall, Space.Availability.Available));
             //Space.spaceList.Add(new Space("SpaceTest2", Space.SpaceCategory.Hall, Space.Availability.Available));
             //Space.spaceList.Add(new Space("SpaceTest3", Space.SpaceCategory.Hall, Space.Availability.Available));

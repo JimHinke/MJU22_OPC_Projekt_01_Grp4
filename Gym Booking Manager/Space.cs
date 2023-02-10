@@ -102,7 +102,6 @@ namespace Gym_Booking_Manager
         public static void ShowAvailable()
         {
             spaceList = spaceList.OrderBy(x => x.spaceAvailability != Availability.Available).ToList();
-            index = 0;
             for (int i = 0; i < spaceList.Count; i++)
 			{
 				if (spaceList[i].spaceAvailability == Availability.Available)
