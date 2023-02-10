@@ -1,15 +1,18 @@
-﻿using static Gym_Booking_Manager.Space;
+﻿using Gym_Booking_Manager.Interfaces;
+using static Gym_Booking_Manager.Space;
 
 namespace Gym_Booking_Manager
 {
 	internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>
 	{
         private EquipmentCatagory equipmentCategory;
-        private Availability equipmentAvailability;
+        public Availability equipmentAvailability;
 		private static List<Equipment> _equipmentList = new List<Equipment>();
+        public static List<Equipment> availableEquipment = new List<Equipment>();
         public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
+		public static int index = 0;
 
-		public Equipment(string name, EquipmentCatagory equipmentCatagory, Availability availability ,Calendar calendar = null) : base(name,calendar)
+        public Equipment(string name, EquipmentCatagory equipmentCatagory, Availability availability ,Calendar calendar = null) : base(name,calendar)
         {
             this.equipmentAvailability = availability;
             this.equipmentCategory= equipmentCatagory;
@@ -58,18 +61,35 @@ namespace Gym_Booking_Manager
 				}
 			}
 		}
-        public static void ShowAvailable()
-        {
-			for (int i = 0; i <equipmentList.Count; i++)
+		public static void ShowAvailable()
+		{
+			equipmentList = equipmentList.OrderBy(x => x.equipmentAvailability != Availability.Available).ToList();
+			index = 0;
+			for (int i = 0; i < equipmentList.Count; i++)
 			{
 				if (equipmentList[i].equipmentAvailability == Availability.Available)
 				{
-					Console.WriteLine(i+1 + " " + equipmentList[i].name);
+					index++;
+					Console.WriteLine(i + 1 + " " + equipmentList[i].name);
 				}
 			}
-        }
+		}
+		//public static void ShowAvailable()
+		//{
+		//	for (int i = 0; i < equipmentList.Count; i++)
+		//	{
+		//		if (equipmentList[i].equipmentAvailability == Availability.Available)
+		//		{
+		//			availableEquipment.Add(equipmentList[i]);
+		//		}
+		//	}
+		//	for (int i = 0; i < availableEquipment.Count; i++)
+		//	{
+		//		Console.WriteLine(i + 1 + " " + availableEquipment[i].name);
+		//	}
+		//}
 
-        public static void RepairEquipment()
+		public static void RepairEquipment()
         {
 			// Catch when n is out of bounds
 			List<Equipment> temp = new List<Equipment>();
@@ -178,10 +198,10 @@ namespace Gym_Booking_Manager
 			}
 		}
 
-		//public void MakeReservation(IReservingEntity owner)
-		//{
+		public void MakeReservation(IReservingEntity owner)
+		{
 
-		//}
+		}
 
 		public void CancelReservation()
 		{

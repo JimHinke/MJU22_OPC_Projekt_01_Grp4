@@ -31,7 +31,41 @@ namespace Gym_Booking_Manager
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
         }
+        public static void manageSchedule()
+        {
+            Console.Clear();
+            Console.WriteLine("--------------Manage Group Schedule-------------");
+            Console.WriteLine("1. Create New Group Activity");
+            Console.WriteLine("2. Edit Group Activity");
+            Console.WriteLine("3. Delete Group Activity");
+            Console.WriteLine("4. Go Back");
+            Console.WriteLine("----------------------------------\n");
+            int command = int.Parse(Console.ReadLine());
 
+            switch (command)
+            {
+                case 1:
+                    Console.Clear();
+                    GroupSchedule.addActivity();
+                    break;
+                case 2:
+                    //TODO Edit Group Activity
+                    Console.Clear();
+                    break;
+                case 3:
+                    //TODO Delete Group Activity
+                    Console.Clear();
+                    GroupSchedule.addActivity();
+                    break;
+                case 4:
+                    Console.Clear();
+                    Program.MainMenu();
+                    break;
+                default:
+                    Console.WriteLine("Invalid input, type a number");
+                    break;
+        }
+    }
         public static void menu(string user = "")
         {
             List<string> menuOptions = new List<string>()
@@ -42,7 +76,7 @@ namespace Gym_Booking_Manager
                 "Purchase Day Pass",
                 "Cancel Reservation",
                 "View group Schedule",
-                "Update group schedule",
+                "Manage group Schedule",
                 "Make Reservation",
                 "View Item",
                 "Restrict item",
@@ -59,7 +93,7 @@ namespace Gym_Booking_Manager
                 menuOptions.Remove("View Logs");
                 menuOptions.Remove("Add item");
                 menuOptions.Remove("Restrict item");
-                menuOptions.Remove("Update group schedule");
+                menuOptions.Remove("Manage group Schedule");
             }
 
             for (int i = 0; i < menuOptions.Count; i++)
@@ -236,8 +270,8 @@ namespace Gym_Booking_Manager
                     GroupSchedule.showActivities();
                     break;
                 case 6:
-                    // TODO: Update group schedule
-                    GroupSchedule.addActivity();
+                    // TODO: Manage group schedule
+                    manageSchedule();
                     break;
                 case 7:
                     // TODO: Make reservation
@@ -260,7 +294,6 @@ namespace Gym_Booking_Manager
                     break;
             }
         }
-
         public static void RestrictItem()
         {
             Console.Clear();

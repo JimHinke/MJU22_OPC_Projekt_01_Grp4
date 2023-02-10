@@ -22,6 +22,7 @@ namespace Gym_Booking_Manager
             "13:00-14:00",
             "14:00-15:00"
         };
+        public static List<Equipment> EQC = new List<Equipment>();
 
         public static List<string> TypeOfActivity = new List<string>()
         {
@@ -70,34 +71,41 @@ namespace Gym_Booking_Manager
 
             //What space is used
             Console.Clear();
-            for (int i = 0; i < Space.spaceList.Count; i++)
-            {
-                Console.WriteLine(index + " " + Space.spaceList[i].name);
-                index++;
-            }
-            index = 1;
+            Space.ShowAvailable();
             int LocationChoice = Convert.ToInt32(input("Where is the location for this session?\n>"));
 
-            //What equipment is used
-            Console.WriteLine("What equipment do you need for this session?");
-            Equipment.ShowAvailable();
-            int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ?\n>"));
+            //What Equipment is needed
+            while (true)
+            {
+                Equipment.ShowAvailable();
+                int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
 
+                if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
+                {
+                    EQC.Add(Equipment.equipmentList[equipmentChoice - 1]);
+                    Equipment.equipmentList[equipmentChoice - 1].equipmentAvailability = Equipment.Availability.Reserved;
+                }
+                else if (equipmentChoice == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Not a valid equipment. Try again.");
+                }
+            }
 
 
             GroupActivity temp = new GroupActivity(
-                null, //Personal Trainer
-                TypeOfActivity[typeOfActivityChoice - 1], //Type Of Activity
-                23, //Uniqe ID set to an random number. Is this needed?
-                Convert.ToInt32(limit), //Particpant Limit
-                TimeSlot[timeSlotChoice - 1], //Time Slot
-                null, //List of Participants. This is not added here but rather under another menu-choice
-                null, //What space is used for this session
-                null //What Equipment is used for this session
-                );
-            temp.personalTrainer.Add(PersonalTrainer.personalTrainers[InstructorChoice - 1]);
-            temp.equipment.Add(Equipment.equipmentList[equipmentChoice - 1]);
-            temp.space.Add(Space.spaceList[LocationChoice - 1]);
+                            PersonalTrainer.personalTrainers[InstructorChoice - 1], //Personal Trainer
+                            TypeOfActivity[typeOfActivityChoice - 1], //Type Of Activity
+                            23, //Unique ID set to an random number. Is this needed?
+                            Convert.ToInt32(limit), //Particpant Limit
+                            TimeSlot[timeSlotChoice - 1], //Time Slot
+                            null, //List of Participants. This is not added here but rather under another menu-choice
+                            Space.spaceList[LocationChoice - 1], //What space is used for this session
+                            EQC //What Equipment is used for this session
+                            );
 
             Console.Clear();
             Console.WriteLine(temp);

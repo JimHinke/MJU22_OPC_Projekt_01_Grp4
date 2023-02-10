@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gym_Booking_Manager.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -160,6 +161,11 @@ namespace Gym_Booking_Manager
         public void CancelReservation()
         {
 
+        }
+
+        public void MakeReservation(IReservingEntity owner)
+        {
+            throw new NotImplementedException();
         }
 
         // Consider how and when to add a new Space to the database.

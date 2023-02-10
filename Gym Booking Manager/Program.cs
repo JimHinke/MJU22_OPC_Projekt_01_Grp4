@@ -1,4 +1,5 @@
 ﻿using Gym_Booking_Manager;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using static Gym_Booking_Manager.Equipment;
 
@@ -7,62 +8,76 @@ using static Gym_Booking_Manager.Equipment;
 #endif
 namespace Gym_Booking_Manager
 {
-	internal class Program
-	{
+    internal class Program
+    {
 
 
-		static void Main(string[] args)
-		{
-			// FUL TESTAR!	
-			Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentCatagory.Kettlebells ,Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
-			Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
+        static void Main(string[] args)
+        {
+            // FUL TESTAR!	
+            Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
+            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Reserved));
+            Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentCatagory.Kettlebells, Equipment.Availability.Available));
 
-			//Space.spaceList.Add(new Space("SpaceTest1", Space.SpaceCategory.Hall, Space.Availability.Available));
-			//Space.spaceList.Add(new Space("SpaceTest2", Space.SpaceCategory.Hall, Space.Availability.Available));
-			//Space.spaceList.Add(new Space("SpaceTest3", Space.SpaceCategory.Hall, Space.Availability.Available));
-			
+            //Space.spaceList.Add(new Space("SpaceTest1", Space.SpaceCategory.Hall, Space.Availability.Available));
+            //Space.spaceList.Add(new Space("SpaceTest2", Space.SpaceCategory.Hall, Space.Availability.Available));
+            //Space.spaceList.Add(new Space("SpaceTest3", Space.SpaceCategory.Hall, Space.Availability.Available));
+
 
             PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare");
             PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
-            Space space = new Space("Hall");
+            Space space = new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available);
             Space.spaceList.Add(space);
+
+
+            //GroupActivity temp = new GroupActivity(
+            //                PersonalTrainer.personalTrainers[0], //Personal Trainer
+            //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
+            //                23, //Unique ID set to an random number. Is this needed?
+            //                32, //Particpant Limit
+            //                GroupSchedule.TimeSlot[0], //Time Slot
+            //                null, //List of Participants. This is not added here but rather under another menu-choice
+            //                Space.spaceList[0], //What space is used for this session
+            //                Equipment.equipmentList[0] //What Equipment is used for this session
+            //                );
+
+            //Console.WriteLine(temp);
 
 
             //User userContext;
             while (true)
-			{
-				MainMenu();
-			}
-		}
+            {
+                MainMenu();
+            }
+        }
 
-		// Static methods for the program
-		public static void MainMenu()
-		{            
+        // Static methods for the program
+        public static void MainMenu()
+        {
             Console.WriteLine("-------------Choose user:-------------");
-			Console.WriteLine("1. Admin");
-			Console.WriteLine("2. Staff");
-			Console.WriteLine("3. Service");
-			Console.WriteLine("4. NonPayingNonMember");
+            Console.WriteLine("1. Admin");
+            Console.WriteLine("2. Staff");
+            Console.WriteLine("3. Service");
+            Console.WriteLine("4. NonPayingNonMember");
             Console.WriteLine("5. NonPayingDayPass");
             Console.WriteLine("6. PayingMember");
             Console.WriteLine("7. Quit");
-			Console.WriteLine("--------------------------------------\n");
-			int command = int.Parse(Console.ReadLine());			
+            Console.WriteLine("--------------------------------------\n");
+            int command = int.Parse(Console.ReadLine());
 
-			switch (command)
-			{
-				case 1:
-					Admin.AdminMenu();
-					break;
-				case 2:                    
+            switch (command)
+            {
+                case 1:
+                    Admin.AdminMenu();
+                    break;
+                case 2:
                     Staff.StaffMenu();
-					break;
-				case 3:                    
-                    Service.ServiceMenu();					
-					break;
-				case 4:                   
-                    Customer.NonPayingNonMemberMenu();					
+                    break;
+                case 3:
+                    Service.ServiceMenu();
+                    break;
+                case 4:
+                    Customer.NonPayingNonMemberMenu();
                     break;
                 case 5:
                     Customer.PayingMemberMenu();
@@ -71,14 +86,14 @@ namespace Gym_Booking_Manager
                     Customer.PayingMemberMenu();
                     break;
                 case 7:
-					Console.WriteLine("\nExiting program...");
-					Environment.Exit(0);
-					break;
-				default:
-					Console.WriteLine("Invalid input, type a number");
-					break;
+                    Console.WriteLine("\nExiting program...");
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Invalid input, type a number");
+                    break;
 
-			}
-		}
-	}
+            }
+        }
+    }
 }
