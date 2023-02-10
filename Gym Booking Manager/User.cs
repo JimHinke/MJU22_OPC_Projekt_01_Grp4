@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -101,6 +102,25 @@ namespace Gym_Booking_Manager
                 Console.WriteLine($"{i+1}. {menuOptions[i]}");
             }
         }
+
+        public static void ReserveMenu(string user = "")
+        {
+			Console.WriteLine("What would you like to reserve?");
+			List<string> reservationOptions = new List<string>()
+            {
+                "Equipment",
+                "Space",
+                "Personal Trainer",
+                "Group Activity",
+                "Go Back"
+            };
+
+			for (int i = 0; i < reservationOptions.Count; i++)
+			{
+				Console.WriteLine($"{i + 1}. {reservationOptions[i]}");
+			}
+
+		}
     }
 
     internal class Service : User
@@ -138,6 +158,7 @@ namespace Gym_Booking_Manager
 
     internal class Customer : User
     {
+        private static List<string> logs = new List<string>();
         DateTime createdAt;
         string accessLevel { get; set; }
         public Customer(string name, string phone, string email, string accessLevel = "") : base(name, phone, email)
@@ -148,6 +169,32 @@ namespace Gym_Booking_Manager
         public override string ToString()
         {
             return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nAccount Created: {createdAt}";
+        }
+        public static void AddLog(string log)
+        {
+            logs.Add(log);
+        }
+        public static void ShowLogs()
+        {
+            Console.WriteLine("Logs:");
+            foreach (string log in logs)
+            {
+                Console.WriteLine(log);
+            }
+        }
+        public static void SendNotification(Customer customer, string message, bool useSMS)
+        {
+            string log = "Sending";
+            if (useSMS)
+            {
+                log += " SMS to " + customer.phone + ": " + message;
+            }
+            else
+            {
+                log += " email to " + customer.email + ": " + message;
+            }
+            Console.WriteLine(log);
+            Customer.AddLog(log);
         }
 
         public static void NonPayingNonMemberMenu()
@@ -170,7 +217,15 @@ namespace Gym_Booking_Manager
                     // TODO: Purchase daypass
                     break;
                 case 4:
-                    // TODO: Cancel reservation
+                    Console.WriteLine("Enter the customer's name: ");
+                    string name = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's phone number: ");
+                    string phone = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's email address: ");
+                    string email = Console.ReadLine();
+                    string message = "The Reservation was cancelled.";
+                    Customer customer = new Customer(name, phone, email);
+                    Customer.SendNotification(customer, message, false);
                     break;
                 case 5:
                     // TODO: View group schedule
@@ -223,6 +278,7 @@ namespace Gym_Booking_Manager
                     break;
                 case 6:
                     // TODO: Make reservation
+                    PayingMemberReservation();
                     break;
                 case 7:
                     // TODO: View items
@@ -235,7 +291,43 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("Invalid input, type a number.");
                     break;
             }
+
+            static void PayingMemberReservation()
+            {
+				while (true) 
+                {
+                    Console.Clear();
+				    ReserveMenu("user");
+				    int n = int.Parse(Console.ReadLine());
+				    switch (n)
+				    {
+					    case 1:
+                            // Equipment
+                            Equipment myEquipment = new Equipment();
+                            myEquipment.MakeReservation("user");
+						    break;
+					    case 2:
+						    // Space
+						    Space mySpace = new Space();
+						    mySpace.MakeReservation("user");
+						    break;
+					    case 3:
+						    // Personal Trainer
+						    break;
+					    case 4:
+						    // Group Activity
+						    break;
+					    case 5:
+						    // Go Back
+                            PayingMemberMenu();
+						    break;
+                    }
+				}
+			}
         }
+
+
+
     }
 
     internal class Staff : User
