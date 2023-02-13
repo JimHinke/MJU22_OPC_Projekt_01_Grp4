@@ -11,6 +11,12 @@ namespace Gym_Booking_Manager
         public string name { get; set; }
         public Calendar calendar { get; set; }
 
+        public static List<string> TimeSlot = new List<string>()
+        {
+            "12:00-13:00",
+            "13:00-14:00",
+            "14:00-15:00"
+        };
         public Resources(string name ="", Calendar calendar =null)
         {
             this.name = name;
