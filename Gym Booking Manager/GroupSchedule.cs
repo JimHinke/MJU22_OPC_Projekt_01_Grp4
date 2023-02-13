@@ -93,7 +93,7 @@ namespace Gym_Booking_Manager
             while (true)
             {
 
-                Equipment.ShowAvailable();
+                Equipment.ShowAvailable(TimeSlot[timeSlotChoice - 1]);
                 int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
                 if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
                 {

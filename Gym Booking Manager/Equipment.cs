@@ -25,7 +25,6 @@ namespace Gym_Booking_Manager
             this.owner = owner;
             this.timeSlot = timeSlot;
             this.reservedTimeSlot = new List<string>();
-
         }
 
         public enum EquipmentType
@@ -75,13 +74,14 @@ namespace Gym_Booking_Manager
                 }
             }
         }
-        public static void ShowAvailable()
-        {
+        public static void ShowAvailable(string timeslot)
+        { 
             equipmentList = equipmentList.OrderBy(x => x.equipmentAvailability != Availability.Available).ToList();
+            equipmentList = equipmentList.OrderBy(x => x.reservedTimeSlot.Contains(timeslot)).ToList();
             index = 0;
             for (int i = 0; i < equipmentList.Count; i++)
             {
-                if (equipmentList[i].equipmentAvailability == Availability.Available)
+                if (equipmentList[i].equipmentAvailability == Availability.Available && !equipmentList[i].reservedTimeSlot.Contains(timeslot))
                 {
                     index++;
                     Console.WriteLine(i + 1 + " " + equipmentList[i].name);
@@ -176,7 +176,7 @@ namespace Gym_Booking_Manager
             if (temp.Count > 0)
             {
                 Console.WriteLine("Choose equipment");
-                Equipment.ShowAvailable();
+                //Equipment.ShowAvailable();
                 int n = int.Parse(Console.ReadLine());
 
                 Console.Clear();
