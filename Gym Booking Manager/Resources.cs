@@ -14,8 +14,6 @@ namespace Gym_Booking_Manager
         public Calendar calendar { get; set; }
         public IReservingEntity owner { get; set; }
 
-        public IReservingEntity owner { get; set; }
-
         public static List<string> TimeSlot = new List<string>()
         {
             "12:00-13:00",

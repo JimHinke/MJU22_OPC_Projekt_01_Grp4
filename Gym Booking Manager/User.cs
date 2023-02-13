@@ -12,6 +12,7 @@ using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 #if DEBUG
@@ -34,6 +35,7 @@ namespace Gym_Booking_Manager
             this.phone = phone;
             this.email = email;
         }
+
         public override string ToString()
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
@@ -169,6 +171,16 @@ namespace Gym_Booking_Manager
         NonPayingNonMember
     }
 
+	public class ReservingEntity : IReservingEntity
+	{
+		public string owner { get; set; }
+
+		public ReservingEntity(int id)
+		{
+			owner = id.ToString();
+		}
+	}
+
 	internal class Customer : User
     {
         public static List<Customer> customerList = new List<Customer>();
@@ -186,7 +198,9 @@ namespace Gym_Booking_Manager
             customerList.Add(this);
             List<Resources > reservedItems = new List<Resources>();
             uniqueID = new Random().Next(0, 1000);
+            ID = new ReservingEntity(uniqueID);
 		}
+        
         public override string ToString()
         {
             return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nAccount Created: {createdAt}";
@@ -305,23 +319,6 @@ namespace Gym_Booking_Manager
             menu("user");
             Console.WriteLine("--------------------------------------");
             int command = int.Parse(Console.ReadLine());
-            Console.WriteLine("Enter your name: ");
-            string name = Console.ReadLine();
-            Console.WriteLine("Enter your phone number: ");
-            string phone = Console.ReadLine();
-            Console.WriteLine("Enter your email: ");
-            string email = Console.ReadLine();
-            Customer customer = customerList.Find(c => c.name == name && c.phone == phone && c.email == email);
-            if (customer == null || (customer.AccessLevel != AccessLevels.PayingMember && customer.AccessLevel != AccessLevels.DayPassUser))
-            {
-                Console.WriteLine("Error: You do not have permission.");
-                return;
-            }
-            if (customer.AccessLevel == AccessLevels.DayPassUser && customer.dayPassDate.Date != DateTime.Now.Date)
-            {
-                Console.WriteLine("Error: Your day pass has expired.");
-                return;
-            }
             switch (command)
             {
                 case 1:
@@ -376,6 +373,7 @@ namespace Gym_Booking_Manager
                     Console.Clear();
                     ReserveMenu("user");
                     int n = int.Parse(Console.ReadLine());
+                    Customer.ID = new ReservingEntity(1);
                     switch (n)
                     {
                         case 1:
