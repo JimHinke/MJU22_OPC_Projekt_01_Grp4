@@ -12,7 +12,7 @@ namespace Gym_Booking_Manager
         public int activtyId { get; set; }
         public int participantLimit { get; set; }
         public string timeSlot { get; set; }
-        public List<Customer> participants { get; set; }
+        public List<User> participants { get; set; }
         public PersonalTrainer personalTrainer { get; set; }
         public Space space { get; set; }
         public List<Equipment> equipment { get; set; }
@@ -24,7 +24,7 @@ namespace Gym_Booking_Manager
                     int activtyId = 0,
                     int participantLimit = 0,
                     string timeSlot = "",
-                    Customer participants = null,
+                    User participants = null,
                     Space space = null,
                     List<Equipment> equipment = null
                     )
@@ -33,7 +33,7 @@ namespace Gym_Booking_Manager
             this.activtyId = activtyId;
             this.participantLimit = participantLimit;
             this.timeSlot = timeSlot;
-            this.participants = new List<Customer>();
+            this.participants = new List<User>();
             this.personalTrainer = personalTrainer;
             this.space = space;
             this.equipment = equipment;
@@ -61,7 +61,7 @@ namespace Gym_Booking_Manager
                 }
             }
             else
-                equipmentNames = "No Equipment for this session";
+                equipmentNames = "No Equipment for this s";
 
             return $"---------------------------------------------\n" +
                 $"Type Of Activity: {typeOfActivity}\n" +

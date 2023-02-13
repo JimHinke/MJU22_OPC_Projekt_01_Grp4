@@ -25,6 +25,7 @@ namespace Gym_Booking_Manager
         public string name { get; set; }
         public string phone { get; set; }
         public string email { get; set; }
+        public static List<User> userList = new List<User>();
 
 
         protected User(int uniqueID, string name = "", string phone = "", string email = "")
@@ -299,15 +300,28 @@ namespace Gym_Booking_Manager
 
         public static void PayingMemberMenu()
         {
-            Console.Clear();
+            //Console.Clear(); //BORTKOMMENTERAD FÖR TESTER
             Console.WriteLine("-------------PayingMember-------------");
             menu("user");
             Console.WriteLine("--------------------------------------");
             int command = int.Parse(Console.ReadLine());
-
-            // TEMPORARY!!!!
-
-
+            Console.WriteLine("Enter your name: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Enter your phone number: ");
+            string phone = Console.ReadLine();
+            Console.WriteLine("Enter your email: ");
+            string email = Console.ReadLine();
+            Customer customer = customerList.Find(c => c.name == name && c.phone == phone && c.email == email);
+            if (customer == null || (customer.AccessLevel != AccessLevels.PayingMember && customer.AccessLevel != AccessLevels.DayPassUser))
+            {
+                Console.WriteLine("Error: You do not have permission.");
+                return;
+            }
+            if (customer.AccessLevel == AccessLevels.DayPassUser && customer.dayPassDate.Date != DateTime.Now.Date)
+            {
+                Console.WriteLine("Error: Your day pass has expired.");
+                return;
+            }
             switch (command)
             {
                 case 1:
@@ -335,9 +349,13 @@ namespace Gym_Booking_Manager
                     break;
                 case 5:
                     // TODO: View group schedule
+                    Console.Clear();
+                    GroupSchedule.showActivities();
+                    PayingMemberMenu();
                     break;
                 case 6:
                     // TODO: Make reservation
+                    Console.Clear();
                     PayingMemberReservation();
                     break;
                 case 7:
@@ -374,7 +392,18 @@ namespace Gym_Booking_Manager
                             // Personal Trainer
                             break;
                         case 4:
-                            // Group Activity
+                            Console.Clear();
+                            GroupSchedule.showActivities();
+                            Console.WriteLine("What group activity do you want to participate in? ");
+                            string activityChoice = Console.ReadLine();
+                            for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
+                            {
+                                if (GroupSchedule.groupScheduleList[i].typeOfActivity.Contains(activityChoice))
+                                {
+                                    GroupSchedule.addCustomerToActivity(userList[0],GroupSchedule.groupScheduleList[i]);
+                                }
+                            }
+                            PayingMemberMenu();
                             break;
                         case 5:
                             // Go Back

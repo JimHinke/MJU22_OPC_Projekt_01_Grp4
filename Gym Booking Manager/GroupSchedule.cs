@@ -13,10 +13,10 @@ using static System.Collections.Specialized.BitVector32;
 #endif
 namespace Gym_Booking_Manager
 {
-    internal class GroupSchedule
+    internal class GroupSchedule : Resources
     {
         public static List<GroupActivity> groupScheduleList = new List<GroupActivity>();
-        public static List<Equipment> EQC = new List<Equipment>();
+        public static List<Equipment> EQC = new List<Equipment>(); //LÄGGER IN DENNA FLERA ÅNGER MÅSTE RESETAS!!
 
         public static List<string> TypeOfActivity = new List<string>()
         {
@@ -70,26 +70,6 @@ namespace Gym_Booking_Manager
             Space.ShowAvailable();
             int LocationChoice = Convert.ToInt32(input("Where is the location for this session?\n>"));
 
-            //What Equipment is needed
-            //while (true)
-            //{
-            //    Equipment.ShowAvailable();
-            //    int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
-
-            //    if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
-            //    {
-            //        EQC.Add(Equipment.equipmentList[equipmentChoice - 1]);
-            //        Equipment.equipmentList[equipmentChoice - 1].equipmentAvailability = Equipment.Availability.Reserved;
-            //    }
-            //    else if (equipmentChoice == 0)
-            //    {
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Not a valid equipment. Try again.");
-            //    }
-            //}
             while (true)
             {
 
@@ -97,8 +77,9 @@ namespace Gym_Booking_Manager
                 int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
                 if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
                 {
-                    //Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1] ,TypeOfActivity[typeOfActivityChoice - 1]);
-                }   
+                    Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1], TypeOfActivity[typeOfActivityChoice - 1]);
+                    GroupSchedule.EQC.Add(Equipment.equipmentList[equipmentChoice - 1]);
+                }
                 else if (equipmentChoice == 0)
                 {
                     break;
@@ -133,6 +114,11 @@ namespace Gym_Booking_Manager
                 Console.WriteLine("Activity is added to the Schedule");
                 Console.WriteLine("---------------------------------");
             }
+        }
+
+        public static void addCustomerToActivity(User customer, GroupActivity groupActivity)
+        {
+            groupActivity.participants.Add(customer);
         }
         public static void showActivities()
         {
