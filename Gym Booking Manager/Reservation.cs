@@ -8,5 +8,6 @@ namespace Gym_Booking_Manager
 {
     internal class Reservation
     {     
+
     }
 }

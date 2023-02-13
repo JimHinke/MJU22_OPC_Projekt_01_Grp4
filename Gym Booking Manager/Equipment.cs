@@ -7,18 +7,13 @@ namespace Gym_Booking_Manager
     {
         public string owner { get; set; }
         public string timeSlot { get; set; }
+        public List <string> reservedTimeSlot { get; set; } //TEST HINKE
         private EquipmentType equipmentType;
         private EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
         private static List<Equipment> _equipmentList = new List<Equipment>();
         public static List<Equipment> availableEquipment = new List<Equipment>();
         public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
-        public static List<string> TimeSlot = new List<string>()
-        {
-            "12:00-13:00",
-            "13:00-14:00",
-            "14:00-15:00"
-        };
         public static int index = 0;
 
 
@@ -29,8 +24,9 @@ namespace Gym_Booking_Manager
             this.equipmentCategory = equipmentCategory;
             this.owner = owner;
             this.timeSlot = timeSlot;
-
+            this.reservedTimeSlot = new List<string>();
         }
+
         public enum EquipmentType
         {
             Large,
@@ -78,19 +74,36 @@ namespace Gym_Booking_Manager
                 }
             }
         }
-        public static void ShowAvailable()
-        {
+        public static void ShowAvailable(string timeslot)
+        { 
             equipmentList = equipmentList.OrderBy(x => x.equipmentAvailability != Availability.Available).ToList();
+            equipmentList = equipmentList.OrderBy(x => x.reservedTimeSlot.Contains(timeslot)).ToList();
             index = 0;
             for (int i = 0; i < equipmentList.Count; i++)
             {
-                if (equipmentList[i].equipmentAvailability == Availability.Available)
+                if (equipmentList[i].equipmentAvailability == Availability.Available && !equipmentList[i].reservedTimeSlot.Contains(timeslot))
                 {
                     index++;
                     Console.WriteLine(i + 1 + " " + equipmentList[i].name);
                 }
             }
         }
+        //TESTMETOD TODO...... Fungerar men visar all equipment. Skall detta implementeras i ShowAvailable också?
+        public static void ReservEquipment(Equipment equipment, string timeslot,string customer)
+        {
+            if (equipment.equipmentAvailability == Availability.Available && !equipment.reservedTimeSlot.Contains(timeslot))
+            {
+                equipment.reservedTimeSlot.Add(timeslot);
+                equipment.owner = customer;
+                //equipment.equipmentAvailability = Equipment.Availability.Reserved; //Denna sets som Reserved oavsett vad som sätts in i reservedTimeSlot.
+                GroupSchedule.EQC.Add(equipment); //Fungerar nu enbart med groupActivity. 
+            }
+            else
+            {
+                Console.WriteLine("This Equipment is not available for reservation during that timeslot.");
+            }
+        }
+
         public static void ShowAvailableSport()
         {
 
@@ -163,7 +176,7 @@ namespace Gym_Booking_Manager
             if (temp.Count > 0)
             {
                 Console.WriteLine("Choose equipment");
-                Equipment.ShowAvailable();
+                //Equipment.ShowAvailable();
                 int n = int.Parse(Console.ReadLine());
 
                 Console.Clear();

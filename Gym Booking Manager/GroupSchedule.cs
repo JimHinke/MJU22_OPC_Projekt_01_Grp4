@@ -16,12 +16,6 @@ namespace Gym_Booking_Manager
     internal class GroupSchedule
     {
         public static List<GroupActivity> groupScheduleList = new List<GroupActivity>();
-        public static List<string> TimeSlot = new List<string>()
-        {
-            "12:00-13:00",
-            "13:00-14:00",
-            "14:00-15:00"
-        };
         public static List<Equipment> EQC = new List<Equipment>();
 
         public static List<string> TypeOfActivity = new List<string>()
@@ -77,15 +71,33 @@ namespace Gym_Booking_Manager
             int LocationChoice = Convert.ToInt32(input("Where is the location for this session?\n>"));
 
             //What Equipment is needed
+            //while (true)
+            //{
+            //    Equipment.ShowAvailable();
+            //    int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
+
+            //    if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
+            //    {
+            //        EQC.Add(Equipment.equipmentList[equipmentChoice - 1]);
+            //        Equipment.equipmentList[equipmentChoice - 1].equipmentAvailability = Equipment.Availability.Reserved;
+            //    }
+            //    else if (equipmentChoice == 0)
+            //    {
+            //        break;
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Not a valid equipment. Try again.");
+            //    }
+            //}
             while (true)
             {
-                Equipment.ShowAvailable();
-                int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
 
+                Equipment.ShowAvailable(TimeSlot[timeSlotChoice - 1]);
+                int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
                 if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
                 {
-                    EQC.Add(Equipment.equipmentList[equipmentChoice - 1]);
-                    Equipment.equipmentList[equipmentChoice - 1].equipmentAvailability = Equipment.Availability.Reserved;
+                    Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1], TypeOfActivity[typeOfActivityChoice - 1]);
                 }
                 else if (equipmentChoice == 0)
                 {
@@ -96,6 +108,7 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("Not a valid equipment. Try again.");
                 }
             }
+
 
 
             GroupActivity temp = new GroupActivity(

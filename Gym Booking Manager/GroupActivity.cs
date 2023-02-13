@@ -61,7 +61,7 @@ namespace Gym_Booking_Manager
                 }
             }
             else
-                equipmentNames = "No Equipment for this session!";
+                equipmentNames = "No Equipment for this session";
 
             return $"---------------------------------------------\n" +
                 $"Type Of Activity: {typeOfActivity}\n" +
