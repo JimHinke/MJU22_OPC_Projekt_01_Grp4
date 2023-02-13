@@ -14,6 +14,7 @@ namespace Gym_Booking_Manager
     {
         public string CSVify();
     }
+
 }
 
 // However, for the curious, a library to look into for more robust .NET CSV (comma-separated values) file interaction: https://joshclose.github.io/CsvHelper/
