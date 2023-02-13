@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using static Gym_Booking_Manager.Equipment;
+using CsvHelper;
+using System.Globalization;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -12,6 +14,14 @@ namespace Gym_Booking_Manager
     {
 
 
+		static void Main(string[] args)
+		{
+            LoadFiles();
+
+            // FUL TESTAR!	
+            //Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
+            //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
+            //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
         static void Main(string[] args)
         {
             // FUL TESTAR!	
@@ -28,15 +38,34 @@ namespace Gym_Booking_Manager
             Customer testCustomer3 = new Customer("TestCustomer 3", "1234", "test3@gmail.com");
 
 
-            //Space.spaceList.Add(new Space("SpaceTest1", Space.SpaceCategory.Hall, Space.Availability.Available));
-            //Space.spaceList.Add(new Space("SpaceTest2", Space.SpaceCategory.Hall, Space.Availability.Available));
-            //Space.spaceList.Add(new Space("SpaceTest3", Space.SpaceCategory.Hall, Space.Availability.Available));
+            //Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
+            //Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
+            //Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
 
             PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke");
             PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
-            Space space = new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available);
-            Space.spaceList.Add(space);
+
+
+
+
+            Console.WriteLine(Space.spaceList[0]);
+            Space.spaceList[0].SetAvailability(Space.Availability.Available);
+            Console.WriteLine(Space.spaceList[0]);
+
+
+            foreach (Space obj in Space.spaceList)
+            {
+                Console.WriteLine(obj);
+            }
+
+
+
+            CsvHandler csvHandler = new CsvHandler();
+            csvHandler.WriteFile(Space.spaceList);
+
+
+            Console.WriteLine($"Migratition started at {DateTime.Now}");
 
 
             //GroupSchedule.EQC.Add(Equipment.equipmentList[0]);
@@ -63,17 +92,43 @@ namespace Gym_Booking_Manager
         }
 
         // Static methods for the program
+        
+        public static void LoadFiles()
+        {
+            CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Spaces.txt");
+            //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Equipment.txt");
+            //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\PersonalTrainer.txt");
+            //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\GroupActivities.txt"); //???
+        }
+        
         public static void MainMenu()
         {
-            Console.WriteLine("-------------Choose user:-------------");
+            //Console.WriteLine("-------------Choose user:-------------");
+            //Console.WriteLine("1. Admin");
+            //Console.WriteLine("2. Staff");
+            //Console.WriteLine("3. Service");
+            //Console.WriteLine("4. NonPayingNonMember");
+            //Console.WriteLine("5. NonPayingDayPass");
+            //Console.WriteLine("6. PayingMember");
+            //Console.WriteLine("7. Quit");
+            //Console.WriteLine("--------------------------------------\n");
+
+            Console.WriteLine("-------------Main Menu:-------------");
+            Console.WriteLine("1. Login");
+            Console.WriteLine("2. Create account");            
+            Console.WriteLine("3. View group schedule");
+            Console.WriteLine("4. Quit");
+            Console.WriteLine("--------------------------------------\n");
+
+            Console.WriteLine("-------------Login:-------------");
             Console.WriteLine("1. Admin");
             Console.WriteLine("2. Staff");
             Console.WriteLine("3. Service");
-            Console.WriteLine("4. NonPayingNonMember");
-            Console.WriteLine("5. NonPayingDayPass");
-            Console.WriteLine("6. PayingMember");
-            Console.WriteLine("7. Quit");
+            Console.WriteLine("4. NonPayingDayPass");
+            Console.WriteLine("5. PayingMember");
+            Console.WriteLine("6. Quit");
             Console.WriteLine("--------------------------------------\n");
+
             int command = int.Parse(Console.ReadLine());
 
             switch (command)

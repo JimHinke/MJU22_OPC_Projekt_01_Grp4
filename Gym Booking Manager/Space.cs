@@ -29,8 +29,8 @@ namespace Gym_Booking_Manager
     {
         //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
         public string owner { get; set; }
-        private SpaceCategory spaceCategory;
-        private Availability spaceAvailability;
+        public SpaceCategory spaceCategory { get; set; }
+        public Availability spaceAvailability { get; set; }
         public string timeSlot;
 		private static List<Space> _spaceList = new List<Space>();
         public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
@@ -44,19 +44,17 @@ namespace Gym_Booking_Manager
             this.owner = owner;
         }
 
-
-
         // Every class T to be used for DbSet<T> needs a constructor with this parameter signature. Make sure the object is properly initialized.
-        public Space(Dictionary<String, String> constructionArgs)
-        {
-            this.name = constructionArgs[nameof(name)];
-            if (!SpaceCategory.TryParse(constructionArgs[nameof(spaceCategory)], out this.spaceCategory))
-            {
-                throw new ArgumentException("Couldn't parse a valid Space.Category value.", nameof(spaceCategory));
-            }
+        //public Space(Dictionary<String, String> constructionArgs)
+        //{
+        //    this.name = constructionArgs[nameof(name)];
+        //    if (!SpaceCategory.TryParse(constructionArgs[nameof(spaceCategory)], out this.spaceCategory))
+        //    {
+        //        throw new ArgumentException("Couldn't parse a valid Space.Category value.", nameof(spaceCategory));
+        //    }
 
-            this.calendar = new Calendar();
-        }
+        //    this.calendar = new Calendar();
+        //}
 
         public int CompareTo(Space? other)
         {
@@ -76,8 +74,9 @@ namespace Gym_Booking_Manager
         // Every class C to be used for DbSet<C> should have the ICSVable interface and the following implementation.
         public string CSVify()
         {
-            return $"{nameof(spaceCategory)}:{spaceCategory.ToString()},{nameof(name)}:{name}";
-        }
+            return $"{nameof(spaceCategory)}:{spaceCategory.ToString()},{nameof(name)}:{name},{nameof(spaceAvailability)}:{spaceAvailability.ToString()}";
+        }        
+
         public enum SpaceCategory
         {
             Hall = 1,
