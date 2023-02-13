@@ -14,15 +14,14 @@ namespace Gym_Booking_Manager
     {
 
 
-		static void Main(string[] args)
-		{
+        static void Main(string[] args)
+        {
+
+
             LoadFiles();
-	
             Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
             Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
             Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
-
-
 
             Customer CurrentCustomer = new Customer("Current Customer", "0987321", "CurrentCustomer@test.se");
 
@@ -31,61 +30,40 @@ namespace Gym_Booking_Manager
             Customer testCustomer3 = new Customer("TestCustomer 3", "1234", "test3@gmail.com");
 
 
-            //Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
-            //Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
-            //Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
+            Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
+            Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
+            Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
 
             PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke");
             PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
 
 
+            GroupSchedule.EQC.Add(Equipment.equipmentList[0]);
+            User.userList.Add(CurrentCustomer);
 
+            GroupActivity temp = new GroupActivity(
+                            PersonalTrainer.personalTrainers[0], //Personal Trainer
+                            GroupSchedule.TypeOfActivity[0], //Type Of Activity
+                            23, //Unique ID set to an random number. Is this needed?
+                            32, //Particpant Limit
+                            Resources.TimeSlot[0], //Time Slot
+                            null, //List of Participants. This is not added here but rather under another menu-choice
+                            Space.spaceList[0], //What space is used for this session
+                            GroupSchedule.EQC //What Equipment is used for this session
+                            );
 
-            Console.WriteLine(Space.spaceList[0]);
-            Space.spaceList[0].SetAvailability(Space.Availability.Available);
-            Console.WriteLine(Space.spaceList[0]);
-
-
-            foreach (Space obj in Space.spaceList)
-            {
-                Console.WriteLine(obj);
-            }
-
-
-
-            CsvHandler csvHandler = new CsvHandler();
-            csvHandler.WriteFile(Space.spaceList);
-
-
-            Console.WriteLine($"Migratition started at {DateTime.Now}");
-
-
-            //GroupSchedule.EQC.Add(Equipment.equipmentList[0]);
-            //User.userList.Add(CurrentCustomer);
-
-            //GroupActivity temp = new GroupActivity(
-            //                PersonalTrainer.personalTrainers[0], //Personal Trainer
-            //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
-            //                23, //Unique ID set to an random number. Is this needed?
-            //                32, //Particpant Limit
-            //                Resources.TimeSlot[0], //Time Slot
-            //                null, //List of Participants. This is not added here but rather under another menu-choice
-            //                Space.spaceList[0], //What space is used for this session
-            //                GroupSchedule.EQC //What Equipment is used for this session
-            //                );
-
-            //GroupSchedule.groupScheduleList.Add(temp);
-
+            GroupSchedule.groupScheduleList.Add(temp);
 
             while (true)
             {
                 MainMenu();
             }
+
         }
 
         // Static methods for the program
-        
+
         public static void LoadFiles()
         {
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Spaces.txt");
@@ -93,14 +71,17 @@ namespace Gym_Booking_Manager
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\PersonalTrainer.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\GroupActivities.txt"); //???
         }
-        
+
         public static void MainMenu()
         {
-            Console.WriteLine("-------------Main Menu:-------------");
-            Console.WriteLine("1. Login");
-            Console.WriteLine("2. Create account");            
-            Console.WriteLine("3. View group schedule");
-            Console.WriteLine("4. Quit");
+            Console.WriteLine("-------------Choose user:-------------");
+            Console.WriteLine("1. Admin");
+            Console.WriteLine("2. Staff");
+            Console.WriteLine("3. Service");
+            Console.WriteLine("4. NonPayingNonMember");
+            Console.WriteLine("5. NonPayingDayPass");
+            Console.WriteLine("6. PayingMember");
+            Console.WriteLine("7. Quit");
             Console.WriteLine("--------------------------------------\n");
 
 
