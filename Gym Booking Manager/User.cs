@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Gym_Booking_Manager;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -15,7 +18,7 @@ using System.Threading.Tasks;
 namespace Gym_Booking_Manager
 {
     internal abstract class User
-    {        
+    {
         public int uniqueID { get; set; }
         public string name { get; set; }
         public string phone { get; set; }
@@ -27,7 +30,7 @@ namespace Gym_Booking_Manager
             this.name = name;
             this.phone = phone;
             this.email = email;
-        }        
+        }
         public override string ToString()
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
@@ -65,25 +68,26 @@ namespace Gym_Booking_Manager
                 default:
                     Console.WriteLine("Invalid input, type a number");
                     break;
+            }
         }
-    }
+
         public static void menu(string user = "")
         {
             List<string> menuOptions = new List<string>()
-            {
-                "View Logs",
-                "Purchase Membership",
-                "Manage Account (own only)",
-                "Purchase Day Pass",
-                "Cancel Reservation",
-                "View group Schedule",
-                "Manage group Schedule",
-                "Make Reservation",
-                "View Item",
-                "Restrict item",
-                "Add item",
-                "Log out"
-            };
+                {
+                    "View Logs",
+                    "Purchase Membership",
+                    "Manage Account (own only)",
+                    "Purchase Day Pass",
+                    "Cancel Reservation",
+                    "View group Schedule",
+                    "Manage group Schedule",
+                    "Make Reservation",
+                    "View Item",
+                    "Restrict item",
+                    "Add item",
+                    "Log out"
+                };
 
             if (user == "staff")
             {
@@ -99,14 +103,14 @@ namespace Gym_Booking_Manager
 
             for (int i = 0; i < menuOptions.Count; i++)
             {
-                Console.WriteLine($"{i+1}. {menuOptions[i]}");
+                Console.WriteLine($"{i + 1}. {menuOptions[i]}");
             }
         }
 
         public static void ReserveMenu(string user = "")
         {
-			Console.WriteLine("What would you like to reserve?");
-			List<string> reservationOptions = new List<string>()
+            Console.WriteLine("What would you like to reserve?");
+            List<string> reservationOptions = new List<string>()
             {
                 "Equipment",
                 "Space",
@@ -115,16 +119,15 @@ namespace Gym_Booking_Manager
                 "Go Back"
             };
 
-			for (int i = 0; i < reservationOptions.Count; i++)
-			{
-				Console.WriteLine($"{i + 1}. {reservationOptions[i]}");
-			}
-
-		}
+            for (int i = 0; i < reservationOptions.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {reservationOptions[i]}");
+            }
+        }
     }
 
     internal class Service : User
-    {  
+    {
         public Service(string name, string phone, string email) : base(name, phone, email)
         {
         }
@@ -137,7 +140,7 @@ namespace Gym_Booking_Manager
             Console.WriteLine("2. Log out");
             Console.WriteLine("----------------------------------\n");
             int command = int.Parse(Console.ReadLine());
-                     
+
             switch (command)
             {
                 case 1:
@@ -151,20 +154,30 @@ namespace Gym_Booking_Manager
                     break;
                 default:
                     Console.WriteLine("Invalid input, type a number");
-                    break;            
+                    break;
             }
         }
+    }
+    public enum AccessLevels
+    {
+        PayingMember,
+        DayPassUser,
+        NonPayingNonMember
     }
 
     internal class Customer : User
     {
-        private static List<string> logs = new List<string>();
+        public static List<Customer> customerList = new List<Customer>();
+        public AccessLevels AccessLevel { get; set; }
+
+        public static List<string> logs = new List<string>();
         DateTime createdAt;
-        string accessLevel { get; set; }
-        public Customer(string name, string phone, string email, string accessLevel = "") : base(name, phone, email)
+        public DateTime dayPassDate { get; set; }
+        public Customer(string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember) : base(name, phone, email)
         {
             this.createdAt = DateTime.Now;
-            accessLevel = accessLevel;
+            AccessLevel = accessLevel;
+            customerList.Add(this);
         }
         public override string ToString()
         {
@@ -197,34 +210,65 @@ namespace Gym_Booking_Manager
             Customer.AddLog(log);
         }
 
-        public static void NonPayingNonMemberMenu()
+        public static void NonPayingNonMemberMenu()//TODO
         {
             Console.Clear();
             Console.WriteLine("-------------NonPayingNonMember-------------");
             menu("user");
-            Console.WriteLine("--------------------------------------------\n");            
+            Console.WriteLine("--------------------------------------------\n");
             int command = int.Parse(Console.ReadLine());
 
             switch (command)
             {
                 case 1:
                     // TODO: Purchase membership
+                    Console.WriteLine("Enter your name: ");
+                    string name = Console.ReadLine();
+                    Console.WriteLine("Enter your phone number: ");
+                    string phone = Console.ReadLine();
+                    Console.WriteLine("Enter your email: ");
+                    string email = Console.ReadLine();
+                    Customer customer = customerList.Find(c => c.name == name && c.phone == phone && c.email == email);
+                    if (customer == null)
+                    {
+                        customer = new Customer(name, phone, email);
+                    }
+                    customer.AccessLevel = AccessLevels.DayPassUser;
+                    customer.dayPassDate = DateTime.Now;
+                    PayingMemberMenu();
                     break;
                 case 2:
                     // TODO: Manage Account
                     break;
                 case 3:
                     // TODO: Purchase daypass
+                    Console.WriteLine("Enter the customer's name: ");
+                    string customerName = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's phone number: ");
+                    string customerPhone = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's email: ");
+                    string customerEmail = Console.ReadLine();
+                    Customer customerToUpgrade = Customer.customerList.Find(c => c.name == customerName && c.phone == customerPhone && c.email == customerEmail);
+                    if (customerToUpgrade == null)
+                    {
+                        customerToUpgrade = new Customer(customerName, customerPhone, customerEmail, AccessLevels.DayPassUser);
+                    }
+                    else
+                    {
+                        customerToUpgrade.AccessLevel = AccessLevels.DayPassUser;
+                    }
+                    customerToUpgrade.dayPassDate = DateTime.Now;
+                    Customer.PayingMemberMenu();
                     break;
                 case 4:
                     Console.WriteLine("Enter the customer's name: ");
-                    string name = Console.ReadLine();
+                    name = Console.ReadLine();
                     Console.WriteLine("Enter the customer's phone number: ");
-                    string phone = Console.ReadLine();
+                    phone = Console.ReadLine();
                     Console.WriteLine("Enter the customer's email address: ");
-                    string email = Console.ReadLine();
+                    email = Console.ReadLine();
                     string message = "The Reservation was cancelled.";
-                    Customer customer = new Customer(name, phone, email);
+                    customer = new Customer(name, phone, email);
                     Customer.SendNotification(customer, message, false);
                     break;
                 case 5:
@@ -253,11 +297,33 @@ namespace Gym_Booking_Manager
             menu("user");
             Console.WriteLine("--------------------------------------");
             int command = int.Parse(Console.ReadLine());
-
+            Console.WriteLine("Enter your name: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Enter your phone number: ");
+            string phone = Console.ReadLine();
+            Console.WriteLine("Enter your email: ");
+            string email = Console.ReadLine();
+            Customer customer = customerList.Find(c => c.name == name && c.phone == phone && c.email == email);
+            if (customer == null || (customer.AccessLevel != AccessLevels.PayingMember && customer.AccessLevel != AccessLevels.DayPassUser))
+            {
+                Console.WriteLine("Error: You do not have permission.");
+                return;
+            }
+            if (customer.AccessLevel == AccessLevels.DayPassUser && customer.dayPassDate.Date != DateTime.Now.Date)
+            {
+                Console.WriteLine("Error: Your day pass has expired.");
+                return;
+            }
             switch (command)
             {
                 case 1:
                     // TODO: Purchase membership
+                    Console.WriteLine("\nYou cannot buy a daypass for one of the following two reasons: ");
+                    Console.WriteLine("1. You already have a daypass.");
+                    Console.WriteLine("2. You are a paying member.\n");
+                    Console.WriteLine("Press Enter to continue.");
+                    Console.ReadLine();
+                    Console.Clear();
                     break;
                 case 2:
                     // TODO: Manage Account
@@ -291,43 +357,39 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("Invalid input, type a number.");
                     break;
             }
-
             static void PayingMemberReservation()
             {
-				while (true) 
+                while (true)
                 {
                     Console.Clear();
-				    ReserveMenu("user");
-				    int n = int.Parse(Console.ReadLine());
-				    switch (n)
-				    {
-					    case 1:
+                    ReserveMenu("user");
+                    int n = int.Parse(Console.ReadLine());
+                    switch (n)
+                    {
+                        case 1:
                             // Equipment
                             Equipment myEquipment = new Equipment();
                             myEquipment.MakeReservation("user");
-						    break;
-					    case 2:
-						    // Space
-						    Space mySpace = new Space();
-						    mySpace.MakeReservation("user");
-						    break;
-					    case 3:
-						    // Personal Trainer
-						    break;
-					    case 4:
-						    // Group Activity
-						    break;
-					    case 5:
-						    // Go Back
+                            break;
+                        case 2:
+                            // Space
+                            Space mySpace = new Space();
+                            mySpace.MakeReservation("user");
+                            break;
+                        case 3:
+                            // Personal Trainer
+                            break;
+                        case 4:
+                            // Group Activity
+                            break;
+                        case 5:
+                            // Go Back
                             PayingMemberMenu();
-						    break;
+                            break;
                     }
-				}
-			}
+                }
+            }
         }
-
-
-
     }
 
     internal class Staff : User
@@ -347,12 +409,45 @@ namespace Gym_Booking_Manager
             {
                 case 1:
                     // TODO: Purchase membership
+                    Console.WriteLine("Enter the customer's name: ");
+                    string name = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's phone number: ");
+                    string phone = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's email: ");
+                    string email = Console.ReadLine();
+                    Customer customer = Customer.customerList.Find(c => c.name == name && c.phone == phone && c.email == email);
+                    if (customer == null)
+                    {
+                        customer = new Customer(name, phone, email, AccessLevels.PayingMember);
+                    }
+                    else
+                    {
+                        customer.AccessLevel = AccessLevels.PayingMember;
+                    }
+                    Customer.PayingMemberMenu();
                     break;
                 case 2:
                     // TODO: Manage Account
                     break;
                 case 3:
                     // TODO: Purchase daypass
+                    Console.WriteLine("Enter the customer's name: ");
+                    string customerName = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's phone number: ");
+                    string customerPhone = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's email: ");
+                    string customerEmail = Console.ReadLine();
+                    Customer customerToUpgrade = Customer.customerList.Find(c => c.name == customerName && c.phone == customerPhone && c.email == customerEmail);
+                    if (customerToUpgrade == null)
+                    {
+                        customerToUpgrade = new Customer(customerName, customerPhone, customerEmail, AccessLevels.DayPassUser);
+                    }
+                    else
+                    {
+                        customerToUpgrade.AccessLevel = AccessLevels.DayPassUser;
+                    }
+                    customerToUpgrade.dayPassDate = DateTime.Now;
+                    Customer.PayingMemberMenu();
                     break;
                 case 4:
                     // TODO: Cancel reservation
@@ -390,27 +485,25 @@ namespace Gym_Booking_Manager
         {
             Console.Clear();
             Console.WriteLine("----------Restrict Item---------");
-			Console.WriteLine("1. Equipment");
+            Console.WriteLine("1. Equipment");
             Console.WriteLine("2. Space");
             Console.WriteLine("3. Go back");
-			Console.WriteLine("--------------------------------");
+            Console.WriteLine("--------------------------------");
             int command = int.Parse(Console.ReadLine());
 
             switch (command)
             {
                 case 1:
                     Equipment.RestrictEquipment();
-					break;
+                    break;
                 case 2:
                     Space.RestrictSpace();
                     break;
                 case 3:
                     StaffMenu();
                     break;
-
             }
-
-		}
+        }
     }
 
     internal class Admin : Staff
@@ -418,6 +511,42 @@ namespace Gym_Booking_Manager
         public Admin(string name, string phone, string email) : base(name, phone, email)
         {
         }
+
+        public static void ListAllLogs()
+        {
+            Console.WriteLine("Available Logs: ");
+            for (int i = 0; i < Customer.logs.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {Customer.logs[i]}");
+            }
+        }
+
+        public static void ViewLog(int logIndex)
+        {
+            Console.WriteLine(Customer.logs[logIndex - 1]);
+        }
+
+        /*public static void CancelMembership(int customerID)
+        {
+            Customer customerToRemove = null;
+            foreach (Customer customer in Customer.customerList)
+            {
+                if (customer.uniqueID == customerID)
+                {
+                    customerToRemove = customer;
+                    break;
+                }
+            }
+            if (customerToRemove != null)
+            {
+                Customer.customerList.Remove(customerToRemove);
+                Console.WriteLine("Membership canceled successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Customer not found.");
+            }
+        }*/
 
         public static void AdminMenu()
         {
@@ -431,15 +560,58 @@ namespace Gym_Booking_Manager
             {
                 case 1:
                     // TODO: Show logs here
+                    ListAllLogs();
                     break;
                 case 2:
                     // TODO: Purchase membership
+                    Console.WriteLine("Enter the customer's name: ");
+                    string name = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's phone number: ");
+                    string phone = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's email: ");
+                    string email = Console.ReadLine();
+                    Customer customer = Customer.customerList.Find(c => c.name == name && c.phone == phone && c.email == email);
+                    if (customer == null)
+                    {
+                        customer = new Customer(name, phone, email, AccessLevels.PayingMember);
+                    }
+                    else
+                    {
+                        customer.AccessLevel = AccessLevels.PayingMember;
+                    }
+                    Customer.PayingMemberMenu();
+
                     break;
                 case 3:
                     // TODO: Manage Account
+                    Console.WriteLine("Enter the log index to view: ");
+                    int logIndex = int.Parse(Console.ReadLine());
+                    ViewLog(logIndex);
+                    /*ADD another case TO Admin:
+                    Console.WriteLine("Enter the customer ID to cancel the membership: ");
+                    int customerID = int.Parse(Console.ReadLine());
+                    CancelMembership(customerID);
+                    break;*/
                     break;
                 case 4:
                     // TODO: Purchase daypass
+                    Console.WriteLine("Enter the customer's name: ");
+                    string customerName = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's phone number: ");
+                    string customerPhone = Console.ReadLine();
+                    Console.WriteLine("Enter the customer's email: ");
+                    string customerEmail = Console.ReadLine();
+                    Customer customerToUpgrade = Customer.customerList.Find(c => c.name == customerName && c.phone == customerPhone && c.email == customerEmail);
+                    if (customerToUpgrade == null)
+                    {
+                        customerToUpgrade = new Customer(customerName, customerPhone, customerEmail, AccessLevels.DayPassUser);
+                    }
+                    else
+                    {
+                        customerToUpgrade.AccessLevel = AccessLevels.DayPassUser;
+                    }
+                    customerToUpgrade.dayPassDate = DateTime.Now;
+                    Customer.PayingMemberMenu();
                     break;
                 case 5:
                     // TODO: Cancel reservation
