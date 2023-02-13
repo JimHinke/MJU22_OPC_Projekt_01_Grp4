@@ -50,7 +50,6 @@ namespace Gym_Booking_Manager
 
             //Console.WriteLine(temp);
 
-
             //User userContext;
             while (true)
             {
