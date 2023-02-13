@@ -17,16 +17,9 @@ namespace Gym_Booking_Manager
 		static void Main(string[] args)
 		{
             LoadFiles();
-
-            // FUL TESTAR!	
-            //Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-            //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
-            //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
-        static void Main(string[] args)
-        {
-            // FUL TESTAR!	
+	
             Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket, null, Equipment.Availability.Reserved));
+            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
             Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
 
 
@@ -95,7 +88,7 @@ namespace Gym_Booking_Manager
         
         public static void LoadFiles()
         {
-            CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Spaces.txt");
+            //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Spaces.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Equipment.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\PersonalTrainer.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\GroupActivities.txt"); //???
@@ -103,16 +96,6 @@ namespace Gym_Booking_Manager
         
         public static void MainMenu()
         {
-            //Console.WriteLine("-------------Choose user:-------------");
-            //Console.WriteLine("1. Admin");
-            //Console.WriteLine("2. Staff");
-            //Console.WriteLine("3. Service");
-            //Console.WriteLine("4. NonPayingNonMember");
-            //Console.WriteLine("5. NonPayingDayPass");
-            //Console.WriteLine("6. PayingMember");
-            //Console.WriteLine("7. Quit");
-            //Console.WriteLine("--------------------------------------\n");
-
             Console.WriteLine("-------------Main Menu:-------------");
             Console.WriteLine("1. Login");
             Console.WriteLine("2. Create account");            
@@ -120,14 +103,6 @@ namespace Gym_Booking_Manager
             Console.WriteLine("4. Quit");
             Console.WriteLine("--------------------------------------\n");
 
-            Console.WriteLine("-------------Login:-------------");
-            Console.WriteLine("1. Admin");
-            Console.WriteLine("2. Staff");
-            Console.WriteLine("3. Service");
-            Console.WriteLine("4. NonPayingDayPass");
-            Console.WriteLine("5. PayingMember");
-            Console.WriteLine("6. Quit");
-            Console.WriteLine("--------------------------------------\n");
 
             int command = int.Parse(Console.ReadLine());
 

@@ -28,9 +28,8 @@ namespace Gym_Booking_Manager
         public static List<User> userList = new List<User>();
 
 
-        protected User(int uniqueID, string name = "", string phone = "", string email = "")
+        protected User(string name = "", string phone = "", string email = "")
         {
-            this.uniqueID = new Random().Next(0, 1000);
             this.name = name;
             this.phone = phone;
             this.email = email;
@@ -180,12 +179,13 @@ namespace Gym_Booking_Manager
         DateTime createdAt;
         public DateTime dayPassDate { get; set; }
         public static List<Resources> reservedItems;
-        public Customer(int uniqueID, string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember, List<Resources> resources = null) : base(uniqueID ,name, phone ,email)
+        public Customer(string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember, List<Resources> resources = null) : base(name, phone ,email)
         {
             this.createdAt = DateTime.Now;
             AccessLevel = accessLevel;
             customerList.Add(this);
             List<Resources > reservedItems = new List<Resources>();
+            uniqueID = new Random().Next(0, 1000);
 		}
         public override string ToString()
         {
