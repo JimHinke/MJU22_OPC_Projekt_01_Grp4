@@ -34,12 +34,7 @@ namespace Gym_Booking_Manager
         public string timeSlot;
 		private static List<Space> _spaceList = new List<Space>();
         public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
-		public static List<string> TimeSlot = new List<string>()
-		{
-			"12:00-13:00",
-			"13:00-14:00",
-			"14:00-15:00"
-		};
+
 
 		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, string owner = "", string timeSlot = "", Calendar calendar = null) :base(name,calendar)
         {

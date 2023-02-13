@@ -7,7 +7,7 @@ namespace Gym_Booking_Manager
     {
         public string owner { get; set; }
         public string timeSlot { get; set; }
-        public List <string> reservedTimeSlot { get; set; } //TEST HINKE
+        public List <string> reservedTimeSlot { get; set; }
         private EquipmentType equipmentType;
         private EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
@@ -88,15 +88,12 @@ namespace Gym_Booking_Manager
                 }
             }
         }
-        //TESTMETOD TODO...... Fungerar men visar all equipment. Skall detta implementeras i ShowAvailable också?
         public static void ReservEquipment(Equipment equipment, string timeslot,string customer)
         {
             if (equipment.equipmentAvailability == Availability.Available && !equipment.reservedTimeSlot.Contains(timeslot))
             {
                 equipment.reservedTimeSlot.Add(timeslot);
                 equipment.owner = customer;
-                //equipment.equipmentAvailability = Equipment.Availability.Reserved; //Denna sets som Reserved oavsett vad som sätts in i reservedTimeSlot.
-                GroupSchedule.EQC.Add(equipment); //Fungerar nu enbart med groupActivity. 
             }
             else
             {
