@@ -36,7 +36,6 @@ namespace Gym_Booking_Manager
         public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
         
 
-
         public static List<string> TimeSlot = new List<string>()
 		{
 			"12:00-13:00",
