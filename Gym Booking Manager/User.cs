@@ -1,5 +1,7 @@
 ﻿using Gym_Booking_Manager;
+using Gym_Booking_Manager.Interfaces;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -24,7 +26,8 @@ namespace Gym_Booking_Manager
         public string phone { get; set; }
         public string email { get; set; }
 
-        protected User(string name = "", string phone = "", string email = "")
+
+        protected User(int uniqueID, string name = "", string phone = "", string email = "")
         {
             this.uniqueID = new Random().Next(0, 1000);
             this.name = name;
@@ -35,6 +38,7 @@ namespace Gym_Booking_Manager
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
         }
+
         public static void manageSchedule()
         {
             Console.Clear();
@@ -165,20 +169,23 @@ namespace Gym_Booking_Manager
         NonPayingNonMember
     }
 
-    internal class Customer : User
+	internal class Customer : User
     {
         public static List<Customer> customerList = new List<Customer>();
+        public static IReservingEntity ID;
         public AccessLevels AccessLevel { get; set; }
 
         public static List<string> logs = new List<string>();
         DateTime createdAt;
         public DateTime dayPassDate { get; set; }
-        public Customer(string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember) : base(name, phone, email)
+        public static List<Resources> reservedItems;
+        public Customer(int uniqueID, string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember, List<Resources> resources = null) : base(uniqueID ,name, phone ,email)
         {
             this.createdAt = DateTime.Now;
             AccessLevel = accessLevel;
             customerList.Add(this);
-        }
+            List<Resources > reservedItems = new List<Resources>();
+		}
         public override string ToString()
         {
             return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nAccount Created: {createdAt}";
@@ -297,23 +304,10 @@ namespace Gym_Booking_Manager
             menu("user");
             Console.WriteLine("--------------------------------------");
             int command = int.Parse(Console.ReadLine());
-            Console.WriteLine("Enter your name: ");
-            string name = Console.ReadLine();
-            Console.WriteLine("Enter your phone number: ");
-            string phone = Console.ReadLine();
-            Console.WriteLine("Enter your email: ");
-            string email = Console.ReadLine();
-            Customer customer = customerList.Find(c => c.name == name && c.phone == phone && c.email == email);
-            if (customer == null || (customer.AccessLevel != AccessLevels.PayingMember && customer.AccessLevel != AccessLevels.DayPassUser))
-            {
-                Console.WriteLine("Error: You do not have permission.");
-                return;
-            }
-            if (customer.AccessLevel == AccessLevels.DayPassUser && customer.dayPassDate.Date != DateTime.Now.Date)
-            {
-                Console.WriteLine("Error: Your day pass has expired.");
-                return;
-            }
+
+            // TEMPORARY!!!!
+
+
             switch (command)
             {
                 case 1:
@@ -369,12 +363,12 @@ namespace Gym_Booking_Manager
                         case 1:
                             // Equipment
                             Equipment myEquipment = new Equipment();
-                            myEquipment.MakeReservation("user");
+                            myEquipment.MakeReservation(Customer.ID);
                             break;
                         case 2:
                             // Space
                             Space mySpace = new Space();
-                            mySpace.MakeReservation("user");
+                            mySpace.MakeReservation(Customer.ID);
                             break;
                         case 3:
                             // Personal Trainer

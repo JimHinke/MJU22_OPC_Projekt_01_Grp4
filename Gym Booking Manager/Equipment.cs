@@ -3,11 +3,9 @@ using static Gym_Booking_Manager.Space;
 
 namespace Gym_Booking_Manager
 {
-    internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>, IReservingEntity
+    internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>
     {
-        public string owner { get; set; }
-        public string timeSlot { get; set; }
-        public List <string> reservedTimeSlot { get; set; } //TEST HINKE
+		public List <string> reservedTimeSlot { get; set; } //TEST HINKE
         private EquipmentType equipmentType;
         private EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
@@ -15,15 +13,14 @@ namespace Gym_Booking_Manager
         public static List<Equipment> availableEquipment = new List<Equipment>();
         public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
         public static int index = 0;
+        public string slot;
 
 
-        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, string owner = null, Calendar calendar = null) : base(name, calendar)
+        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string slot = "", List<string> timeSlot = null, Availability availability = Availability.Available, IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner, calendar)
         {
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
             this.equipmentCategory = equipmentCategory;
-            this.owner = owner;
-            this.timeSlot = timeSlot;
             this.reservedTimeSlot = new List<string>();
         }
 
@@ -74,7 +71,7 @@ namespace Gym_Booking_Manager
                 }
             }
         }
-        public static void ShowAvailable(string timeslot)
+        public static void ShowAvailable(string timeslot = null)
         { 
             equipmentList = equipmentList.OrderBy(x => x.equipmentAvailability != Availability.Available).ToList();
             equipmentList = equipmentList.OrderBy(x => x.reservedTimeSlot.Contains(timeslot)).ToList();
@@ -89,12 +86,12 @@ namespace Gym_Booking_Manager
             }
         }
         //TESTMETOD TODO...... Fungerar men visar all equipment. Skall detta implementeras i ShowAvailable också?
-        public static void ReservEquipment(Equipment equipment, string timeslot,string customer)
+        public static void ReservEquipment(Equipment equipment, string timeslot, IReservingEntity owner)
         {
             if (equipment.equipmentAvailability == Availability.Available && !equipment.reservedTimeSlot.Contains(timeslot))
             {
                 equipment.reservedTimeSlot.Add(timeslot);
-                equipment.owner = customer;
+                equipment.owner = owner;
                 //equipment.equipmentAvailability = Equipment.Availability.Reserved; //Denna sets som Reserved oavsett vad som sätts in i reservedTimeSlot.
                 GroupSchedule.EQC.Add(equipment); //Fungerar nu enbart med groupActivity. 
             }
@@ -176,7 +173,7 @@ namespace Gym_Booking_Manager
             if (temp.Count > 0)
             {
                 Console.WriteLine("Choose equipment");
-                //Equipment.ShowAvailable();
+                Equipment.ShowAvailable();
                 int n = int.Parse(Console.ReadLine());
 
                 Console.Clear();
@@ -236,9 +233,9 @@ namespace Gym_Booking_Manager
             }
         }
 
-        public void MakeReservation(string owner)
+        public void MakeReservation(IReservingEntity owner)
         {
-            List<Equipment> temp = new List<Equipment>();
+			List<Equipment> temp = new List<Equipment>();
             foreach (var equipment in equipmentList)
             {
                 if (equipment.equipmentAvailability == Availability.Available)
@@ -309,7 +306,7 @@ namespace Gym_Booking_Manager
                 {
                     temp[n - 1].owner = owner;
                     temp[n - 1].equipmentAvailability = Availability.Reserved;
-                    temp[n - 1].timeSlot = TimeSlot[timeSlot - 1];
+                    temp[n - 1].slot = TimeSlot[timeSlot - 1];
                     // Save the equipment on the owner... Does the owners hava a list with reserved equipments?
                     // Save in the Reserved list in Calendar?
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlot - 1]}");

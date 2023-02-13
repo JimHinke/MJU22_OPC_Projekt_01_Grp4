@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gym_Booking_Manager.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ namespace Gym_Booking_Manager
     {
         private TypeOfTrainerCategory typeOfTrainerCategory;
         public static List<PersonalTrainer> personalTrainers = new List<PersonalTrainer>();
-        public PersonalTrainer(string name, Calendar calendar = null) : base(name, calendar)
+		public IReservingEntity owner { get; set; }
+		public PersonalTrainer(string name, Calendar calendar = null) : base(name, TimeSlot, null ,calendar)
         {
 
         }

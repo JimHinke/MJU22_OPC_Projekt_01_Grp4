@@ -97,8 +97,8 @@ namespace Gym_Booking_Manager
                 int equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
                 if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
                 {
-                    Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1], TypeOfActivity[typeOfActivityChoice - 1]);
-                }
+                    //Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1] ,TypeOfActivity[typeOfActivityChoice - 1]);
+                }   
                 else if (equipmentChoice == 0)
                 {
                     break;
