@@ -89,7 +89,7 @@ namespace Gym_Booking_Manager
 
             //if (objects.GetType == Equipment)
 
-            string filePath = @"C:\Users\Gusta\source\repos\MJU22_OPC_Projekt_01_Grp4\Gym Booking Manager\CSV\Spaces.txt";
+            string filePath = @"\MJU22_OPC_Projekt_01_Grp4\Gym Booking Manager\CSV\Spaces.txt";
 
             if (File.Exists(filePath))
             {

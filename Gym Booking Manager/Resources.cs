@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gym_Booking_Manager.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +12,8 @@ namespace Gym_Booking_Manager
     {
         public string name { get; set; }
         public Calendar calendar { get; set; }
+
+        public IReservingEntity owner { get; set; }
 
         public static List<string> TimeSlot = new List<string>()
         {
