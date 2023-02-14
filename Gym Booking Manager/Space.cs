@@ -28,22 +28,13 @@ namespace Gym_Booking_Manager
     internal class Space : Resources, IReservable, ICSVable, IComparable<Space>
     {
         //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
-        public IReservingEntity owner { get; set; }
-        public SpaceCategory spaceCategory { get; set; }
-        public Availability spaceAvailability { get; set; }
+        private SpaceCategory spaceCategory;
+        private Availability spaceAvailability;
         public string timeSlot;
 		private static List<Space> _spaceList = new List<Space>();
         public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
-        
 
-        public static List<string> TimeSlot = new List<string>()
-		{
-			"12:00-13:00",
-			"13:00-14:00",
-			"14:00-15:00"
-		};
-
-		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "", Calendar calendar = null) :base(name,calendar)
+		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "", Calendar calendar = null) :base(name,TimeSlot,null,calendar)
         {
             this.spaceCategory = spaceCategory;
             this.spaceAvailability = availability;
@@ -168,7 +159,7 @@ namespace Gym_Booking_Manager
             }
         }
 
-		public void MakeReservation(IReservingEntity owner)
+		public void MakeReservation(IReservingEntity owner, AccessLevels accessLevel)
 		{
 			List<Space> temp = new List<Space>();
 			foreach (var space in spaceList)

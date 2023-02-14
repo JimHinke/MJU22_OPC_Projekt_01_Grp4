@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 
 namespace Gym_Booking_Manager
 {
-    internal class GroupActivity
+    internal class GroupActivity : Resources
     {
         public int activtyId { get; set; }
         public int participantLimit { get; set; }
         public string timeSlot { get; set; }
-        public List<Customer> participants { get; set; }
-        public PersonalTrainer personalTrainer { get; set; }
+        public List<User> participants { get; set; }
+        public List<PersonalTrainer> personalTrainer { get; set; }
         public Space space { get; set; }
         public List<Equipment> equipment { get; set; }
         public string typeOfActivity { get; set; }
 
         public GroupActivity(
-                    PersonalTrainer personalTrainer,
+                    List<PersonalTrainer> personalTrainer,
                     string typeOfActivity = "",
                     int activtyId = 0,
                     int participantLimit = 0,
                     string timeSlot = "",
-                    Customer participants = null,
+                    User participants = null,
                     Space space = null,
                     List<Equipment> equipment = null
                     )
@@ -33,7 +33,7 @@ namespace Gym_Booking_Manager
             this.activtyId = activtyId;
             this.participantLimit = participantLimit;
             this.timeSlot = timeSlot;
-            this.participants = new List<Customer>();
+            this.participants = new List<User>();
             this.personalTrainer = personalTrainer;
             this.space = space;
             this.equipment = equipment;
@@ -63,6 +63,17 @@ namespace Gym_Booking_Manager
             else
                 equipmentNames = "No Equipment for this session";
 
+            string personalTrainerName = "";
+            if (personalTrainer.Count > 0)
+            {
+                foreach (var PT in personalTrainer)
+                {
+                    personalTrainerName += PT.name + ", ";
+                }
+            }
+            else
+                personalTrainerName = "No Personal Trainer for this session";
+
             return $"---------------------------------------------\n" +
                 $"Type Of Activity: {typeOfActivity}\n" +
                 $"Activity ID: {activtyId}\n" +
@@ -74,8 +85,9 @@ namespace Gym_Booking_Manager
                 $"-----------------\n" +
                 $"Space: {space.name}\n" +
                 $"Equipment: {equipmentNames}\n" +
-                $"Personal Trainer: {personalTrainer.name}\n" +
+                $"Personal Trainer: {personalTrainerName}\n" +
                 $"---------------------------------------------\n";
         }
+
     }
 }
