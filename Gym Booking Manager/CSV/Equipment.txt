@@ -1,0 +1,3 @@
+equipmentCategory:Treadmill,name:Test1
+equipmentCategory:TennisRacket,name:Test2
+equipmentCategory:RowingMachine,name:Test3

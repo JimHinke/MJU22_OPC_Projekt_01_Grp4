@@ -16,8 +16,15 @@ namespace Gym_Booking_Manager
         //public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
         public static int index = 0;
 
+		public static List<string> TimeSlot = new List<string>()
+		{
+			"12:00-13:00",
+			"13:00-14:00",
+			"14:00-15:00"
+		};
 
-        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner = null, calendar)
+
+		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner = null, calendar)
         {
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
@@ -102,26 +109,33 @@ namespace Gym_Booking_Manager
             }
         }
 
-        public static void ShowAvailableSport()
+        public static void ShowAvailableSport(string timeSlot = null)
         {
-
-            for (int i = 0; i < equipmentList.Count; i++)
-            {
-                if (equipmentList[i].equipmentAvailability == Availability.Available && equipmentList[i].equipmentType == EquipmentType.Sport)
-                {
-                    Console.WriteLine(i + 1 + " " + equipmentList[i].name);
-                }
-            }
+			equipmentList = equipmentList.OrderBy(x => x.equipmentAvailability != Availability.Available).ToList();
+			equipmentList = equipmentList.OrderBy(x => x.reservedTimeSlot.Contains(timeSlot)).ToList();
+			equipmentList = equipmentList.OrderBy(x => x.equipmentType != EquipmentType.Sport).ToList();
+			index = 0;
+			for (int i = 0; i < equipmentList.Count; i++)
+			{
+				if (equipmentList[i].equipmentAvailability == Availability.Available && equipmentList[i].equipmentType == EquipmentType.Sport && !equipmentList[i].reservedTimeSlot.Contains(timeSlot))
+				{
+					index++;
+					Console.WriteLine(i + 1 + " " + equipmentList[i].name);
+				}
+			}
         }
-        public static void ShowAvailableLarge()
+        public static void ShowAvailableLarge(string timeSlot = null)
         {
-
-            for (int i = 0; i < equipmentList.Count; i++)
+			equipmentList = equipmentList.OrderBy(x => x.equipmentAvailability != Availability.Available).ToList();
+			equipmentList = equipmentList.OrderBy(x => x.reservedTimeSlot.Contains(timeSlot)).ToList();
+			equipmentList = equipmentList.OrderBy(x => x.equipmentType != EquipmentType.Large).ToList();
+			for (int i = 0; i < equipmentList.Count; i++)
             {
-                if (equipmentList[i].equipmentAvailability == Availability.Available && equipmentList[i].equipmentType == EquipmentType.Large)
+                if (equipmentList[i].equipmentAvailability == Availability.Available && equipmentList[i].equipmentType == EquipmentType.Large && !equipmentList[i].reservedTimeSlot.Contains(timeSlot))
                 {
-                    Console.WriteLine(i + 1 + " " + equipmentList[i].name);
-                }
+					index++;
+					Console.WriteLine(i + 1 + " " + equipmentList[i].name);
+				}
             }
         }
 
@@ -234,7 +248,7 @@ namespace Gym_Booking_Manager
             //}
         }
 
-        public void MakeReservation(IReservingEntity owner, AccessLevels accessLevel)
+        public void MakeReservation(IReservingEntity owner, Customer customer ,AccessLevels accessLevel)
         {
 			Console.Clear();
 			int index = 1;
@@ -245,101 +259,93 @@ namespace Gym_Booking_Manager
 			}
             int timeSlotChoice = Convert.ToInt32(input("During which time would you like to reserve the equipment?\n"));
 
-			List<Equipment> temp = new List<Equipment>();
+			List<Equipment> tempAll = new List<Equipment>();
 
 			for (int i = 0; i < equipmentList.Count; i++)
 			{
 				if (equipmentList[i].equipmentAvailability == Availability.Available && !equipmentList[i].reservedTimeSlot.Contains(TimeSlot[timeSlotChoice-1]))
 				{
-					index++;
-					Console.WriteLine(i + 1 + " " + equipmentList[i].name);
+                    tempAll.Add(equipmentList[i]);
 				}
 			}
-			if (temp.Count > 0)
+			if (tempAll.Count > 0)
             {    
-                int equip;
+                int equip = 0;
                 if (accessLevel == AccessLevels.NonPayingNonMember)
                 {
-					foreach (var equipment in equipmentList)
-					{
-						if (equipment.equipmentAvailability == Availability.Available && equipment.equipmentType == EquipmentType.Sport)
-						{
-							temp.Add(equipment);
-						}
-					}
-					if (temp.Count != 0) { ShowAvailableSport(); }
-					else
-					{
-						Console.WriteLine("There are no Sport Equipments available");
-						Console.WriteLine("Press enter to go back");
-						Console.ReadLine();
-						User.ReserveMenu("user");
-					};
+                    equip = 2;
 				}
                 else
                 {
                     Console.Clear();
                     Console.WriteLine("1. Large Equipment\n" +
                         "2. Sports Equipment");
-                    equip = Convert.ToInt32(input("What kind of equipment would you like to reserve?"));
+                    equip = Convert.ToInt32(input("What kind of equipment would you like to reserve?\n"));
 
-                    Console.Clear();
-                    if (equip == 1)
-                    {
-                        foreach (var equipment in equipmentList)
-                        {
-                            if (equipment.equipmentAvailability == Availability.Available && equipment.equipmentType == EquipmentType.Large)
-                            {
-                                temp.Add(equipment);
-                            }
-                        }
-                        if (temp.Count != 0) { ShowAvailableLarge(); }
-                        else
-                        {
-                            Console.WriteLine("There are no Large Equipments available");
-                            Console.WriteLine("Press enter to go back");
-                            Console.ReadLine();
-                            User.ReserveMenu("user");
-                        }
-
-                    }
-                    else if (equip == 2)
-                    {
-                        foreach (var equipment in equipmentList)
-                        {
-                            if (equipment.equipmentAvailability == Availability.Available && equipment.equipmentType == EquipmentType.Sport)
-                            {
-                                temp.Add(equipment);
-                            }
-                        }
-                        if (temp.Count != 0) { ShowAvailableSport(); }
-                        else
-                        {
-                            Console.WriteLine("There are no Sport Equipments available");
-                            Console.WriteLine("Press enter to go back");
-                            Console.ReadLine();
-                            User.ReserveMenu("user");
-                        };
-                    }
                 }
-                int n = Convert.ToInt32(input("What equipment would you like to reserve?\n"));
-
                 Console.Clear();
-                string confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}.\n" +
-                    $"Is this correct? Y / N").ToLower();
+                int n = 0;
+                string confirm = "";
+				List<Equipment> temp = new List<Equipment>();
+				if (equip == 1)
+                {
+                    foreach (var equipment in temp)
+                    {
+                        if (equipment.equipmentType == EquipmentType.Large)
+                        {
+                            temp.Add(equipment);
+                        }
+                    }
+                    if (tempAll.Count != 0) 
+                    {
+                        ShowAvailableLarge(TimeSlot[timeSlotChoice -1]);				 
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no Large Equipments available");
+                        Console.WriteLine("Press enter to go back");
+                        Console.ReadLine();
+                        User.ReserveMenu(accessLevel);
+                    }
+				}
+                else if (equip == 2)
+                {
+					foreach (var equipment in tempAll)
+					{
+						if (equipment.equipmentType == EquipmentType.Sport)
+						{
+							temp.Add(equipment);
+						}
+					}
+					if (temp.Count != 0) 
+                    { 
+                        ShowAvailableSport(TimeSlot[timeSlotChoice - 1]); 
+                    }
+					else
+					{
+						Console.WriteLine("There are no Sport Equipments available");
+						Console.WriteLine("Press enter to go back");
+						Console.ReadLine();
+						User.ReserveMenu(accessLevel);
+					};
+				}
+				n = Convert.ToInt32(input("What equipment would you like to reserve?\n"));
+                //confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}.\n" +
+                //    $"Is this correct? Y / N\n").ToLower();
+                Console.Clear();
+				
                 if (confirm == "y")
                 {
                     temp[n - 1].owner = owner;
-                    temp[n - 1].equipmentAvailability = Availability.Reserved;
-                    temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-                    // Save the equipment on the owner... Does the owners hava a list with reserved equipments?
-                    // Save in the Reserved list in Calendar?
+                    temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
+                    customer.reservedItems.Add(temp[n - 1]);
+                    // TBD? Save in the Reserved list in Calendar?
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
                 }
                 else if (confirm == "n")
                 {
-                    User.ReserveMenu("user");
+                    User.ReserveMenu(accessLevel);
                 }
             }
 

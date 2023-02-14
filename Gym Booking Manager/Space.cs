@@ -159,7 +159,7 @@ namespace Gym_Booking_Manager
             }
         }
 
-		public void MakeReservation(IReservingEntity owner, AccessLevels accessLevel)
+		public void MakeReservation(IReservingEntity owner, Customer customer ,AccessLevels accessLevel)
 		{
 			List<Space> temp = new List<Space>();
 			foreach (var space in spaceList)
@@ -198,7 +198,7 @@ namespace Gym_Booking_Manager
 			}
             else if (confirm == "n")
             {
-                User.ReserveMenu("user");
+                User.ReserveMenu(accessLevel);
             }
 
 		}
