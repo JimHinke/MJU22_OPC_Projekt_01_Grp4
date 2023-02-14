@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using static Gym_Booking_Manager.Equipment;
 using CsvHelper;
+using System.IO;
 using System.Globalization;
+using static System.Net.Mime.MediaTypeNames;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -19,9 +21,9 @@ namespace Gym_Booking_Manager
             LoadFiles();
 
             // FUL TESTAR!	
-            //Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-            //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
-            //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
+            Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
+            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
+            Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
 
 
             //Customer CurrentCustomer = new Customer("Current Customer", "0987321", "CurrentCustomer@test.se");
@@ -37,12 +39,10 @@ namespace Gym_Booking_Manager
 
             PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare");
             PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
-
-
-
+            
 
             Console.WriteLine(Space.spaceList[0]);
-            Space.spaceList[0].SetAvailability(Space.Availability.Available);
+            Space.spaceList[0].SetAvailability(Space.Availability.Reserved);
             Console.WriteLine(Space.spaceList[0]);
 
 
@@ -50,14 +50,10 @@ namespace Gym_Booking_Manager
             {
                 Console.WriteLine(obj);
             }
-
-
-
-            CsvHandler csvHandler = new CsvHandler();
-            csvHandler.WriteFile(Space.spaceList);
-
-
-            Console.WriteLine($"Migratition started at {DateTime.Now}");
+            
+            //Console.WriteLine(Environment.CurrentDirectory);
+            
+            //Console.WriteLine($"Migration started at {DateTime.Now}");
 
 
             //GroupActivity temp = new GroupActivity(
@@ -84,7 +80,7 @@ namespace Gym_Booking_Manager
         
         public static void LoadFiles()
         {
-            CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Spaces.txt");
+            CsvHandler.ReadFile("Spaces.txt");           
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Equipment.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\PersonalTrainer.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\GroupActivities.txt"); //???
@@ -92,31 +88,31 @@ namespace Gym_Booking_Manager
         
         public static void MainMenu()
         {
-            //Console.WriteLine("-------------Choose user:-------------");
-            //Console.WriteLine("1. Admin");
-            //Console.WriteLine("2. Staff");
-            //Console.WriteLine("3. Service");
-            //Console.WriteLine("4. NonPayingNonMember");
-            //Console.WriteLine("5. NonPayingDayPass");
-            //Console.WriteLine("6. PayingMember");
-            //Console.WriteLine("7. Quit");
-            //Console.WriteLine("--------------------------------------\n");
-
-            Console.WriteLine("-------------Main Menu:-------------");
-            Console.WriteLine("1. Login");
-            Console.WriteLine("2. Create account");            
-            Console.WriteLine("3. View group schedule");
-            Console.WriteLine("4. Quit");
-            Console.WriteLine("--------------------------------------\n");
-
-            Console.WriteLine("-------------Login:-------------");
+            Console.WriteLine("-------------Choose user:-------------");
             Console.WriteLine("1. Admin");
             Console.WriteLine("2. Staff");
             Console.WriteLine("3. Service");
-            Console.WriteLine("4. NonPayingDayPass");
-            Console.WriteLine("5. PayingMember");
-            Console.WriteLine("6. Quit");
+            Console.WriteLine("4. NonPayingNonMember");
+            Console.WriteLine("5. NonPayingDayPass");
+            Console.WriteLine("6. PayingMember");
+            Console.WriteLine("7. Quit");
             Console.WriteLine("--------------------------------------\n");
+
+            //Console.WriteLine("-------------Main Menu:-------------");
+            //Console.WriteLine("1. Login");
+            //Console.WriteLine("2. Create account");            
+            //Console.WriteLine("3. View group schedule");
+            //Console.WriteLine("4. Quit");
+            //Console.WriteLine("--------------------------------------\n");
+
+            //Console.WriteLine("-------------Login:-------------");
+            //Console.WriteLine("1. Admin");
+            //Console.WriteLine("2. Staff");
+            //Console.WriteLine("3. Service");
+            //Console.WriteLine("4. NonPayingDayPass");
+            //Console.WriteLine("5. PayingMember");
+            //Console.WriteLine("6. Quit");
+            //Console.WriteLine("--------------------------------------\n");
 
             int command = int.Parse(Console.ReadLine());
 
@@ -142,6 +138,13 @@ namespace Gym_Booking_Manager
                     break;
                 case 7:
                     Console.WriteLine("\nExiting program...");
+
+                    CsvHandler csvHandler = new CsvHandler();
+                    csvHandler.WriteFile(Space.spaceList, "Spaces.txt");                    
+                    csvHandler.WriteFile(Equipment.equipmentList, "Equipment.txt");                    
+                    csvHandler.WriteFile(Space.spaceList, "PersonalTrainer.txt");                   
+                    csvHandler.WriteFile(Space.spaceList, "GroupActivity.txt");
+
                     Environment.Exit(0);
                     break;
                 default:

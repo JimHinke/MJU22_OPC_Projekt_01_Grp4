@@ -236,7 +236,7 @@ namespace Gym_Booking_Manager
             }
         }
 
-        public void MakeReservation(string owner)
+        public void MakeReservation(IReservingEntity owner)
         {
             List<Equipment> temp = new List<Equipment>();
             foreach (var equipment in equipmentList)

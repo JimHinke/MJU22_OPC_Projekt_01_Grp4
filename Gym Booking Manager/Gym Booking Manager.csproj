@@ -12,4 +12,14 @@
     <PackageReference Include="CsvHelper" Version="30.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="LocalDB\Spaces.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CSV\" />
+  </ItemGroup>
+
 </Project>
