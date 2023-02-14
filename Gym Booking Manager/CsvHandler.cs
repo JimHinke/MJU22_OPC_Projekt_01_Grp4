@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Gym_Booking_Manager.Space;
 using System.Xml.Linq;
+using Gym_Booking_Manager.Interfaces;
 
 namespace Gym_Booking_Manager
 {
@@ -20,7 +21,7 @@ namespace Gym_Booking_Manager
                 string name = "";
                 SpaceCategory spaceCategory = 0;
                 Availability availability = 0;
-                string owner = "";
+                IReservingEntity owner = null;
                 string timeSlot = "";
                 Calendar calendar = null;
                 foreach (string value in values)
@@ -61,7 +62,7 @@ namespace Gym_Booking_Manager
                         }
                     }
                 }                
-                //spaceList.Add(new Space(name, spaceCategory, availability, owner, timeSlot, calendar));
+                spaceList.Add(new Space(name, spaceCategory, availability, owner, timeSlot, calendar));
             }
         }
 
