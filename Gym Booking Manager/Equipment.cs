@@ -5,23 +5,25 @@ namespace Gym_Booking_Manager
 {
     internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>
     {
-		public List <string> reservedTimeSlot { get; set; } //TEST HINKE
+
+        public string timeSlot { get; set; } //Hur fungerar detta i Julias kod? Kan man utgå från reservedTimeSlot istället? Känns dubbelt med info?
+        public List <string> reservedTimeSlot { get; set; }
         private EquipmentType equipmentType;
         private EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
-        private static List<Equipment> _equipmentList = new List<Equipment>();
-        public static List<Equipment> availableEquipment = new List<Equipment>();
-        public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
+        //private static List<Equipment> _equipmentList = new List<Equipment>();
+        //public static List<Equipment> availableEquipment = new List<Equipment>();
+        //public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
         public static int index = 0;
-        public string timeSlot;
 
 
-        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner, calendar)
+        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner = null, calendar)
         {
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
             this.equipmentCategory = equipmentCategory;
-            this.reservedTimeSlot = new List<string>();
+			this.timeSlot = timeSlot;
+			this.reservedTimeSlot = new List<string>();
         }
 
         public enum EquipmentType
@@ -92,8 +94,7 @@ namespace Gym_Booking_Manager
             {
                 equipment.reservedTimeSlot.Add(timeslot);
                 equipment.owner = owner;
-                //equipment.equipmentAvailability = Equipment.Availability.Reserved; //Denna sets som Reserved oavsett vad som sätts in i reservedTimeSlot.
-                GroupSchedule.EQC.Add(equipment); //Fungerar nu enbart med groupActivity. 
+
             }
             else
             {
@@ -224,13 +225,13 @@ namespace Gym_Booking_Manager
 
         public void ViewTimeTable()
         {
-            // Fetch
-            List<Reservation> tableSlice = this.calendar.GetSlice();
-            // Show?
-            foreach (Reservation reservation in tableSlice)
-            {
-                // Do something?
-            }
+            //// Fetch
+            //List<Reservation> tableSlice = this.calendar.GetSlice();
+            //// Show?
+            //foreach (Reservation reservation in tableSlice)
+            //{
+            //    // Do something?
+            //}
         }
 
         public void MakeReservation(IReservingEntity owner, AccessLevels accessLevel)

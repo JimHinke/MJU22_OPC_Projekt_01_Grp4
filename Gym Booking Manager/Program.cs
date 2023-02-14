@@ -38,25 +38,27 @@ namespace Gym_Booking_Manager
             Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
 
-            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke");
-            PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
+            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke", PersonalTrainer.TrainerCategory.GymInstructor);
+            Resources.personalTrainers.Add(testAvPersonalTrainer);
+            //Console.WriteLine(testAvPersonalTrainer);
 
-
-            GroupSchedule.EQC.Add(Equipment.equipmentList[0]);
+            //List<Equipment> equipmentList = new List<Equipment>();
+            //equipmentList.Add(Equipment.equipmentList[0]);
             User.userList.Add(CurrentCustomer);
 
-            GroupActivity temp = new GroupActivity(
-                            PersonalTrainer.personalTrainers[0], //Personal Trainer
-                            GroupSchedule.TypeOfActivity[0], //Type Of Activity
-                            23, //Unique ID set to an random number. Is this needed?
-                            32, //Particpant Limit
-                            Resources.TimeSlot[0], //Time Slot
-                            null, //List of Participants. This is not added here but rather under another menu-choice
-                            Space.spaceList[0], //What space is used for this session
-                            GroupSchedule.EQC //What Equipment is used for this session
-                            );
+            //GroupActivity temp = new GroupActivity(
+            //                PersonalTrainer.personalTrainers[0], //Personal Trainer
+            //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
+            //                23, //Unique ID set to an random number. Is this needed?
+            //                0, //Particpant Limit
+            //                Resources.TimeSlot[0], //Time Slot
+            //                null, //List of Participants. This is not added here but rather under another menu-choice
+            //                Space.spaceList[0], //What space is used for this session
+            //                equipmentList //What Equipment is used for this session
+            //                );
 
-            GroupSchedule.groupScheduleList.Add(temp);
+            //GroupSchedule.groupScheduleList.Add(temp);
+            Equipment.ShowAvailable("12:00");
 
             while (true)
             {
@@ -77,14 +79,11 @@ namespace Gym_Booking_Manager
 
         public static void MainMenu()
         {
-            Console.WriteLine("-------------Choose user:-------------");
-            Console.WriteLine("1. Admin");
-            Console.WriteLine("2. Staff");
-            Console.WriteLine("3. Service");
-            Console.WriteLine("4. NonPayingNonMember");
-            Console.WriteLine("5. NonPayingDayPass");
-            Console.WriteLine("6. PayingMember");
-            Console.WriteLine("7. Quit");
+            Console.WriteLine("-------------Main Menu:-------------");
+            Console.WriteLine("1. Login");
+            Console.WriteLine("2. Create account");
+            Console.WriteLine("3. View group schedule");
+            Console.WriteLine("4. Quit");
             Console.WriteLine("--------------------------------------\n");
 
 
@@ -93,24 +92,15 @@ namespace Gym_Booking_Manager
             switch (command)
             {
                 case 1:
-                    Admin.AdminMenu();
+                    Customer.LoginMenu();
                     break;
                 case 2:
-                    Staff.StaffMenu();
+                    Customer.DayPassMenu();
                     break;
                 case 3:
-                    Service.ServiceMenu();
+                    User.manageSchedule();
                     break;
                 case 4:
-                    Customer.NonPayingNonMemberMenu();
-                    break;
-                case 5:
-                    Customer.PayingMemberMenu();
-                    break;
-                case 6:
-                    Customer.PayingMemberMenu();
-                    break;
-                case 7:
                     Console.WriteLine("\nExiting program...");
                     Environment.Exit(0);
                     break;

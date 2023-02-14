@@ -14,6 +14,12 @@ namespace Gym_Booking_Manager
         public Calendar calendar { get; set; }
         public IReservingEntity owner { get; set; }
 
+        
+        public static List<Equipment> availableEquipment = new List<Equipment>();
+        private static List<Equipment> _equipmentList = new List<Equipment>();
+        public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
+        public static List<PersonalTrainer> personalTrainers = new List<PersonalTrainer>();
+
         public static List<string> TimeSlot = new List<string>()
         {
             "12:00-13:00",
@@ -28,10 +34,9 @@ namespace Gym_Booking_Manager
             this.calendar = calendar;
         }
 
-        public override string ToString()
-        {
-            return $"{name}";
-        }
+        
+
+
 
     }
 }
