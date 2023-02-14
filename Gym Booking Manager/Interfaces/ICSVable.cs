@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Gym_Booking_Manager
 {
-    internal interface ICSVable
+    public interface ICSVable
     {
         public string CSVify();
     }

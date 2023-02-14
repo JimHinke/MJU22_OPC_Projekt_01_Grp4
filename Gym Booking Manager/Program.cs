@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using static Gym_Booking_Manager.Equipment;
 using CsvHelper;
+using System.IO;
 using System.Globalization;
+using static System.Net.Mime.MediaTypeNames;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -14,9 +16,14 @@ namespace Gym_Booking_Manager
     {
 
 
-        static void Main(string[] args)
-        {
+		static void Main(string[] args)
+		{
+            LoadFiles();
 
+            // FUL TESTAR!	
+            //Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
+            //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
+            //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
 
             LoadFiles();
             Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
@@ -33,14 +40,28 @@ namespace Gym_Booking_Manager
             Customer.customerList.Add(testCustomer3);
 
 
-            Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
-            Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
-            Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
+            //Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
+            //Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
+            //Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
 
-            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke", PersonalTrainer.TrainerCategory.GymInstructor);
-            Resources.personalTrainers.Add(testAvPersonalTrainer);
-            //Console.WriteLine(testAvPersonalTrainer);
+            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare");
+            PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
+            
+
+            Console.WriteLine(Space.spaceList[0]);
+            Space.spaceList[0].SetAvailability(Space.Availability.Reserved);
+            Console.WriteLine(Space.spaceList[0]);
+
+
+            foreach (Space obj in Space.spaceList)
+            {
+                Console.WriteLine(obj);
+            }
+            
+            //Console.WriteLine(Environment.CurrentDirectory);
+            
+            //Console.WriteLine($"Migration started at {DateTime.Now}");
 
             //List<Equipment> equipmentList = new List<Equipment>();
             //equipmentList.Add(Equipment.equipmentList[0]);
@@ -71,7 +92,7 @@ namespace Gym_Booking_Manager
 
         public static void LoadFiles()
         {
-            //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Spaces.txt");
+            CsvHandler.ReadFile("Spaces.txt");           
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Equipment.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\PersonalTrainer.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\GroupActivities.txt"); //???
@@ -102,6 +123,13 @@ namespace Gym_Booking_Manager
                     break;
                 case 4:
                     Console.WriteLine("\nExiting program...");
+
+                    CsvHandler csvHandler = new CsvHandler();
+                    csvHandler.WriteFile(Space.spaceList, "Spaces.txt");                    
+                    csvHandler.WriteFile(Equipment.equipmentList, "Equipment.txt");                    
+                    csvHandler.WriteFile(Space.spaceList, "PersonalTrainer.txt");                   
+                    csvHandler.WriteFile(Space.spaceList, "GroupActivity.txt");
+
                     Environment.Exit(0);
                     break;
                 default:
