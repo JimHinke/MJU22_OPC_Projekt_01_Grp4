@@ -80,7 +80,7 @@ namespace Gym_Booking_Manager
         {
             Console.Clear();
             Console.WriteLine("--------------Equipment Type Menu-------------");
-            Console.WriteLine("1. Lager");
+            Console.WriteLine("1. Large");
             Console.WriteLine("2. Sport");
             Console.WriteLine("3. Go Back");
             Console.WriteLine("----------------------------------\n");
@@ -205,7 +205,7 @@ namespace Gym_Booking_Manager
                     Service.ServiceMenu();
                     break;
                 case 4:
-                    Customer.PayingMemberMenu();
+                    //Customer.PayingMemberMenu();
                     break;
                 case 5:
                     // Day Pass
@@ -446,7 +446,7 @@ namespace Gym_Booking_Manager
                     // TODO: View group schedule
                     Console.Clear();
                     GroupSchedule.showActivities();
-                    PayingMemberMenu();
+                    //PayingMemberMenu();
                     break;
                 case 6:
                     // TODO: Make reservation
@@ -501,11 +501,11 @@ namespace Gym_Booking_Manager
                                     GroupSchedule.addCustomerToActivity(userList[0],GroupSchedule.groupScheduleList[i]);
                                 }
                             }
-                            PayingMemberMenu();
+                            //PayingMemberMenu();
                             break;
                         case 5:
                             // Go Back
-                            PayingMemberMenu();
+                            //PayingMemberMenu();
                             break;
                     }
                 }
@@ -547,7 +547,7 @@ namespace Gym_Booking_Manager
                         {
                             customer.AccessLevel = AccessLevels.PayingMember;
                         }
-                        Customer.PayingMemberMenu();
+                        //Customer.PayingMemberMenu();
                         break;
                     case 2:
                         // TODO: Manage Account
@@ -570,7 +570,7 @@ namespace Gym_Booking_Manager
                             customerToUpgrade.AccessLevel = AccessLevels.DayPassUser;
                         }
                         customerToUpgrade.dayPassDate = DateTime.Now;
-                        Customer.PayingMemberMenu();
+                        //Customer.PayingMemberMenu();
                         break;
                     case 4:
                         // Cancel reservation

@@ -89,7 +89,7 @@ namespace Gym_Booking_Manager
                 
                 if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
                 {
-                    Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1], TypeOfActivity[typeOfActivityChoice - 1]);
+                    //Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1], TypeOfActivity[typeOfActivityChoice - 1]);
                     activityEquipmentList.Add(Equipment.equipmentList[equipmentChoice - 1]);
                 }
                 else if (equipmentChoice == 0)
@@ -101,7 +101,6 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("Not a valid equipment. Try again.");
                 }
             }
-
 
 
             GroupActivity temp = new GroupActivity(
