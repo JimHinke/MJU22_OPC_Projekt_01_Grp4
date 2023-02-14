@@ -331,9 +331,9 @@ namespace Gym_Booking_Manager
 					};
 				}
 				n = Convert.ToInt32(input("What equipment would you like to reserve?\n"));
-				//confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}.\n" +
-				//	$"Is this correct? Y / N\n").ToLower();
-				Console.Clear();
+                //confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}.\n" +
+                //    $"Is this correct? Y / N\n").ToLower();
+                Console.Clear();
 				
                 if (confirm == "y")
                 {
