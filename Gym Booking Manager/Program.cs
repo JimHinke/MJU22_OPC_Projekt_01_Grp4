@@ -35,25 +35,27 @@ namespace Gym_Booking_Manager
             Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
 
-            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke");
-            PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
+            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke", PersonalTrainer.TrainerCategory.GymInstructor);
+            Resources.personalTrainers.Add(testAvPersonalTrainer);
+            //Console.WriteLine(testAvPersonalTrainer);
 
-
-            GroupSchedule.EQC.Add(Equipment.equipmentList[0]);
+            //List<Equipment> equipmentList = new List<Equipment>();
+            //equipmentList.Add(Equipment.equipmentList[0]);
             User.userList.Add(CurrentCustomer);
 
-            GroupActivity temp = new GroupActivity(
-                            PersonalTrainer.personalTrainers[0], //Personal Trainer
-                            GroupSchedule.TypeOfActivity[0], //Type Of Activity
-                            23, //Unique ID set to an random number. Is this needed?
-                            32, //Particpant Limit
-                            Resources.TimeSlot[0], //Time Slot
-                            null, //List of Participants. This is not added here but rather under another menu-choice
-                            Space.spaceList[0], //What space is used for this session
-                            GroupSchedule.EQC //What Equipment is used for this session
-                            );
+            //GroupActivity temp = new GroupActivity(
+            //                PersonalTrainer.personalTrainers[0], //Personal Trainer
+            //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
+            //                23, //Unique ID set to an random number. Is this needed?
+            //                0, //Particpant Limit
+            //                Resources.TimeSlot[0], //Time Slot
+            //                null, //List of Participants. This is not added here but rather under another menu-choice
+            //                Space.spaceList[0], //What space is used for this session
+            //                equipmentList //What Equipment is used for this session
+            //                );
 
-            GroupSchedule.groupScheduleList.Add(temp);
+            //GroupSchedule.groupScheduleList.Add(temp);
+            Equipment.ShowAvailable("12:00");
 
             while (true)
             {

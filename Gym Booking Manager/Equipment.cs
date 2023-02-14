@@ -6,19 +6,20 @@ namespace Gym_Booking_Manager
     internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>, IReservingEntity
     {
         public string owner { get; set; }
-        public string timeSlot { get; set; }
+        public string timeSlot { get; set; } //Hur fungerar detta i Julias kod? Kan man utgå från reservedTimeSlot istället? Känns dubbelt med info?
         public List <string> reservedTimeSlot { get; set; }
         private EquipmentType equipmentType;
         private EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
-        private static List<Equipment> _equipmentList = new List<Equipment>();
-        public static List<Equipment> availableEquipment = new List<Equipment>();
-        public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
+        //private static List<Equipment> _equipmentList = new List<Equipment>();
+        //public static List<Equipment> availableEquipment = new List<Equipment>();
+        //public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
         public static int index = 0;
 
 
-        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, string owner = null, Calendar calendar = null) : base(name, calendar)
+        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, string owner = null, Calendar calendar = null)
         {
+            this.name = name;
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
             this.equipmentCategory = equipmentCategory;
@@ -224,13 +225,13 @@ namespace Gym_Booking_Manager
 
         public void ViewTimeTable()
         {
-            // Fetch
-            List<Reservation> tableSlice = this.calendar.GetSlice();
-            // Show?
-            foreach (Reservation reservation in tableSlice)
-            {
-                // Do something?
-            }
+            //// Fetch
+            //List<Reservation> tableSlice = this.calendar.GetSlice();
+            //// Show?
+            //foreach (Reservation reservation in tableSlice)
+            //{
+            //    // Do something?
+            //}
         }
 
         public void MakeReservation(string owner)
