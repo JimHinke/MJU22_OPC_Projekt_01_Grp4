@@ -174,11 +174,12 @@ namespace Gym_Booking_Manager
 	public class ReservingEntity : IReservingEntity
 	{
 		public string owner { get; set; }
+        public AccessLevels AccessLevel;
 
-		public ReservingEntity(int id)
+		public ReservingEntity(int id, AccessLevels accessLevels = 0)
 		{
 			owner = id.ToString();
-		}
+        }
 	}
 
 	internal class Customer : User
@@ -373,18 +374,20 @@ namespace Gym_Booking_Manager
                     Console.Clear();
                     ReserveMenu("user");
                     int n = int.Parse(Console.ReadLine());
-                    Customer.ID = new ReservingEntity(1);
+                    int x = 0;
+                     // TODO: Find user ind3ex based on unique ID in customer list
+                    Customer.ID = new ReservingEntity(customerList[x].uniqueID);
                     switch (n)
                     {
                         case 1:
                             // Equipment
                             Equipment myEquipment = new Equipment();
-                            myEquipment.MakeReservation(Customer.ID);
+                            myEquipment.MakeReservation(Customer.ID, Customer.customerList[x].AccessLevel);
                             break;
                         case 2:
                             // Space
                             Space mySpace = new Space();
-                            mySpace.MakeReservation(Customer.ID);
+                            mySpace.MakeReservation(Customer.ID, Customer.customerList[x].AccessLevel);
                             break;
                         case 3:
                             // Personal Trainer

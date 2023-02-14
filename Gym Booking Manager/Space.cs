@@ -159,7 +159,7 @@ namespace Gym_Booking_Manager
             }
         }
 
-		public void MakeReservation(IReservingEntity owner)
+		public void MakeReservation(IReservingEntity owner, AccessLevels accessLevel)
 		{
 			List<Space> temp = new List<Space>();
 			foreach (var space in spaceList)
