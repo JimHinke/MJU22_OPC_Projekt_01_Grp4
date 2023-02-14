@@ -33,9 +33,5 @@ namespace Gym_Booking_Manager
             this.calendar = calendar;
         }
 
-        
-
-
-
     }
 }
