@@ -1,5 +1,7 @@
 ﻿using Gym_Booking_Manager;
+using Gym_Booking_Manager.Interfaces;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 #if DEBUG
@@ -28,15 +31,16 @@ namespace Gym_Booking_Manager
 
         protected User(string name = "", string phone = "", string email = "")
         {
-            this.uniqueID = new Random().Next(0, 1000);
             this.name = name;
             this.phone = phone;
             this.email = email;
         }
+
         public override string ToString()
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
         }
+
         public static void manageSchedule()
         {
             Console.Clear();
@@ -76,7 +80,7 @@ namespace Gym_Booking_Manager
         {
             Console.Clear();
             Console.WriteLine("--------------Equipment Type Menu-------------");
-            Console.WriteLine("1. Lager");
+            Console.WriteLine("1. Large");
             Console.WriteLine("2. Sport");
             Console.WriteLine("3. Go Back");
             Console.WriteLine("----------------------------------\n");
@@ -259,20 +263,37 @@ namespace Gym_Booking_Manager
         NonPayingNonMember
     }
 
-    internal class Customer : User
+	public class ReservingEntity : IReservingEntity
+	{
+		public string owner { get; set; }
+        public AccessLevels AccessLevel;
+
+		public ReservingEntity(int id, AccessLevels accessLevels = 0)
+		{
+			owner = id.ToString();
+        }
+	}
+
+	internal class Customer : User
     {
         public static List<Customer> customerList = new List<Customer>();
+        public static IReservingEntity ID;
         public AccessLevels AccessLevel { get; set; }
 
         public static List<string> logs = new List<string>();
         DateTime createdAt;
         public DateTime dayPassDate { get; set; }
-        public Customer(string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember) : base(name, phone, email)
+        public static List<Resources> reservedItems;
+        public Customer(string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember, List<Resources> resources = null) : base(name, phone ,email)
         {
             this.createdAt = DateTime.Now;
             this.AccessLevel = accessLevel;
             customerList.Add(this);
-        }
+            List<Resources > reservedItems = new List<Resources>();
+            uniqueID = new Random().Next(0, 1000);
+            ID = new ReservingEntity(uniqueID);
+		}
+        
         public override string ToString()
         {
             return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nAccount Created: {createdAt}";
@@ -395,23 +416,6 @@ namespace Gym_Booking_Manager
             menu("daypass");
             Console.WriteLine("--------------------------------------------\n");
             int command = int.Parse(Console.ReadLine());
-            Console.WriteLine("Enter your name: ");
-            string name = Console.ReadLine();
-            Console.WriteLine("Enter your phone number: ");
-            string phone = Console.ReadLine();
-            Console.WriteLine("Enter your email: ");
-            string email = Console.ReadLine();
-            Customer customer = customerList.Find(c => c.name == name && c.phone == phone && c.email == email);
-            if (customer == null || (customer.AccessLevel != AccessLevels.PayingMember && customer.AccessLevel != AccessLevels.DayPassUser))
-            {
-                Console.WriteLine("Error: You do not have permission.");
-                return;
-            }
-            if (customer.AccessLevel == AccessLevels.DayPassUser && customer.dayPassDate.Date != DateTime.Now.Date)
-            {
-                Console.WriteLine("Error: Your day pass has expired.");
-                return;
-            }
             switch (command)
             {
                 case 1:
@@ -439,9 +443,13 @@ namespace Gym_Booking_Manager
                     break;
                 case 5:
                     // TODO: View group schedule
+                    Console.Clear();
+                    GroupSchedule.showActivities();
+                    //PayingMemberMenu();
                     break;
                 case 6:
                     // TODO: Make reservation
+                    Console.Clear();
                     PayingMemberReservation();
                     break;
                 case 7:
@@ -462,17 +470,20 @@ namespace Gym_Booking_Manager
                     Console.Clear();
                     ReserveMenu("user");
                     int n = int.Parse(Console.ReadLine());
+                    int x = 0;
+                     // TODO: Find user ind3ex based on unique ID in customer list
+                    Customer.ID = new ReservingEntity(customerList[x].uniqueID);
                     switch (n)
                     {
                         case 1:
                             // Equipment
                             Equipment myEquipment = new Equipment();
-                            myEquipment.MakeReservation("user");
+                            myEquipment.MakeReservation(Customer.ID, Customer.customerList[x].AccessLevel);
                             break;
                         case 2:
                             // Space
                             Space mySpace = new Space();
-                            mySpace.MakeReservation("user");
+                            mySpace.MakeReservation(Customer.ID, Customer.customerList[x].AccessLevel);
                             break;
                         case 3:
                             // Personal Trainer

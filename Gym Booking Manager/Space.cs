@@ -25,18 +25,16 @@ namespace Gym_Booking_Manager
     // As alluded to from previous paragraphs, implementing IComparable<T> is not exhaustive to cover all "comparisons".
     // Refer to official C# documentation to determine what interface to implement to allow use with
     // the class/method/operator that you want.
-    internal class Space : Resources, IReservable, ICSVable, IComparable<Space>, IReservingEntity
+    internal class Space : Resources, IReservable, ICSVable, IComparable<Space>
     {
         //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
-        public string owner { get; set; }
-        public SpaceCategory spaceCategory { get; set; }
-        public Availability spaceAvailability { get; set; }
+        private SpaceCategory spaceCategory;
+        private Availability spaceAvailability;
         public string timeSlot;
 		private static List<Space> _spaceList = new List<Space>();
         public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
 
-
-		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, string owner = "", string timeSlot = "", Calendar calendar = null) :base(name,calendar)
+		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "", Calendar calendar = null) :base(name,TimeSlot,null,calendar)
         {
             this.spaceCategory = spaceCategory;
             this.spaceAvailability = availability;
@@ -161,7 +159,7 @@ namespace Gym_Booking_Manager
             }
         }
 
-		public void MakeReservation(string owner)
+		public void MakeReservation(IReservingEntity owner, AccessLevels accessLevel)
 		{
 			List<Space> temp = new List<Space>();
 			foreach (var space in spaceList)

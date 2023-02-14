@@ -20,14 +20,17 @@ namespace Gym_Booking_Manager
 
             LoadFiles();
             Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket, null, Equipment.Availability.Reserved));
+            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
             Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
 
-            Customer CurrentCustomer = new Customer("Current Customer", "0987321", "CurrentCustomer@test.se");
-
-            Customer testCustomer1 = new Customer("TestCustomer 1", "1234", "test1@gmail.com");
-            Customer testCustomer2 = new Customer("TestCustomer 2", "1234", "test2@gmail.com");
-            Customer testCustomer3 = new Customer("TestCustomer 3", "1234", "test3@gmail.com");
+			Customer CurrentCustomer = new Customer("Current Customer", "0987321", "CurrentCustomer@test.se") { uniqueID = 10 };
+			Customer testCustomer1 = new Customer("TestCustomer 1", "1234", "test1@gmail.com") { uniqueID = 20 };
+			Customer testCustomer2 = new Customer("TestCustomer 2", "1234", "test2@gmail.com") { uniqueID = 30 };
+			Customer testCustomer3 = new Customer("TestCustomer 3", "1234", "test3@gmail.com") { uniqueID = 40 };
+			Customer.customerList.Add(CurrentCustomer);
+            Customer.customerList.Add(testCustomer1);
+            Customer.customerList.Add(testCustomer2);
+            Customer.customerList.Add(testCustomer3);
 
 
             Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
