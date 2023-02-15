@@ -1,6 +1,8 @@
 using Gym_Booking_Manager;
 using static Gym_Booking_Manager.Space;
 using System;
+using System.Globalization;
+using System.Xml.Linq;
 
 // There are many tools for improving how you write your tests,
 // but it's good enough to keep things simple to get things started.
@@ -16,7 +18,7 @@ namespace Tests
         [TestMethod]
         public void CreateSpace()
         {
-            Space testSpace = new Space(Space.Category.Studio, "Test Studio");
+            Space testSpace = new Space("Test Space",SpaceCategory.Lane, Availability.Available, null, "12:00");
             Assert.IsNotNull(testSpace);
         }
 
@@ -32,12 +34,19 @@ namespace Tests
 
             try
             {
-                Space sudioSpace = new Space(constructionArgs);
+                Space studioSpace = new Space(
+                    name: constructionArgs["name"],
+                    spaceCategory: (SpaceCategory)Enum.Parse(typeof(SpaceCategory), constructionArgs["category"]),
+                    availability: 0,
+                    owner: null,
+                    timeSlot: "",
+                    calendar: null);
             }
             catch (Exception e)
             {
                 threw = true;
                 Assert.IsInstanceOfType(e, typeof(ArgumentException));
+                Assert.AreEqual("Invalid space category: Sudio", e.Message);
             }
 
             Assert.IsTrue(threw);
@@ -46,34 +55,35 @@ namespace Tests
         [TestMethod]
         public void SpaceToString()
         {
-            Space testSpace = new Space(Space.Category.Studio, "Test Studio");
-            Assert.AreEqual(testSpace.ToString(), "Some nice string representation"); // Fix this
+            Space testSpace = new Space("Test Space", SpaceCategory.Lane, Availability.Available, null, "12:00");
+            Assert.AreEqual(testSpace.ToString(), "Namn: Test Space, Category: Lane, Availability: Available"); // Fix this
         }
 
         [TestMethod]
         public void SpaceCSVify()
         {
-            Space testSpace = new Space(Space.Category.Studio, "Test Studio");
-            Assert.AreEqual(testSpace.CSVify(), "category:Studio,name:Test Studio");
+            Space testSpace = new Space("Test Space", SpaceCategory.Lane, Availability.Available, null, "12:00");
+            Assert.AreEqual(testSpace.CSVify(), "spaceCategory:Lane,name:Test Space,spaceAvailability:Available");
         }
 
         [TestMethod]
         public void SpaceCompareToSpace()
         {
             SortedSet<Space> sortedSpaces = new SortedSet<Space>();
-            Space testStudio = new Space(Space.Category.Studio, "Test Studio");
-            Space testHall = new Space(Space.Category.Hall, "Test Hall");
+            Space testStudio = new Space("Test Studio", SpaceCategory.Studio);
+            Space testHall = new Space("Test Hall", SpaceCategory.Hall);
 
             sortedSpaces.Add(testStudio);
             sortedSpaces.Add(testHall);
 
             var spaceEnumerator = sortedSpaces.GetEnumerator();
 
-            Assert.AreSame(testHall, spaceEnumerator.Current);
             spaceEnumerator.MoveNext();
-            Assert.AreSame(testStudio, spaceEnumerator.Current);
+            Assert.AreEqual("Test Hall", spaceEnumerator.Current.name);
+            spaceEnumerator.MoveNext();
+            Assert.AreEqual("Test Studio", spaceEnumerator.Current.name);
         }
 
-        
+
     }
 }

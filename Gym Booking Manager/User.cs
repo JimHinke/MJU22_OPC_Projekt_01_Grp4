@@ -353,10 +353,6 @@ namespace Gym_Booking_Manager
         {
             owner = id;
         }
-        public ReservingEntity(string id)
-        {
-            owner = id.ToString();
-        }
 	}
 
 	internal class Customer : User
@@ -514,11 +510,19 @@ namespace Gym_Booking_Manager
                 case 4:
                     // TODO: Cancel reservation
                     break;
-                case 5:
+                case 5: //HINKE HIJACKAT DENNA FÖR TESTER!!
                     // TODO: View group schedule
                     Console.Clear();
                     GroupSchedule.showActivities();
-                    //PayingMemberMenu();
+                    Console.WriteLine("What Activity do you want to participate in? (full name)");
+                    string activityChoice = Console.ReadLine();
+                    for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
+                    {
+                        if (GroupSchedule.groupScheduleList[i].typeOfActivity.ToLower() == activityChoice.ToLower())
+                        {
+                            GroupSchedule.addCustomerToActivity(Customer.customerList[0], GroupSchedule.groupScheduleList[i]);
+                        }
+                    }
                     break;
                 case 6:
                     // TODO: Make reservation
