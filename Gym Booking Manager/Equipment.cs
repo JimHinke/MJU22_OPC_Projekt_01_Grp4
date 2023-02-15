@@ -91,14 +91,13 @@ namespace Gym_Booking_Manager
                 }
             }
         }
-        //TESTMETOD TODO...... Fungerar men visar all equipment. Skall detta implementeras i ShowAvailable också?
         public static void ReservEquipment(Equipment equipment, string timeslot, string owner)
         {
             if (equipment.equipmentAvailability == Availability.Available && !equipment.reservedTimeSlot.Contains(timeslot))
             {
                 equipment.reservedTimeSlot.Add(timeslot);
-				IReservingEntity activity  = new ReservingEntity(owner);
-				equipment.owner = activity;
+                IReservingEntity activity  = new ReservingEntity(owner);
+                equipment.owner = activity;
 
             }
             else

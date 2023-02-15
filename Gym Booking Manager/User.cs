@@ -60,6 +60,7 @@ namespace Gym_Booking_Manager
                     break;
                 case 2:
                     //TODO Edit Group Activity
+                    GroupSchedule.editActivity();
                     Console.Clear();
                     break;
                 case 3:
@@ -348,7 +349,7 @@ namespace Gym_Booking_Manager
         }
         public ReservingEntity(string id)
         {
-            owner = id.ToString();
+            owner = id;
         }
 	}
 
@@ -645,7 +646,7 @@ namespace Gym_Booking_Manager
                             break;
                         case 13:
                             Console.Clear();
-                            Staff.StaffMenu();
+                            Program.MainMenu();
                             break;
                         default:
                             Console.WriteLine("Invalid input, type a number");

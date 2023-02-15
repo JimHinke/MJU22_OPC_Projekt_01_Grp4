@@ -23,6 +23,12 @@ namespace Gym_Booking_Manager
             "Group Gym Training",
             "Yoga Class"
         };
+        public static List<string> TimeSlot = new List<string>()
+        {
+            "12:00-13:00",
+            "13:00-14:00",
+            "14:00-15:00"
+        };
         public List<GroupActivity> Activity { get; set; }
 
         public static void addActivity()
@@ -85,11 +91,11 @@ namespace Gym_Booking_Manager
             {
                 Equipment.ShowAvailable(TimeSlot[timeSlotChoice - 1]);
                 equipmentChoice = Convert.ToInt32(input("What equipment do you need for this session ? To go to next section press '0'\n>"));
-                
-                
+
+
                 if (equipmentChoice > 0 && equipmentChoice <= Equipment.index)
                 {
-                    //Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1], TypeOfActivity[typeOfActivityChoice - 1]);
+                    Equipment.ReservEquipment(Equipment.equipmentList[equipmentChoice - 1], TimeSlot[timeSlotChoice - 1], TypeOfActivity[typeOfActivityChoice - 1]);
                     activityEquipmentList.Add(Equipment.equipmentList[equipmentChoice - 1]);
                 }
                 else if (equipmentChoice == 0)
@@ -161,7 +167,73 @@ namespace Gym_Booking_Manager
         }
         public static void editActivity()
         {
-            //TODO
+            showActivities();
+            string editActivityChoice = input("Whats activity do you want to edit?\n>");
+            for (int i = 0; i < groupScheduleList.Count; i++)
+            {
+                if (editActivityChoice.ToLower() == groupScheduleList[i].typeOfActivity.ToLower())
+                {
+                    Console.WriteLine("1: <Name> - Name of this Activity");
+                    Console.WriteLine("2: <ActivityId> - The uniq ID for this Activity");
+                    Console.WriteLine("3: <Particpanat Limit> - The number of participants for this Activity");
+                    Console.WriteLine("4: <Time Slot> - The timeslot for this Activity (NOT AVAILABLE AT THIS MOMENT");
+                    Console.WriteLine("5: <Remove Participants> - Remove a participant for this Activity");
+                    Console.WriteLine("6: <Change Space> - Change the alocated space for this Activity");
+                    Console.WriteLine("7: <Change Equipment> - Change the equipment alocated for this Activity");
+                    Console.WriteLine("8: <Go Back> - Go back");
+
+                    int command = int.Parse(Console.ReadLine());
+                    switch (command)
+                    {
+                        case 1:
+                            string newName = input("Whats the new name for this Activity?\n>");
+                            groupScheduleList[i].typeOfActivity = newName;
+                            break;
+                        case 2:
+                            int newID = Convert.ToInt32(input("Whats the new uniqID for this Activity?\n>"));
+                            groupScheduleList[i].activtyId = newID;
+                            break;
+                        case 3:
+                            int newParticipantLimit = Convert.ToInt32(input("Whats the new participant limit?\n>"));
+                            groupScheduleList[i].participantLimit = newParticipantLimit;
+                            break;
+                        case 4:
+                            Console.WriteLine("Unavailable at this moment");
+                            break;
+                        case 5:
+                            List<User> participants = groupScheduleList[i].participants;
+                            foreach (User participant in participants)
+                            {
+                                Console.WriteLine(participant.name);
+                            }
+                            string removeParticipant = input("What participant do you want to remove? (Full name)\n>");
+                            for (int j = 0; j < participants.Count; j++)
+                            {
+                                if (participants[i].name == removeParticipant)
+                                {
+                                    participants.RemoveAt(j);
+                                    Console.WriteLine($"Removed {removeParticipant} from this Activity");
+                                    break;
+                                }
+                            }
+                            break;
+                        case 6:
+                            Space.ShowAvailable();
+                            string changeSpace = input($"What space would you like to add instead of '{groupScheduleList[i].space.name}'?\n>");
+                            
+                                
+                            break;
+                        case 7:
+                            break;
+                        case 8:
+                            User.manageSchedule();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid input, type a number");
+                            break;
+                    }
+                }
+            }
         }
         public static void deleteActivity()
         {

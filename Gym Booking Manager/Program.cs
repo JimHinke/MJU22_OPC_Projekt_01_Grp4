@@ -44,30 +44,19 @@ namespace Gym_Booking_Manager
             Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
 
-            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare", PersonalTrainer.TrainerCategory.YogaInstructor);
+            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke", PersonalTrainer.TrainerCategory.GymInstructor);
             PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
-            
+            //List<PersonalTrainer> personalTrainerList = new List<PersonalTrainer>();
+            //personalTrainerList.Add(PersonalTrainer.personalTrainers[0]);
+            User.userList.Add(CurrentCustomer);
+            //Console.WriteLine(testAvPersonalTrainer);
 
-            //Console.WriteLine(Space.spaceList[0]);
-            //Space.spaceList[0].SetAvailability(Space.Availability.Reserved);
-            //Console.WriteLine(Space.spaceList[0]);
-
-
-            foreach (Space obj in Space.spaceList)
-            {
-                Console.WriteLine(obj);
-            }
-            
-            //Console.WriteLine(Environment.CurrentDirectory);
-            
-            //Console.WriteLine($"Migration started at {DateTime.Now}");
-
-            //List<Equipment> equipmentList = new List<Equipment>();
-            //equipmentList.Add(Equipment.equipmentList[0]);
+            List<Equipment> equipmentList = new List<Equipment>();
+            equipmentList.Add(Equipment.equipmentList[0]);
             User.userList.Add(CurrentCustomer);
 
             //GroupActivity temp = new GroupActivity(
-            //                PersonalTrainer.personalTrainers[0], //Personal Trainer
+            //                personalTrainerList, //Personal Trainer
             //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
             //                23, //Unique ID set to an random number. Is this needed?
             //                0, //Particpant Limit
@@ -78,7 +67,7 @@ namespace Gym_Booking_Manager
             //                );
 
             //GroupSchedule.groupScheduleList.Add(temp);
-            Equipment.ShowAvailable("12:00");
+            //Equipment.ShowAvailable("12:00");
 
             while (true)
             {
