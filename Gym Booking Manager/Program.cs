@@ -30,9 +30,9 @@ namespace Gym_Booking_Manager
             LoadFiles();            
 
             // FUL TESTAR!	
-            //Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-            //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
-            //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
+            Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
+            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
+            Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
             Customer.customerList.Add(new Customer("Current Customer", "0987321", "CurrentCustomer@test.se") { uniqueID = 10, AccessLevel = AccessLevels.DayPassUser });
                     Customer.customerList.Add(new Customer("TestCustomer 1", "1234", "test1@gmail.com") { uniqueID = 20, AccessLevel = AccessLevels.DayPassUser});
             //         Customer.customerList.Add(new Customer("TestCustomer 2", "1234", "test2@gmail.com") { uniqueID = 30 });

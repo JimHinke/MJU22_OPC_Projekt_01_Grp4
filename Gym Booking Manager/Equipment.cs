@@ -335,9 +335,10 @@ namespace Gym_Booking_Manager
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
 					temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-					customer.reservedItems.Add(temp[n - 1]);
+					customer.reservedItems.Add(new Equipment(temp[n - 1].name, temp[n-1].equipmentType , temp[n-1].equipmentCategory, 0,temp[n-1].timeSlot));
                     // TBD? Save in the Reserved list in Calendar?
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
+                    Customer.ViewReservedItemList(customer);
                     input("Press enter...");
                     Console.Clear();
                     User.ReserveMenu(accessLevel);

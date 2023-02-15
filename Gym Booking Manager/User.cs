@@ -353,88 +353,93 @@ namespace Gym_Booking_Manager
 
         public static void ReserveMenu(AccessLevels accessLevels)
         {
-            Console.WriteLine("What would you like to reserve?");
-            List<string> reservationOptions = new List<string>()
+            while (true)
             {
-                "Equipment",
-                "Space",
-                "Personal Trainer",
-                "Group Activity",
-                "Go Back"
-            };
-            if (accessLevels == AccessLevels.NonPayingNonMember)
-            {
-                reservationOptions.Remove("Space");
-				reservationOptions.Remove("Personal Trainer");
-				reservationOptions.Remove("Group Activity");
-			}
-            for (int i = 0; i < reservationOptions.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {reservationOptions[i]}");
-            }
-			int n = int.Parse(Console.ReadLine());
-            // Choosing cutomer
-			int x = 0;
-            if (accessLevels == AccessLevels.NonPayingNonMember)
-            {
-                switch (n)
-                {
-                    case 1:
-						// Equipment
-						Equipment myEquipment = new Equipment();
-						myEquipment.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
-						break;
-					case 2:
-                        // Go Back
-                        Customer.UserMenu();
-						break;
-                    default:
-                        Console.WriteLine("Not a valid choice");
-                        break;
-                }
-            }
-            else
-            {
-		        // TODO: Find user ind3ex based on unique ID in customer list
-		        Customer.ID = new ReservingEntity(Customer.customerList[x].uniqueID);
-		        switch (n)
-		        {
-			        case 1:
-				        // Equipment
-				        Equipment myEquipment = new();
-				        myEquipment.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
-				        break;
-			        case 2:
-				        // Space
-				        Space mySpace = new();
-				        mySpace.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
-				        break;
-			        case 3:
-				        // Personal Trainer
-                        PersonalTrainer myTrainer = new();
-                        myTrainer.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
-				        break;
-			        case 4:
-				        Console.Clear();
-				        GroupSchedule.showActivities();
-				        Console.WriteLine("What group activity do you want to participate in? ");
-				        string activityChoice = Console.ReadLine();
-				        for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
-				        {
-					        if (GroupSchedule.groupScheduleList[i].typeOfActivity.Contains(activityChoice))
-					        {
-						        GroupSchedule.addCustomerToActivity(userList[0], GroupSchedule.groupScheduleList[i]);
-					        }
-				        }
-				        break;
-			        case 5:
-                        // Go Back
-                        GoBackDependingOnAccess(accessLevels);
-				        break;
-                    default:
-                        break;
-		        }
 
+                Console.WriteLine("What would you like to reserve?");
+                List<string> reservationOptions = new List<string>()
+                {
+                    "Equipment",
+                    "Space",
+                    "Personal Trainer",
+                    "Group Activity",
+                    "Go Back"
+                };
+                if (accessLevels == AccessLevels.NonPayingNonMember)
+                {
+                    reservationOptions.Remove("Space");
+			        reservationOptions.Remove("Personal Trainer");
+			        reservationOptions.Remove("Group Activity");
+		        }
+                for (int i = 0; i < reservationOptions.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {reservationOptions[i]}");
+                }
+		        int n = int.Parse(Console.ReadLine());
+                // Choosing cutomer
+		        int x = 0;
+                if (accessLevels == AccessLevels.NonPayingNonMember)
+                {
+                    switch (n)
+                    {
+                        case 1:
+					        // Equipment
+					        Equipment myEquipment = new Equipment();
+					        myEquipment.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
+					        break;
+				        case 2:
+                            // Go Back
+                            Customer.UserMenu();
+					        break;
+                        default:
+                            Console.WriteLine("Not a valid choice");
+                            break;
+                    }
+                }
+                else
+                {
+		            // TODO: Find user ind3ex based on unique ID in customer list
+		            Customer.ID = new ReservingEntity(Customer.customerList[x].uniqueID);
+		            switch (n)
+		            {
+			            case 1:
+				            // Equipment
+				            Equipment myEquipment = new();
+				            myEquipment.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
+				            break;
+			            case 2:
+				            // Space
+				            Space mySpace = new();
+				            mySpace.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
+				            break;
+			            case 3:
+				            // Personal Trainer
+                            PersonalTrainer myTrainer = new();
+                            myTrainer.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
+				            break;
+			            case 4:
+				            Console.Clear();
+				            GroupSchedule.showActivities();
+				            Console.WriteLine("What group activity do you want to participate in? ");
+				            string activityChoice = Console.ReadLine();
+				            for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
+				            {
+					            if (GroupSchedule.groupScheduleList[i].typeOfActivity.Contains(activityChoice))
+					            {
+						            GroupSchedule.addCustomerToActivity(userList[0], GroupSchedule.groupScheduleList[i]);
+					            }
+				            }
+				            break;
+			            case 5:
+                            // Go Back
+                            GoBackDependingOnAccess(accessLevels);
+				            break;
+                        default:
+                            Console.WriteLine("Not a valid choice!");
+                            break;
+		            }
+
+                }
             }
 
 		}
@@ -617,6 +622,44 @@ namespace Gym_Booking_Manager
             Console.WriteLine(log);
             Customer.AddLog(log);
         }
+
+        public static void ViewReservedItemList(Customer customer)
+        {
+			List<object> reservedItemsList = new List<object>();
+
+			foreach (var reservedItem in customer.reservedItems)
+			{
+				if (reservedItem is Equipment equipment)
+				{
+					reservedItemsList.Add(equipment);
+				}
+				else if (reservedItem is Space space)
+				{
+					reservedItemsList.Add(space);
+				}
+				else if (reservedItem is PersonalTrainer trainer)
+				{
+					reservedItemsList.Add(trainer);
+				}
+			}
+
+			for (int i = 0; i < reservedItemsList.Count; i++)
+			{
+				if (reservedItemsList[i] is Equipment equipment)
+				{
+					Console.WriteLine($"{i + 1}. {equipment.name}, {equipment.equipmentCategory}, {equipment.timeSlot}");
+				}
+				else if (reservedItemsList[i] is Space space)
+				{
+					Console.WriteLine($"{i + 1}. {space.name}, {space.spaceCategory}, {space.timeSlot}");
+				}
+				else if (reservedItemsList[i] is PersonalTrainer trainer)
+				{
+					Console.WriteLine($"{i + 1}. {trainer.name}, {trainer.trainerCategory}, {trainer.timeSlot}");
+				}
+			}
+		}
+
         public static void UserMenu()
         {
             Console.Clear();

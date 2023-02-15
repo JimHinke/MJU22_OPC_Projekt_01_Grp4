@@ -28,7 +28,7 @@ namespace Gym_Booking_Manager
     internal class Space : Resources, IReservable, ICSVable, IComparable<Space>
     {
         //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
-        private SpaceCategory spaceCategory;
+        public SpaceCategory spaceCategory { get; set; }
         private Availability spaceAvailability;
         public string timeSlot;
 		

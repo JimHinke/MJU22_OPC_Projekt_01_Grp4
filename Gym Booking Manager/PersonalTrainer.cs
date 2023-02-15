@@ -12,7 +12,7 @@ namespace Gym_Booking_Manager
     internal class PersonalTrainer : Resources, ICSVable
     {
         public IReservingEntity owner { get; set; }
-        private TrainerCategory trainerCategory { get; set; }
+        public TrainerCategory trainerCategory { get; set; }
         public Availability trainerAvailability { get; set; }
         public List<string> reservedTimeSlot { get; set; }
         public static int index = 0;
@@ -24,7 +24,6 @@ namespace Gym_Booking_Manager
             "13:00-14:00",
             "14:00-15:00"
         };
-
         public PersonalTrainer(string name = "", TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, IReservingEntity owner = null, string timeSlot = "")
         {
             this.owner = owner;
