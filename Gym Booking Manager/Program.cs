@@ -25,7 +25,6 @@ namespace Gym_Booking_Manager
             //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
             //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
 
-            LoadFiles();
             Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
             Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
             Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
@@ -40,18 +39,18 @@ namespace Gym_Booking_Manager
             Customer.customerList.Add(testCustomer3);
 
 
-            //Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
-            //Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
-            //Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
+            Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
+            Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
+            Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
 
-            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare");
+            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Personlig Tränare", PersonalTrainer.TrainerCategory.YogaInstructor);
             PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
             
 
-            Console.WriteLine(Space.spaceList[0]);
-            Space.spaceList[0].SetAvailability(Space.Availability.Reserved);
-            Console.WriteLine(Space.spaceList[0]);
+            //Console.WriteLine(Space.spaceList[0]);
+            //Space.spaceList[0].SetAvailability(Space.Availability.Reserved);
+            //Console.WriteLine(Space.spaceList[0]);
 
 
             foreach (Space obj in Space.spaceList)

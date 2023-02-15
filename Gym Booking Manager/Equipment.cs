@@ -15,15 +15,12 @@ namespace Gym_Booking_Manager
         //public static List<Equipment> availableEquipment = new List<Equipment>();
         //public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
         public static int index = 0;
-
 		public static List<string> TimeSlot = new List<string>()
 		{
 			"12:00-13:00",
 			"13:00-14:00",
 			"14:00-15:00"
 		};
-
-
 		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner = null, calendar)
         {
             this.equipmentAvailability = availability;
@@ -31,8 +28,8 @@ namespace Gym_Booking_Manager
             this.equipmentCategory = equipmentCategory;
 			this.timeSlot = timeSlot;
 			this.reservedTimeSlot = new List<string>();
-        }
-
+			this.owner = owner;
+		}
         public enum EquipmentType
         {
             Large,
@@ -171,8 +168,6 @@ namespace Gym_Booking_Manager
                 Console.ReadLine();
                 Service.ServiceMenu();
             }
-
-
         }
         public static void RestrictEquipment()
         {
@@ -249,7 +244,7 @@ namespace Gym_Booking_Manager
             //}
         }
 
-        public void MakeReservation(IReservingEntity owner, Customer customer ,AccessLevels accessLevel)
+        public void MakeReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevel)
         {
 			Console.Clear();
 			int index = 1;
@@ -297,7 +292,7 @@ namespace Gym_Booking_Manager
                             temp.Add(equipment);
                         }
                     }
-                    if (tempAll.Count != 0) 
+                    if (temp.Count != 0) 
                     {
                         ShowAvailableLarge(TimeSlot[timeSlotChoice -1]);				 
                     }
@@ -331,25 +326,33 @@ namespace Gym_Booking_Manager
 					};
 				}
 				n = Convert.ToInt32(input("What equipment would you like to reserve?\n"));
-                //confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}.\n" +
-                //    $"Is this correct? Y / N\n").ToLower();
+                Console.Clear();
+                confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}.\n" +
+                    $"Is this correct? Y / N\n").ToLower();
                 Console.Clear();
 				
                 if (confirm == "y")
                 {
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
-                    customer.reservedItems.Add(temp[n - 1]);
+					temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
+					customer.reservedItems.Add(temp[n - 1]);
                     // TBD? Save in the Reserved list in Calendar?
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
+                    Console.Clear();
+                    User.ReserveMenu(accessLevel);
                 }
                 else if (confirm == "n")
                 {
                     User.ReserveMenu(accessLevel);
                 }
             }
-
+            else
+            {
+                Console.WriteLine("There is no available equipment during your choosen time.");
+				User.ReserveMenu(accessLevel);
+			}
         }
 
         public void CancelReservation()

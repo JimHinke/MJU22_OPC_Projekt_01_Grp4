@@ -186,13 +186,10 @@ namespace Gym_Booking_Manager
             {
                 Console.WriteLine($"{i + 1}. {reservationOptions[i]}");
             }
-
 			int n = int.Parse(Console.ReadLine());
-
             // Choosing cutomer
 			int x = 0;
-
-            if (accessLevels!= AccessLevels.NonPayingNonMember)
+            if (accessLevels == AccessLevels.NonPayingNonMember)
             {
                 switch (n)
                 {
@@ -218,16 +215,18 @@ namespace Gym_Booking_Manager
 		        {
 			        case 1:
 				        // Equipment
-				        Equipment myEquipment = new Equipment();
+				        Equipment myEquipment = new();
 				        myEquipment.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
 				        break;
 			        case 2:
 				        // Space
-				        Space mySpace = new Space();
+				        Space mySpace = new();
 				        mySpace.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
 				        break;
 			        case 3:
 				        // Personal Trainer
+                        PersonalTrainer myTrainer = new();
+                        myTrainer.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
 				        break;
 			        case 4:
 				        Console.Clear();

@@ -67,7 +67,7 @@ namespace Gym_Booking_Manager
                         }
                     }
                 }
-                spaceList.Add(new Space(name, spaceCategory, availability, owner, timeSlot, calendar));
+                Resources.spaceList.Add(new Space(name, spaceCategory, availability, owner, timeSlot, calendar));
             }
         }
 
