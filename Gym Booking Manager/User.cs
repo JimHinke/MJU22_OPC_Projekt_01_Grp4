@@ -1,5 +1,7 @@
 ﻿using Gym_Booking_Manager;
+using Gym_Booking_Manager.Interfaces;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -24,15 +27,16 @@ namespace Gym_Booking_Manager
         public string email { get; set; }
         protected User(string name = "", string phone = "", string email = "")
         {
-            this.uniqueID = new Random().Next(0, 1000);
             this.name = name;
             this.phone = phone;
             this.email = email;
         }
+
         public override string ToString()
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
         }
+
         public static void manageSchedule()
         {
             Console.Clear();
@@ -348,7 +352,8 @@ namespace Gym_Booking_Manager
                 Console.WriteLine($"{i + 1}. {menuOptions[i]}");
             }
         }
-        public static void ReserveMenu(string user = "")
+
+        public static void ReserveMenu(AccessLevels accessLevels)
         {
             Console.WriteLine("What would you like to reserve?");
             List<string> reservationOptions = new List<string>()
@@ -359,11 +364,83 @@ namespace Gym_Booking_Manager
                 "Group Activity",
                 "Go Back"
             };
+            if (accessLevels == AccessLevels.NonPayingNonMember)
+            {
+                reservationOptions.Remove("Space");
+				reservationOptions.Remove("Personal Trainer");
+				reservationOptions.Remove("Group Activity");
+			}
             for (int i = 0; i < reservationOptions.Count; i++)
             {
                 Console.WriteLine($"{i + 1}. {reservationOptions[i]}");
             }
-        }
+			int n = int.Parse(Console.ReadLine());
+            // Choosing cutomer
+			int x = 0;
+            if (accessLevels == AccessLevels.NonPayingNonMember)
+            {
+                switch (n)
+                {
+                    case 1:
+						// Equipment
+						Equipment myEquipment = new Equipment();
+						myEquipment.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
+						break;
+					case 2:
+						// Go Back
+						// Usermenu
+						break;
+                    default:
+                        Console.WriteLine("Not a valid choice");
+                        break;
+                }
+            }
+            else
+            {
+		        // TODO: Find user ind3ex based on unique ID in customer list
+		        Customer.ID = new ReservingEntity(Customer.customerList[x].uniqueID);
+		        switch (n)
+		        {
+			        case 1:
+				        // Equipment
+				        Equipment myEquipment = new();
+				        myEquipment.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
+				        break;
+			        case 2:
+				        // Space
+				        Space mySpace = new();
+				        mySpace.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
+				        break;
+			        case 3:
+				        // Personal Trainer
+                        PersonalTrainer myTrainer = new();
+                        myTrainer.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
+				        break;
+			        case 4:
+				        Console.Clear();
+				        GroupSchedule.showActivities();
+				        Console.WriteLine("What group activity do you want to participate in? ");
+				        string activityChoice = Console.ReadLine();
+				        for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
+				        {
+					        if (GroupSchedule.groupScheduleList[i].typeOfActivity.Contains(activityChoice))
+					        {
+						        GroupSchedule.addCustomerToActivity(userList[0], GroupSchedule.groupScheduleList[i]);
+					        }
+				        }
+				        //PayingMemberMenu();
+				        break;
+			        case 5:
+				        // Go Back
+				        //PayingMemberMenu();
+				        break;
+                    default:
+                        break;
+		        }
+
+            }
+
+		}
         public static void LoginMenu()
         {
             Console.WriteLine("-------------Member Access Menu:-------------");
@@ -468,19 +545,41 @@ namespace Gym_Booking_Manager
         DayPassUser,
         NonPayingNonMember
     }
-    internal class Customer : User
+
+	public class ReservingEntity : IReservingEntity
+	{
+		public string owner { get; set; }
+        public AccessLevels AccessLevel;
+
+		public ReservingEntity(int id, AccessLevels accessLevels = 0)
+		{
+			owner = id.ToString();
+        }
+        public ReservingEntity(string id)
+        {
+            owner = id;
+        }
+	}
+
+	internal class Customer : User
     {
         public static List<Customer> customerList = new List<Customer>();
+        public static IReservingEntity ID;
         public AccessLevels AccessLevel { get; set; }
         public static List<string> logs = new List<string>();
         DateTime createdAt;
         public DateTime dayPassDate { get; set; }
-        public Customer(string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember) : base(name, phone, email)
+        public List<Resources> reservedItems {get; set;}
+        public Customer(string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember) : base(name, phone ,email)
         {
             this.createdAt = DateTime.Now;
             this.AccessLevel = accessLevel;
             customerList.Add(this);
-        }
+            this.reservedItems = new List<Resources>();
+            uniqueID = new Random().Next(0, 1000);
+            ID = new ReservingEntity(uniqueID);
+		}
+        
         public override string ToString()
         {
             return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nAccount Created: {createdAt}";
@@ -795,11 +894,11 @@ namespace Gym_Booking_Manager
 
     }
 
-    internal class Staff : User
-    {
-        public Staff(string name, string phone, string email) : base(name, phone, email)
+        internal class Staff : User
         {
-        }
+            public Staff(string name, string phone, string email) : base(name, phone, email)
+            {
+            }
 
         public static void StaffMenu()
         {

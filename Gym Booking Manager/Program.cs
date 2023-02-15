@@ -6,11 +6,16 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using static Gym_Booking_Manager.Equipment;
+using CsvHelper;
+using System.IO;
+using System.Globalization;
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -21,20 +26,27 @@ namespace Gym_Booking_Manager
     {
 
 
-        static void Main(string[] args)
-        {
-
-
+		static void Main(string[] args)
+		{
             LoadFiles();
+
+            // FUL TESTAR!	
+            //Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
+            //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
+            //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
+
             Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket, null, Equipment.Availability.Reserved));
+            Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
             Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
 
-            Customer CurrentCustomer = new Customer("Current Customer", "0987321", "CurrentCustomer@test.se");
-
-            Customer testCustomer1 = new Customer("TestCustomer 1", "1234", "test1@gmail.com");
-            Customer testCustomer2 = new Customer("TestCustomer 2", "1234", "test2@gmail.com");
-            Customer testCustomer3 = new Customer("TestCustomer 3", "1234", "test3@gmail.com");
+			Customer CurrentCustomer = new Customer("Current Customer", "0987321", "CurrentCustomer@test.se") { uniqueID = 10, AccessLevel = AccessLevels.DayPassUser };
+			Customer testCustomer1 = new Customer("TestCustomer 1", "1234", "test1@gmail.com") { uniqueID = 20 };
+			Customer testCustomer2 = new Customer("TestCustomer 2", "1234", "test2@gmail.com") { uniqueID = 30 };
+			Customer testCustomer3 = new Customer("TestCustomer 3", "1234", "test3@gmail.com") { uniqueID = 40 };
+			Customer.customerList.Add(CurrentCustomer);
+            Customer.customerList.Add(testCustomer1);
+            Customer.customerList.Add(testCustomer2);
+            Customer.customerList.Add(testCustomer3);
 
 
             Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
@@ -42,13 +54,18 @@ namespace Gym_Booking_Manager
             Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
 
-            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke");
+            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke", PersonalTrainer.TrainerCategory.GymInstructor);
             PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
+            //List<PersonalTrainer> personalTrainerList = new List<PersonalTrainer>();
+            //personalTrainerList.Add(PersonalTrainer.personalTrainers[0]);
+            User.userList.Add(CurrentCustomer);
+            //Console.WriteLine(testAvPersonalTrainer);
 
 
-            GroupSchedule.EQC.Add(Equipment.equipmentList[0]);
-            //User.userList.Add(CurrentCustomer);
+            equipmentList.Add(Equipment.equipmentList[0]);
+            User.userList.Add(CurrentCustomer);
 
+            //GroupActivity temp = new GroupActivity(
             GroupActivity temp = new GroupActivity(
                             PersonalTrainer.personalTrainers[0], //Personal Trainer
                             GroupSchedule.TypeOfActivity[0], //Type Of Activity
@@ -59,8 +76,8 @@ namespace Gym_Booking_Manager
                             Space.spaceList[0], //What space is used for this session
                             GroupSchedule.EQC //What Equipment is used for this session
                             );
-
-            GroupSchedule.groupScheduleList.Add(temp);
+            //GroupSchedule.groupScheduleList.Add(temp);
+            //Equipment.ShowAvailable("12:00");
 
             while (true)
             {
@@ -74,7 +91,7 @@ namespace Gym_Booking_Manager
 
         public static void LoadFiles()
         {
-            //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Spaces.txt");
+            CsvHandler.ReadFile("Spaces.txt");           
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\Equipment.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\PersonalTrainer.txt");
             //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\GroupActivities.txt"); //???
@@ -92,30 +109,25 @@ namespace Gym_Booking_Manager
             {
                 int command = int.Parse(Console.ReadLine());
 
-                switch (command)
-                {
-                    case 1:
-                        Customer.LoginMenu();
-                        break;
-                    case 2:
-                        Customer.DayPassMenu();
-                        break;
-                    case 3:
-                        User.manageSchedule();
-                        break;
-                    case 4:
-                        Console.WriteLine("\nExiting program...");
-                        Environment.Exit(0);
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input, type a number");
-                        break;
-                }
-            }
-            catch (FormatException e)
+            switch (command)
             {
-                // Handle the FormatException by displaying an error message
-                Console.WriteLine("Error: Please enter a valid number.");
+                case 1:
+                    Customer.LoginMenu();
+                    break;
+                case 2:
+                    Customer.DayPassMenu();
+                    break;
+                case 3:
+                    User.manageSchedule();
+                    break;
+                case 4:
+                    Console.WriteLine("\nExiting program...");
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Invalid input, type a number");
+                    break;
+
             }
         }
     }

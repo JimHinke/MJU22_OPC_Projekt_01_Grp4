@@ -3,24 +3,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using static Gym_Booking_Manager.Space;
 using System.Xml.Linq;
+using Gym_Booking_Manager.Interfaces;
 
 namespace Gym_Booking_Manager
 {
-    internal class CsvHandler
+    public class CsvHandler
     {
-        public static void ReadFile(string filepath)
+        public static void ReadFile(string fileName)
         {
-            string[] lines = File.ReadAllLines(filepath);
+            string fileName2 = @$"CSV\{fileName}";
+            string newPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\"));
+            string filePath = Path.Combine(newPath, fileName2);
+
+            string[] lines = File.ReadAllLines(filePath);
             foreach (string line in lines)
             {
                 string[] values = line.Split(',');
                 string name = "";
                 SpaceCategory spaceCategory = 0;
                 Availability availability = 0;
-                string owner = "";
+                IReservingEntity owner = null;
                 string timeSlot = "";
                 Calendar calendar = null;
                 foreach (string value in values)
@@ -60,36 +66,19 @@ namespace Gym_Booking_Manager
                             availability = Availability.Available;
                         }
                     }
-                }                
-                spaceList.Add(new Space(name, spaceCategory, availability, owner, timeSlot, calendar));
+                }
+                Resources.spaceList.Add(new Space(name, spaceCategory, availability, owner, timeSlot, calendar));
             }
         }
 
-        
-        //public static void readfile(string filepath)
-        //{
-        //    string file = filepath;
-        //    if (!file.exists(file))
-        //    {
-        //        console.writeline("file does not exist :{0} ", file);
-        //        return;
-        //    }
 
-        //    string[] textfromfile = file.readalllines(file);
-        //    foreach (string line in textfromfile)
-        //    {
-        //        console.writeline(line);
-        //    }            
-        //}
-
-        
-
-        public void WriteFile<T>(List<T> objects)
+        public void WriteFile<T>(List<T> objects, string fileName) where T : ICSVable
         {
-
-            //if (objects.GetType == Equipment)
-
-            string filePath = @"\MJU22_OPC_Projekt_01_Grp4\Gym Booking Manager\CSV\Spaces.txt";
+            string fileName2 = @$"CSV\{fileName}";
+            string newPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\"));
+            string filePath = Path.Combine(newPath, fileName2);
+            Console.WriteLine(filePath);
+            Console.ReadLine();
 
             if (File.Exists(filePath))
             {
@@ -97,19 +86,53 @@ namespace Gym_Booking_Manager
                 {
                     foreach (var obj in objects)
                     {
-                        var objType = obj.GetType();
-                        var csvifyMethod = objType.GetMethod("CSVify");
-                        if (csvifyMethod != null)
-                        {
-                            writer.WriteLine((string)csvifyMethod.Invoke(obj, null));
-                        }
-                        else
-                        {
-                            // Handle the case where the object does not have a CSVify method
-                        }
+                        writer.WriteLine(obj.CSVify());
+                    }
+                }
+            }
+            else
+            {
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    foreach (var obj in objects)
+                    {
+                        writer.WriteLine(obj.CSVify());
                     }
                 }
             }
         }
+
+        //public void WriteFile<T>(List<T> objects, string fileName) where T : ICSVable
+        //{
+        //    string folderName = "CSV";
+        //    string newPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName);
+        //    Directory.CreateDirectory(newPath);
+
+        //    string filePath = Path.Combine(newPath, fileName);
+        //    Console.WriteLine(filePath);
+        //    Console.ReadLine();
+
+        //    if (!File.Exists(filePath))
+        //    {
+        //        using (StreamWriter writer = File.CreateText(filePath))
+        //        {
+        //            foreach (var obj in objects)
+        //            {
+        //                writer.WriteLine(obj.CSVify());
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        using (StreamWriter writer = new StreamWriter(filePath, false))
+        //        {
+        //            foreach (var obj in objects)
+        //            {
+        //                writer.WriteLine(obj.CSVify());
+        //            }
+        //        }
+        //    }
+        
+
     }
 }
