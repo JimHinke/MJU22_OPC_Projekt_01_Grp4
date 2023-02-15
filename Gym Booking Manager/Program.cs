@@ -1,9 +1,16 @@
 ﻿using Gym_Booking_Manager;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Numerics;
 using System.Runtime.CompilerServices;
-using static Gym_Booking_Manager.Equipment;
-using CsvHelper;
-using System.Globalization;
+using System.Runtime.ExceptionServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -40,7 +47,7 @@ namespace Gym_Booking_Manager
 
 
             GroupSchedule.EQC.Add(Equipment.equipmentList[0]);
-            User.userList.Add(CurrentCustomer);
+            //User.userList.Add(CurrentCustomer);
 
             GroupActivity temp = new GroupActivity(
                             PersonalTrainer.personalTrainers[0], //Personal Trainer
@@ -62,6 +69,7 @@ namespace Gym_Booking_Manager
 
         }
 
+
         // Static methods for the program
 
         public static void LoadFiles()
@@ -79,30 +87,35 @@ namespace Gym_Booking_Manager
             Console.WriteLine("2. Create account");
             Console.WriteLine("3. View group schedule");
             Console.WriteLine("4. Quit");
-            Console.WriteLine("--------------------------------------\n");
-
-
-            int command = int.Parse(Console.ReadLine());
-
-            switch (command)
+            Console.WriteLine("------------------------------------\n");
+            try
             {
-                case 1:
-                    Customer.LoginMenu();
-                    break;
-                case 2:
-                    Customer.DayPassMenu();
-                    break;
-                case 3:
-                    User.manageSchedule();
-                    break;
-                case 4:
-                    Console.WriteLine("\nExiting program...");
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Invalid input, type a number");
-                    break;
+                int command = int.Parse(Console.ReadLine());
 
+                switch (command)
+                {
+                    case 1:
+                        Customer.LoginMenu();
+                        break;
+                    case 2:
+                        Customer.DayPassMenu();
+                        break;
+                    case 3:
+                        User.manageSchedule();
+                        break;
+                    case 4:
+                        Console.WriteLine("\nExiting program...");
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input, type a number");
+                        break;
+                }
+            }
+            catch (FormatException e)
+            {
+                // Handle the FormatException by displaying an error message
+                Console.WriteLine("Error: Please enter a valid number.");
             }
         }
     }
