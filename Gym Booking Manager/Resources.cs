@@ -17,9 +17,13 @@ namespace Gym_Booking_Manager
         public static List<Equipment> availableEquipment = new List<Equipment>();
         private static List<Equipment> _equipmentList = new List<Equipment>();
         public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
+
         public static List<PersonalTrainer> personalTrainers = new List<PersonalTrainer>();
 
-        public static List<string> TimeSlot = new List<string>()
+		private static List<Space> _spaceList = new List<Space>();
+		public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
+
+		public static List<string> TimeSlot = new List<string>()
         {
             "12:00-13:00",
             "13:00-14:00",

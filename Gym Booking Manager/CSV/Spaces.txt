@@ -1,3 +1,0 @@
-spaceCategory:Hall,name:Hall,spaceAvailability:Reserved
-spaceCategory:Lane,name:Lane,spaceAvailability:Available
-spaceCategory:Studio,name:Studio,spaceAvailability:Available
