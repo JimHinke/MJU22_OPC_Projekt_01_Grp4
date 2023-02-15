@@ -205,7 +205,7 @@ namespace Gym_Booking_Manager
 				    temp[n - 1].owner = owner;
 					temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
                     temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-					customer.reservedItems.Add(temp[n - 1]);
+					customer.reservedItems.Add(new Space(temp[n - 1].name, temp[n - 1].spaceCategory, 0, null, temp[n - 1].timeSlot));
 					// Save the equipment on the owner... Does the owners hava a list with reserved equipments?
 					// Save in the Reserved list in Calendar?
 					Console.Clear();

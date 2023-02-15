@@ -355,7 +355,7 @@ namespace Gym_Booking_Manager
         {
             while (true)
             {
-
+                Console.Clear();
                 Console.WriteLine("What would you like to reserve?");
                 List<string> reservationOptions = new List<string>()
                 {
@@ -623,25 +623,14 @@ namespace Gym_Booking_Manager
             Customer.AddLog(log);
         }
 
-        public static void ViewReservedItemList(Customer customer)
-        {
-			List<object> reservedItemsList = new List<object>();
-
-			foreach (var reservedItem in customer.reservedItems)
-			{
-				if (reservedItem is Equipment equipment)
-				{
-					reservedItemsList.Add(equipment);
-				}
-				else if (reservedItem is Space space)
-				{
-					reservedItemsList.Add(space);
-				}
-				else if (reservedItem is PersonalTrainer trainer)
-				{
-					reservedItemsList.Add(trainer);
-				}
-			}
+		public static void ViewReservedItemList(Customer customer)
+		{
+			var reservedItemsList = customer.reservedItems
+				.OrderBy(x => x.GetType() == typeof(Equipment) ? 0 :
+							  x.GetType() == typeof(Space) ? 1 :
+							  x.GetType() == typeof(PersonalTrainer) ? 2 :
+							  3)
+				.ToList();
 
 			for (int i = 0; i < reservedItemsList.Count; i++)
 			{
@@ -660,7 +649,7 @@ namespace Gym_Booking_Manager
 			}
 		}
 
-        public static void UserMenu()
+		public static void UserMenu()
         {
             Console.Clear();
             Console.WriteLine("-------------User Menu-------------");

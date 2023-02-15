@@ -115,10 +115,10 @@ namespace Gym_Booking_Manager
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
                     temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-                    customer.reservedItems.Add(temp[n - 1]);
-                    // Save the equipment on the owner... Does the owners hava a list with reserved equipments?
-                    // Save in the Reserved list in Calendar?
-                    Console.Clear();
+					customer.reservedItems.Add(new PersonalTrainer(temp[n - 1].name, temp[n - 1].trainerCategory, 0, null, temp[n - 1].timeSlot));
+					// Save the equipment on the owner... Does the owners hava a list with reserved equipments?
+					// Save in the Reserved list in Calendar?
+					Console.Clear();
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
                     Console.Clear();
