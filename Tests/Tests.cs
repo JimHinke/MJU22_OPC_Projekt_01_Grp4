@@ -41,6 +41,15 @@ namespace Tests
             // then the GroupActivity may need to implement IEquatable<GroupActivity> for that comparison.
             //
             // If you prefer, you can also change the Assert statement to something else.
+
+
+            //TBD
+            //Skapa ett groupActivity ojekt med alla atribut fylda. Kolla så en sprecfik equipmen i groupactiviten är upptagen och inte bokningarbar
+            //utanför denna tid
+            //Ta bort equipment från groupActivity och kolla så den är tillgänlig denna tid
+
+
+
         }
     }
 }
