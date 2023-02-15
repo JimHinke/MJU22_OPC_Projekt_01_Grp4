@@ -1,10 +1,21 @@
 ﻿using Gym_Booking_Manager;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using static Gym_Booking_Manager.Equipment;
 using CsvHelper;
 using System.IO;
 using System.Globalization;
+using System.Runtime.ExceptionServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -49,16 +60,16 @@ namespace Gym_Booking_Manager
             //User.userList.Add(CurrentCustomer);
 
             //GroupActivity temp = new GroupActivity(
-            //                PersonalTrainer.personalTrainers[0], //Personal Trainer
-            //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
-            //                23, //Unique ID set to an random number. Is this needed?
-            //                0, //Particpant Limit
-            //                Resources.TimeSlot[0], //Time Slot
-            //                null, //List of Participants. This is not added here but rather under another menu-choice
-            //                Space.spaceList[0], //What space is used for this session
-            //                equipmentList //What Equipment is used for this session
-            //                );
-
+            GroupActivity temp = new GroupActivity(
+                            PersonalTrainer.personalTrainers[0], //Personal Trainer
+                            GroupSchedule.TypeOfActivity[0], //Type Of Activity
+                            23, //Unique ID set to an random number. Is this needed?
+                            32, //Particpant Limit
+                            Resources.TimeSlot[0], //Time Slot
+                            null, //List of Participants. This is not added here but rather under another menu-choice
+                            Space.spaceList[0], //What space is used for this session
+                            GroupSchedule.EQC //What Equipment is used for this session
+                            );
             //GroupSchedule.groupScheduleList.Add(temp);
             //Equipment.ShowAvailable("12:00");
 
@@ -67,6 +78,7 @@ namespace Gym_Booking_Manager
                 MainMenu();
             }
         }
+
 
         // Static methods for the program
 
@@ -105,10 +117,10 @@ namespace Gym_Booking_Manager
             Console.WriteLine("2. Create account");
             Console.WriteLine("3. View group schedule");
             Console.WriteLine("4. Quit");
-            Console.WriteLine("--------------------------------------\n");
-
-
-            int command = int.Parse(Console.ReadLine());
+            Console.WriteLine("------------------------------------\n");
+            try
+            {
+                int command = int.Parse(Console.ReadLine());
 
             switch (command)
             {

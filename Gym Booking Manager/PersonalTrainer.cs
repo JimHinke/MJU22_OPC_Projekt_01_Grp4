@@ -11,13 +11,21 @@ namespace Gym_Booking_Manager
 {
     internal class PersonalTrainer : Resources, ICSVable
     {
-        public string owner { get; set; }
-        public TrainerCategory trainerCategory { get; set; }
+        public IReservingEntity owner { get; set; }
+        private TrainerCategory trainerCategory { get; set; }
         public Availability trainerAvailability { get; set; }
         public List<string> reservedTimeSlot { get; set; }
         public static int index = 0;
+        public string timeSlot;
 
-        public PersonalTrainer(string name, TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, string owner = "")
+		public static List<string> TimeSlot = new List<string>()
+		{
+			"12:00-13:00",
+			"13:00-14:00",
+			"14:00-15:00"
+		};
+
+		public PersonalTrainer(string name = "", TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, IReservingEntity owner = null, string timeSlot = "")
         {
             this.owner = owner;
             this.name = name;
@@ -43,8 +51,6 @@ namespace Gym_Booking_Manager
         {
             return this.trainerAvailability = availability;
         }
-
-
         public static void ShowAvailable(string timeslot)
         {
             personalTrainers = personalTrainers.OrderBy(x => x.trainerAvailability != Availability.Available).ToList();
@@ -63,9 +69,10 @@ namespace Gym_Booking_Manager
         {
             if (trainer.trainerAvailability == Availability.Available && !trainer.reservedTimeSlot.Contains(timeslot))
             {
-                trainer.reservedTimeSlot.Add(timeslot);
-                trainer.owner = customer;
-            }
+				trainer.reservedTimeSlot.Add(timeslot);
+				IReservingEntity activity = new ReservingEntity(customer);
+				trainer.owner = activity;
+			}
             else
             {
                 Console.WriteLine("This personal trainer is not available for reservation during that timeslot.");
@@ -75,11 +82,68 @@ namespace Gym_Booking_Manager
         {
             return $"Namn: {name}, Category: {trainerCategory}, Avilability: {trainerAvailability}";
         }
-
-        public string CSVify()
+        public void MakeReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevel)
         {
-            return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name},{nameof(trainerAvailability)}:{trainerAvailability.ToString()}";
-        }
+            Console.Clear();
+            int index = 1;
+            for (int i = 0; i < TimeSlot.Count; i++)
+            {
+                Console.WriteLine(index + " " + TimeSlot[i]);
+                index++;
+            }
+            int timeSlotChoice = Convert.ToInt32(input("During which time would you like to book the trainer?\n"));
 
+            List<PersonalTrainer> temp = new List<PersonalTrainer>();
+
+            for (int i = 0; i < personalTrainers.Count; i++)
+            {
+                if (personalTrainers[i].trainerAvailability == Availability.Available && !personalTrainers[i].reservedTimeSlot.Contains(TimeSlot[timeSlotChoice - 1]))
+                {
+                    temp.Add(personalTrainers[i]);
+                }
+            }
+            if (temp.Count > 0)
+            {
+                Console.Clear();
+                ShowAvailable(TimeSlot[timeSlotChoice - 1]);
+                int n = Convert.ToInt32(input("Which trainer would you like to book?\n"));
+                Console.Clear();
+                string confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}.\n" +
+                    $"Is this correct? Y / N\n").ToLower();
+
+                if (confirm == "y")
+                {
+                    temp[n - 1].owner = owner;
+                    temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
+                    temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
+                    customer.reservedItems.Add(temp[n - 1]);
+                    // Save the equipment on the owner... Does the owners hava a list with reserved equipments?
+                    // Save in the Reserved list in Calendar?
+                    Console.Clear();
+                    Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
+                    input("Press enter...");
+					Console.Clear();
+					User.ReserveMenu(accessLevel);
+				}
+                else if (confirm == "n")
+                {
+                    User.ReserveMenu(accessLevel);
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("There is no available trainer during your choosen time");
+				User.ReserveMenu(accessLevel);
+			}
+
+
+
+        }
+        static public string input(string prompt)
+        {
+            Console.Write(prompt);
+            return Console.ReadLine();
+        }
     }
 }

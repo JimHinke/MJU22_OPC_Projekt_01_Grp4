@@ -31,8 +31,16 @@ namespace Gym_Booking_Manager
         private SpaceCategory spaceCategory;
         private Availability spaceAvailability;
         public string timeSlot;
-		private static List<Space> _spaceList = new List<Space>();
-        public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
+		
+		public List<string> reservedTimeSlot { get; set; }
+        int index = 0;
+
+		public static List<string> TimeSlot = new List<string>()
+		{
+			"12:00-13:00",
+			"13:00-14:00",
+			"14:00-15:00"
+		};
 
 		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "", Calendar calendar = null) :base(name,TimeSlot,null,calendar)
         {
@@ -40,6 +48,7 @@ namespace Gym_Booking_Manager
             this.spaceAvailability = availability;
             this.timeSlot = timeSlot;
             this.owner = owner;
+            this.reservedTimeSlot= new List<string>();
         }
 
         // Every class T to be used for DbSet<T> needs a constructor with this parameter signature. Make sure the object is properly initialized.
@@ -91,13 +100,16 @@ namespace Gym_Booking_Manager
         {
             return this.spaceAvailability = availability;
         }
-        public static void ShowAvailable()
+        public static void ShowAvailable(string timeslot = null)
         {
-            spaceList = spaceList.OrderBy(x => x.spaceAvailability != Availability.Available).ToList();
-            for (int i = 0; i < spaceList.Count; i++)
+			spaceList = spaceList.OrderBy(x => x.spaceAvailability != Availability.Available).ToList();
+			spaceList = spaceList.OrderBy(x => x.reservedTimeSlot.Contains(timeslot)).ToList();
+			int index = 0;
+			for (int i = 0; i < spaceList.Count; i++)
 			{
-				if (spaceList[i].spaceAvailability == Availability.Available)
+				if (spaceList[i].spaceAvailability == Availability.Available && !spaceList[i].reservedTimeSlot.Contains(timeslot))
 				{
+					index++;
 					Console.WriteLine(i + 1 + " " + spaceList[i].name);
 				}
 			}
@@ -159,47 +171,65 @@ namespace Gym_Booking_Manager
             }
         }
 
-		public void MakeReservation(IReservingEntity owner, AccessLevels accessLevel)
+		public void MakeReservation(IReservingEntity owner, Customer customer ,AccessLevels accessLevel)
 		{
-			List<Space> temp = new List<Space>();
-			foreach (var space in spaceList)
-			{
-				if (space.spaceAvailability == Availability.Available)
-				{
-					temp.Add(space);
-				}
-			}
-            Console.Clear();
-            ShowAvailable();
-			int n = Convert.ToInt32(input("What space would you like to reserve?\n"));
-
-            Console.Clear();
+			Console.Clear();
 			int index = 1;
 			for (int i = 0; i < TimeSlot.Count; i++)
 			{
 				Console.WriteLine(index + " " + TimeSlot[i]);
 				index++;
 			}
-			int timeSlot = Convert.ToInt32(input("During which time would you like to reserve the space?\n"));
+			int timeSlotChoice = Convert.ToInt32(input("During which time would you like to reserve the space?\n"));
 
-            Console.Clear();
-			string confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlot - 1]}.\n" +
-				$"Is this correct? Y / N\n").ToLower();
-			if (confirm == "y")
+			List<Space> temp = new List<Space>();
+
+			for (int i = 0; i < spaceList.Count; i++)
 			{
-				temp[n - 1].owner = owner;
-				temp[n - 1].spaceAvailability = Availability.Reserved;
-				temp[n - 1].timeSlot = TimeSlot[timeSlot - 1];
-                // Save the equipment on the owner... Does the owners hava a list with reserved equipments?
-                // Save in the Reserved list in Calendar?
-                Console.Clear();
-                Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlot - 1]}");
-                input("Press enter...");
+				if (spaceList[i].spaceAvailability == Availability.Available && !spaceList[i].reservedTimeSlot.Contains(TimeSlot[timeSlotChoice - 1]))
+				{
+					temp.Add(spaceList[i]);
+				}
 			}
-            else if (confirm == "n")
+            if (temp.Count > 0)
             {
-                User.ReserveMenu("user");
+			    Console.Clear();
+                ShowAvailable(TimeSlot[timeSlotChoice -1]);
+			    int n = Convert.ToInt32(input("What space would you like to reserve?\n"));
+                Console.Clear();
+			    string confirm = input($"You would like to reserve {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}.\n" +
+				    $"Is this correct? Y / N\n").ToLower();
+
+			    if (confirm == "y")
+			    {
+				    temp[n - 1].owner = owner;
+					temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
+                    temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
+					customer.reservedItems.Add(temp[n - 1]);
+					// Save the equipment on the owner... Does the owners hava a list with reserved equipments?
+					// Save in the Reserved list in Calendar?
+					Console.Clear();
+                    Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
+                    input("Press enter...");
+					Console.Clear();
+					User.ReserveMenu(accessLevel);
+				}
+                else if (confirm == "n")
+                {
+                    User.ReserveMenu(accessLevel);
+                }
+
             }
+            else
+            {
+                Console.WriteLine("There is no available space during your choosen time");
+				User.ReserveMenu(accessLevel);
+			}
+
+
+
+         
+
 
 		}
 
