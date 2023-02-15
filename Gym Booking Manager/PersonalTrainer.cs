@@ -18,14 +18,14 @@ namespace Gym_Booking_Manager
         public static int index = 0;
         public string timeSlot;
 
-		public static List<string> TimeSlot = new List<string>()
-		{
-			"12:00-13:00",
-			"13:00-14:00",
-			"14:00-15:00"
-		};
+        public static List<string> TimeSlot = new List<string>()
+        {
+            "12:00-13:00",
+            "13:00-14:00",
+            "14:00-15:00"
+        };
 
-		public PersonalTrainer(string name = "", TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, IReservingEntity owner = null, string timeSlot = "")
+        public PersonalTrainer(string name = "", TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, IReservingEntity owner = null, string timeSlot = "")
         {
             this.owner = owner;
             this.name = name;
@@ -69,10 +69,10 @@ namespace Gym_Booking_Manager
         {
             if (trainer.trainerAvailability == Availability.Available && !trainer.reservedTimeSlot.Contains(timeslot))
             {
-				trainer.reservedTimeSlot.Add(timeslot);
-				IReservingEntity activity = new ReservingEntity(customer);
-				trainer.owner = activity;
-			}
+                trainer.reservedTimeSlot.Add(timeslot);
+                IReservingEntity activity = new ReservingEntity(customer);
+                trainer.owner = activity;
+            }
             else
             {
                 Console.WriteLine("This personal trainer is not available for reservation during that timeslot.");
@@ -122,9 +122,9 @@ namespace Gym_Booking_Manager
                     Console.Clear();
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
-					Console.Clear();
-					User.ReserveMenu(accessLevel);
-				}
+                    Console.Clear();
+                    User.ReserveMenu(accessLevel);
+                }
                 else if (confirm == "n")
                 {
                     User.ReserveMenu(accessLevel);
@@ -134,8 +134,8 @@ namespace Gym_Booking_Manager
             else
             {
                 Console.WriteLine("There is no available trainer during your choosen time");
-				User.ReserveMenu(accessLevel);
-			}
+                User.ReserveMenu(accessLevel);
+            }
 
 
 
@@ -145,5 +145,10 @@ namespace Gym_Booking_Manager
             Console.Write(prompt);
             return Console.ReadLine();
         }
-    }
+
+        public string CSVify()
+        {
+            return "";
+        }
+	}
 }

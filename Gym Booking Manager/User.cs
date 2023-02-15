@@ -1,4 +1,5 @@
 ﻿using Gym_Booking_Manager;
+using Gym_Booking_Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,6 +30,7 @@ namespace Gym_Booking_Manager
             this.phone = phone;
             this.email = email;
         }
+        public static List<User> userList = new List<User>();
         public override string ToString()
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
@@ -491,11 +493,6 @@ namespace Gym_Booking_Manager
         }
     }
 
-
-
-
-
-
     internal class Service : User
     {
         public Service(string name, string phone, string email) : base(name, phone, email)
@@ -565,6 +562,7 @@ namespace Gym_Booking_Manager
         DateTime createdAt;
         public DateTime dayPassDate { get; set; }
         public List<Resources> reservedItems {get; set;}
+        public static IReservingEntity ID;
         public Customer(string name, string phone, string email, AccessLevels accessLevel = AccessLevels.NonPayingNonMember) : base(name, phone ,email)
         {
             this.createdAt = DateTime.Now;
@@ -759,6 +757,7 @@ namespace Gym_Booking_Manager
                         break;
                     case 5:
                         // TODO: Make Reservation
+                        ReserveMenu(AccessLevels.DayPassUser);
                         break;
                     case 6:
                         // TODO: View Items
@@ -848,43 +847,8 @@ namespace Gym_Booking_Manager
 
         static void PayingMemberReservation()
         {
-            while (true)
-            {
-                Console.Clear();
-                ReserveMenu("user");
-                try
-                {
-                    int n = int.Parse(Console.ReadLine());
-                    switch (n)
-                    {
-                        case 1:
-                            // Equipment
-                            Equipment myEquipment = new Equipment();
-                            myEquipment.MakeReservation("user");
-                            break;
-                        case 2:
-                            // Space
-                            Space mySpace = new Space();
-                            mySpace.MakeReservation("user");
-                            break;
-                        case 3:
-                            // Personal Trainer
-                            break;
-                        case 4:
-                            // Group Activity
-                            break;
-                        case 5:
-                            // Go Back
-                            PayingMemberMenu();
-                            break;
-                    }
-                }
-                catch (FormatException e)
-                {
-                    // FormatException error message
-                    Console.WriteLine("Error: Please enter a valid number.");
-                }
-            }
+            Console.Clear();
+            ReserveMenu(AccessLevels.PayingMember);                      
         }
 
     }

@@ -33,15 +33,12 @@ namespace Gym_Booking_Manager
             //Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
             //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
             //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
-
-            LoadFiles();
-            //Customer.customerList.Add(new Customer("Current Customer", "0987321", "CurrentCustomer@test.se") { uniqueID = 10, AccessLevel = AccessLevels.DayPassUser });
-            //         Customer.customerList.Add(new Customer("TestCustomer 1", "1234", "test1@gmail.com") { uniqueID = 20 });
+            Customer.customerList.Add(new Customer("Current Customer", "0987321", "CurrentCustomer@test.se") { uniqueID = 10, AccessLevel = AccessLevels.DayPassUser });
+                    Customer.customerList.Add(new Customer("TestCustomer 1", "1234", "test1@gmail.com") { uniqueID = 20, AccessLevel = AccessLevels.DayPassUser});
             //         Customer.customerList.Add(new Customer("TestCustomer 2", "1234", "test2@gmail.com") { uniqueID = 30 });
-            //         Customer.customerList.Add(new Customer("TestCustomer 3", "1234", "test3@gmail.com") { uniqueID = 40 });
-			Customer.customerList.Add(CurrentCustomer);
-            Customer.customerList.Add(testCustomer1);
-            Customer.customerList.Add(testCustomer2);
+                     //Customer.customerList.Add(new Customer("TestCustomer 3", "1234", "test3@gmail.com") { uniqueID = 40 });
+   //         Customer.customerList.Add(testCustomer1);
+   //         Customer.customerList.Add(testCustomer2);
             PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke", PersonalTrainer.TrainerCategory.GymInstructor);
             PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
             List<PersonalTrainer> testPersonalTrainerList = new List<PersonalTrainer>();
@@ -121,33 +118,34 @@ namespace Gym_Booking_Manager
             {
                 int command = int.Parse(Console.ReadLine());
 
-            switch (command)
-            {
-                case 1:
-                    Customer.LoginMenu();
-                    break;
-                case 2:
-                    Customer.DayPassMenu();
-                    break;
-                case 3:
-                    User.manageSchedule();
-                    break;
-                case 4:
-                    Console.WriteLine("\nExiting program...");
+                switch (command)
+                {
+                    case 1:
+                        Customer.LoginMenu();
+                        break;
+                    case 2:
+                        Customer.DayPassMenu();
+                        break;
+                    case 3:
+                        User.manageSchedule();
+                        break;
+                    case 4:
+                        Console.WriteLine("\nExiting program...");
 
-                    CsvHandler csvHandler = new CsvHandler();
-                    csvHandler.WriteFile(Space.spaceList, "Spaces.txt");                    
-                    csvHandler.WriteFile(Equipment.equipmentList, "Equipment.txt");                    
-                    csvHandler.WriteFile(PersonalTrainer.personalTrainers, "PersonalTrainer.txt");                   
-                    //csvHandler.WriteFile(Space.spaceList, "GroupActivity.txt");
+                        CsvHandler csvHandler = new CsvHandler();
+                        csvHandler.WriteFile(Space.spaceList, "Spaces.txt");
+                        csvHandler.WriteFile(Equipment.equipmentList, "Equipment.txt");
+                        csvHandler.WriteFile(PersonalTrainer.personalTrainers, "PersonalTrainer.txt");
+                        //csvHandler.WriteFile(Space.spaceList, "GroupActivity.txt");
 
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Invalid input, type a number");
-                    break;
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input, type a number");
+                        break;
 
-            }
+                }
+            }catch(Exception ex) { Console.WriteLine(ex.ToString()); }
         }
     }
 }
