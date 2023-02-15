@@ -501,7 +501,10 @@ namespace Gym_Booking_Manager
                 User.LoginMenu();
             }
         }
-		public static void CancelReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevels)
+		
+        
+        // HOW TO MAKE IT SHOW IN AVAILBALE AGAIN????
+        public static void CancelReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevels)
 		{
 
 			while (customer.reservedItems.Count > 0)
@@ -531,7 +534,6 @@ namespace Gym_Booking_Manager
                         {
                             if (equip.name == equipment.name && equip.owner == equipment.owner && equip.reservedTimeSlot.Contains(equipment.timeSlot))
                             {
-                                Console.WriteLine(equipment.reservedTimeSlot[0]);
 								equip.reservedTimeSlot.Remove(equipment.timeSlot);
                                 equip.owner = null;
                                 equip.timeSlot = "";
@@ -539,8 +541,6 @@ namespace Gym_Booking_Manager
                         }
                         customer.reservedItems.Remove(equipment);
 						Console.WriteLine($"You have canceled your reservation of {equipment.name} at {equipment.timeSlot}");
-                        
-
 						input("Press enter...");
 						return;
 					}

@@ -233,10 +233,6 @@ namespace Gym_Booking_Manager
 
 		}
 
-		public void CancelReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevels)
-        {
-
-        }
 
 		// Consider how and when to add a new Space to the database.
 		// Maybe define a method to persist it? Any other reasonable schemes?
