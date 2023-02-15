@@ -1,4 +1,5 @@
 ﻿using Gym_Booking_Manager.Interfaces;
+using System.Reflection.Metadata.Ecma335;
 using static Gym_Booking_Manager.Space;
 
 namespace Gym_Booking_Manager
@@ -159,13 +160,14 @@ namespace Gym_Booking_Manager
 
                 Console.WriteLine("Press a button...");
                 Console.ReadLine();
+                return;
             }
             else
             {
                 Console.WriteLine("No equipment in need of service!");
                 Console.WriteLine("Press enter to go back...");
                 Console.ReadLine();
-                Service.ServiceMenu();
+                return;
             }
         }
         public static void RestrictEquipment()
@@ -300,7 +302,7 @@ namespace Gym_Booking_Manager
                         Console.WriteLine("There are no Large Equipments available");
                         Console.WriteLine("Press enter to go back");
                         Console.ReadLine();
-                        User.ReserveMenu(accessLevel);
+                        return;
                     }
 				}
                 else if (equip == 2)
@@ -340,28 +342,21 @@ namespace Gym_Booking_Manager
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
                     Console.Clear();
-                    User.ReserveMenu(accessLevel);
+                    return;
                 }
                 else if (confirm == "n")
                 {
-                    User.ReserveMenu(accessLevel);
+                    return;
                 }
             }
             else
             {
                 Console.WriteLine("There is no available equipment during your choosen time.");
-				User.ReserveMenu(accessLevel);
+                return;
 			}
         }
 
-        public void CancelReservation()
-        {
-            // Takes the list of the "logged in" users "Reserved items" and shows it
-            // or of the person hte staff chooses.
-            // the choosen item.owner = null
-            // item.equipmentAailability = Availability.Available
-            // the "time slot" for the item should also be made available again.
-        }
+        
 
         // Consider how and when to add a new Space to the database.
         // Maybe define a method to persist it? Any other reasonable schemes?

@@ -501,7 +501,116 @@ namespace Gym_Booking_Manager
                 User.LoginMenu();
             }
         }
-    }
+		public static void CancelReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevels)
+		{
+
+			while (customer.reservedItems.Count > 0)
+			{
+                Console.Clear();
+			    Customer.ViewReservedItemList(customer);
+				string userInput = input("What reservation would you like to cancel?\n" +
+					"Or press 'Q' to go back\n");
+
+				if (userInput.ToUpper() == "Q")
+				{
+					return;
+				}
+				int i = int.Parse(userInput);
+				int x = 0;
+				string confirm = "";
+                Console.Clear();
+				if (customer.reservedItems[i - 1] is Equipment equipment)
+				{
+					confirm = input($"You want to cancel your reservation of {equipment.name} at {equipment.timeSlot}\n" +
+						$"Is this correct? Y / N\n").ToLower();
+					
+
+					if (confirm == "y")
+					{	
+                        foreach (Equipment equip in Equipment.equipmentList)
+                        {
+                            if (equip.name == equipment.name && equip.owner == equipment.owner && equip.reservedTimeSlot.Contains(equipment.timeSlot))
+                            {
+                                Console.WriteLine(equipment.reservedTimeSlot[0]);
+								equip.reservedTimeSlot.Remove(equipment.timeSlot);
+                                equip.owner = null;
+                                equip.timeSlot = "";
+                            }
+                        }
+                        customer.reservedItems.Remove(equipment);
+						Console.WriteLine($"You have canceled your reservation of {equipment.name} at {equipment.timeSlot}");
+                        
+
+						input("Press enter...");
+						return;
+					}
+					else
+					{
+						return;
+					}			
+				}
+				else if (customer.reservedItems[i - 1] is Space space)
+				{
+					confirm = input($"You want to cancel your reservation of {space.name} at {space.timeSlot}\n" +
+						$"Is this correct? Y / N\n").ToLower();
+
+					if (confirm == "y")
+					{
+						foreach (Space OSpace in Space.spaceList)
+						{
+							if (OSpace.name == space.name && OSpace.owner == space.owner && OSpace.reservedTimeSlot.Contains(space.timeSlot))
+							{
+								OSpace.reservedTimeSlot.Remove(space.timeSlot);
+								OSpace.owner = null;
+								OSpace.timeSlot = "";
+							}
+						}
+						customer.reservedItems.Remove(space);
+						Console.WriteLine($"You have canceled your reservation of {space.name} at {space.timeSlot}");
+						input("Press enter...");
+						return;
+					}
+					else
+					{
+						return;
+					}
+				}
+				else if (customer.reservedItems[i - 1] is PersonalTrainer personalTrainer)
+				{
+					confirm = input($"You want to cancel your reservation of {personalTrainer.name} at {personalTrainer.timeSlot}\n" +
+						$"Is this correct? Y / N\n").ToLower();
+
+					if (confirm == "y")
+					{
+						foreach (PersonalTrainer PT in PersonalTrainer.personalTrainers)
+						{
+							if (PT.name == personalTrainer.name && PT.owner == personalTrainer.owner && PT.reservedTimeSlot.Contains(personalTrainer.timeSlot))
+							{
+								PT.reservedTimeSlot.Remove(personalTrainer.timeSlot);
+								PT.owner = null;
+								PT.timeSlot = "";
+							}
+						}
+						customer.reservedItems.Remove(personalTrainer);
+						Console.WriteLine($"You have canceled your reservation of {personalTrainer.name} at {personalTrainer.timeSlot}");
+						input("Press enter...");
+						return;
+					}
+					else
+					{
+						return;
+					}
+				}
+                Console.Clear();
+				
+			}
+		}
+		static public string input(string prompt)
+		{
+			Console.Write(prompt);
+			return Console.ReadLine();
+		}
+	}
 
     internal class Service : User
     {
@@ -776,15 +885,8 @@ namespace Gym_Booking_Manager
                         break;
                     case 3:
                         // TODO: Cancel Reservation
-                        Console.WriteLine("Enter the customer's name: ");
-                        name = Console.ReadLine();
-                        Console.WriteLine("Enter the customer's phone number: ");
-                        phone = Console.ReadLine();
-                        Console.WriteLine("Enter the customer's email address: ");
-                        email = Console.ReadLine();
-                        string message = "The Reservation was cancelled.";
-                        customer = new Customer(name, phone, email);
-                        Customer.SendNotification(customer, message, false);
+                        // How do we set the active user???S
+                        User.CancelReservation(Customer.ID, customerList[1], AccessLevels.DayPassUser);
                         Customer.DayPassMenu();
                         break;
                     case 4:// TODO: View Group Schedule
@@ -794,7 +896,7 @@ namespace Gym_Booking_Manager
                         ReserveMenu(AccessLevels.DayPassUser);
                         break;
                     case 6:
-                        // TODO: View Items
+                        // TODO: View Items 
                         break;
                     case 7:
                         Console.Clear();

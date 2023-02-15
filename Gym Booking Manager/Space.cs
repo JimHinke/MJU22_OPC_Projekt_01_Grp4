@@ -233,7 +233,7 @@ namespace Gym_Booking_Manager
 
 		}
 
-		public void CancelReservation()
+		public void CancelReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevels)
         {
 
         }
