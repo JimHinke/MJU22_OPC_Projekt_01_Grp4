@@ -9,15 +9,15 @@ using static Gym_Booking_Manager.Space;
 
 namespace Gym_Booking_Manager
 {
-    internal class PersonalTrainer : Resources
+    internal class PersonalTrainer : Resources, ICSVable
     {
         public string owner { get; set; }
-        private TrainerCategory trainerCategory { get; set; }
+        public TrainerCategory trainerCategory { get; set; }
         public Availability trainerAvailability { get; set; }
         public List<string> reservedTimeSlot { get; set; }
         public static int index = 0;
 
-        public PersonalTrainer(string name, TrainerCategory trainerCategory, Availability availability = Availability.Available, string owner = "")
+        public PersonalTrainer(string name, TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, string owner = "")
         {
             this.owner = owner;
             this.name = name;
@@ -74,6 +74,11 @@ namespace Gym_Booking_Manager
         public override string ToString()
         {
             return $"Namn: {name}, Category: {trainerCategory}, Avilability: {trainerAvailability}";
+        }
+
+        public string CSVify()
+        {
+            return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name},{nameof(trainerAvailability)}:{trainerAvailability.ToString()}";
         }
 
     }

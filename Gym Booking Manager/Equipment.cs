@@ -9,7 +9,7 @@ namespace Gym_Booking_Manager
         public string timeSlot { get; set; } //Hur fungerar detta i Julias kod? Kan man utgå från reservedTimeSlot istället? Känns dubbelt med info?
         public List <string> reservedTimeSlot { get; set; }
         private EquipmentType equipmentType;
-        private EquipmentCategory equipmentCategory { get; set; }
+        public EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
         //private static List<Equipment> _equipmentList = new List<Equipment>();
         //public static List<Equipment> availableEquipment = new List<Equipment>();
@@ -17,7 +17,7 @@ namespace Gym_Booking_Manager
         public static int index = 0;
 
 
-        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, string timeSlot = "", Availability availability = Availability.Available, IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner = null, calendar)
+        public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, Availability availability = Availability.Available, string timeSlot = "", IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner = null, calendar)
         {
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
@@ -50,7 +50,7 @@ namespace Gym_Booking_Manager
         }
         public override string ToString()
         {
-            return $"Namn: {name}, Category: {equipmentCategory}, Avilability: {equipmentAvailability}";
+            return $"Namn: {name}, Category: {equipmentCategory}, Availability: {equipmentAvailability}";
         }
 
         public static void ShowService()
