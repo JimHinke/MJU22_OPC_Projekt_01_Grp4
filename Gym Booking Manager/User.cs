@@ -385,8 +385,8 @@ namespace Gym_Booking_Manager
 						myEquipment.MakeReservation(Customer.ID, Customer.customerList[x], Customer.customerList[x].AccessLevel);
 						break;
 					case 2:
-						// Go Back
-						// Usermenu
+                        // Go Back
+                        Customer.UserMenu();
 						break;
                     default:
                         Console.WriteLine("Not a valid choice");
@@ -426,11 +426,10 @@ namespace Gym_Booking_Manager
 						        GroupSchedule.addCustomerToActivity(userList[0], GroupSchedule.groupScheduleList[i]);
 					        }
 				        }
-				        //PayingMemberMenu();
 				        break;
 			        case 5:
-				        // Go Back
-				        //PayingMemberMenu();
+                        // Go Back
+                        GoBackDependingOnAccess(accessLevels);
 				        break;
                     default:
                         break;
@@ -438,6 +437,12 @@ namespace Gym_Booking_Manager
 
             }
 
+		}
+        public static void GoBackDependingOnAccess(AccessLevels accessLevels)
+        {
+			if (accessLevels == AccessLevels.PayingMember) { Customer.PayingMemberMenu(); }
+			else if (accessLevels == AccessLevels.DayPassUser) { Customer.DayPassMenu(); }
+			else if (accessLevels == AccessLevels.NonPayingNonMember) { Customer.UserMenu(); }
 		}
         public static void LoginMenu()
         {
@@ -538,7 +543,6 @@ namespace Gym_Booking_Manager
         DayPassUser,
         NonPayingNonMember
     }
-
 	public class ReservingEntity : IReservingEntity
 	{
 		public string owner { get; set; }
@@ -553,7 +557,6 @@ namespace Gym_Booking_Manager
             owner = id;
         }
 	}
-
 	internal class Customer : User
     {
         public static List<Customer> customerList = new List<Customer>();
@@ -571,8 +574,7 @@ namespace Gym_Booking_Manager
             this.reservedItems = new List<Resources>();
             uniqueID = new Random().Next(0, 1000);
             ID = new ReservingEntity(uniqueID);
-		}
-        
+		} 
         public override string ToString()
         {
             return $"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nAccount Created: {createdAt}";
