@@ -21,6 +21,7 @@ namespace Gym_Booking_Manager
 
 		private static List<Space> _spaceList = new List<Space>();
 		public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
+        public string timeslot;
 
 		public static List<string> TimeSlot = new List<string>()
         {
@@ -28,11 +29,12 @@ namespace Gym_Booking_Manager
             "13:00-14:00",
             "14:00-15:00"
         };
-        public Resources(string name = "", List<string> timeSlot = null, IReservingEntity owner = null)
+        public Resources(string name = "", List<string> timeSlot = null, string timeslot = "" ,IReservingEntity owner = null)
         {
             this.name = name;
             TimeSlot = timeSlot;
             this.owner = owner;
+            this.timeslot = timeslot;
         }
 
     }

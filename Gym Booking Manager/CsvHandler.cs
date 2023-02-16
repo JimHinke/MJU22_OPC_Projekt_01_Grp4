@@ -25,7 +25,6 @@ namespace Gym_Booking_Manager
             {
                 if (fileName == "Spaces.txt")
                 {
-                    
                     string[] lines = File.ReadAllLines(filePath);
                     foreach (string line in lines)
                     {
@@ -97,7 +96,7 @@ namespace Gym_Booking_Manager
                         foreach (string value in values)
                         {
                             string[] parts = value.Split(':');
-                            if (parts[0] == "personalTrainers")
+                            if (parts[0] == "trainerCategory")
                             {
                                 Enum.TryParse(parts[1], out trainerCategory);
                             }
@@ -112,7 +111,127 @@ namespace Gym_Booking_Manager
                         }
                         PersonalTrainer.personalTrainers.Add(new PersonalTrainer(name, trainerCategory, availability));
                     }
-                } 
+                }
+
+                else if (fileName == "GroupActivity.txt")
+                {                    
+                    var lines = File.ReadAllLines(filePath);
+
+                    foreach (var line in lines)
+                    {
+                        var personalTrainers = new List<PersonalTrainer>();
+                        var equipment = new List<Equipment>();
+                        var participants = new List<Customer>();
+                        
+                        var typeOfActivity = "";
+                        var activtyId = 0;
+                        var participantLimit = 0;
+                        var timeSlot = "";
+                        var space = new Space("");
+
+                        var values = line.Split(',');
+
+                        foreach (var value in values)
+                        {
+                            var key = "";
+                            var val = "";
+                            var parts = value.Split(':');
+                            if (parts.Length >= 2)
+                            {
+                                key = parts[0];
+                                val = parts[1];
+                            }
+
+                            switch (key)
+                            {
+                                case "typeOfActivity":
+                                    typeOfActivity = val;
+                                    break;
+                                case "activtyId":
+                                    activtyId = int.Parse(val);
+                                    break;
+                                case "participantLimit":
+                                    participantLimit = int.Parse(val);
+                                    break;
+                                case "timeSlot":
+                                    timeSlot = val;
+                                    break;
+                                case "space":
+                                    space = Space.FindByName(val);
+                                    break;
+                                case "personalTrainer":
+                                    var trainerNames = val.Split(';');
+                                    foreach (var trainerName in trainerNames)
+                                    {
+                                        // Look for an existing PersonalTrainer object with the same name
+                                        var existingTrainer = personalTrainers.FirstOrDefault(t => t.name == trainerName);
+
+                                        // If an existing trainer was not found, create a new PersonalTrainer object and add it to the list
+                                        if (existingTrainer == null)
+                                        {
+                                            existingTrainer = new PersonalTrainer(trainerName);
+                                            personalTrainers.Add(existingTrainer);
+                                        }
+                                    }
+                                    break;
+                                case "equipment":
+                                    var existingEquipment = Equipment.FindByName(Equipment.equipmentList, val);
+                                    if (existingEquipment != null)
+                                    {
+                                        // An existing equipment with the same name was found
+                                        // Add the existing equipment object to a list
+                                        equipment.Add(existingEquipment);
+                                    }
+                                    else
+                                    {
+                                        // An existing equipment with the same name was not found
+                                        // Create a new Equipment object and add it to the list
+                                        var newEquipment = new Equipment(val);
+                                        equipment.Add(newEquipment);
+                                    }
+                                    break;
+                                case "participants":                                    
+
+                                    string [] participantNames = new string[participantLimit];
+                                    
+                                    
+                                    if (val.Contains(";"))
+                                    {
+                                        participantNames = val.Split(';');                                       
+                                    }
+                                    else
+                                    {
+                                        participantNames[0] = val;
+                                    }
+
+                                    foreach (var participantName in participantNames)
+                                    {
+                                        
+                                        if (participantNames.Length > 1)
+                                        {
+                                            participants.Add(new Customer(participantName, "1", "email"));
+                                        }
+                                        else if (participantName == "")
+                                        {
+                                            participants.Clear();
+                                        }
+                                    }
+                                    break;
+                            }
+                        }
+                        GroupSchedule.groupScheduleList.Add(new GroupActivity(
+                                                                            personalTrainer: personalTrainers,
+                                                                            typeOfActivity: typeOfActivity,
+                                                                            activtyId: activtyId,
+                                                                            participantLimit: participantLimit,
+                                                                            timeSlot: timeSlot,
+                                                                            participants: participants,
+                                                                            space: space,
+                                                                            equipment: equipment
+                                                                            )
+                        );
+                    }
+                }
             }
         }
 
@@ -143,27 +262,42 @@ namespace Gym_Booking_Manager
         }
 
         public static void CreateCSV()
-        {            
+        {
             if (!Directory.Exists("CSV"))
-            {                
+            {
                 Directory.CreateDirectory("CSV");
 
                 Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
                 Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
                 Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
-                Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-                Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
-                Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
-                
+                Equipment.equipmentList.Add(new Equipment("Treadmill", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
+                Equipment.equipmentList.Add(new Equipment("TennisRacket", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
+                Equipment.equipmentList.Add(new Equipment("RowingMachine", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
+
                 PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Yanus Yoga", PersonalTrainer.TrainerCategory.YogaInstructor));
                 PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Gurra Gymbro", PersonalTrainer.TrainerCategory.GymInstructor));
                 PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Tomas Tennis", PersonalTrainer.TrainerCategory.TennisTeacher));
+
+                GroupActivity temp = new GroupActivity(
+                                PersonalTrainer.personalTrainers, //Personal Trainer
+                                GroupSchedule.TypeOfActivity[0], //Type Of Activity
+                                23, //Unique ID set to an random number. Is this needed?
+                                1, //Particpant Limit
+                                GroupSchedule.TimeSlot[1], //Time Slot
+                                null, //List of Participants. This is not added here but rather under another menu-choice
+                                Space.spaceList[0], //What space is used for this session
+                                Equipment.equipmentList //What Equipment is used for this session
+                                );
+
+                GroupSchedule.groupScheduleList.Add(temp);
+
 
                 CsvHandler csvHandler = new CsvHandler();
                 csvHandler.WriteFile(Space.spaceList, "Spaces.txt");
                 csvHandler.WriteFile(Equipment.equipmentList, "Equipment.txt");
                 csvHandler.WriteFile(PersonalTrainer.personalTrainers, "PersonalTrainer.txt");
+                csvHandler.WriteFile(GroupSchedule.groupScheduleList, "GroupActivity.txt");
 
                 initialized = 1;
             }            

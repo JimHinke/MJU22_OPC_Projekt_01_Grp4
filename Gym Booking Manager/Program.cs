@@ -16,6 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using System.ComponentModel;
+using System.Reflection.PortableExecutable;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -76,13 +78,31 @@ namespace Gym_Booking_Manager
             //User testCustomer = new Customer("Test Customer", "0987321", "testCustomer@test.se", AccessLevels.PayingMember) { uniqueID = 10 };
             //Console.WriteLine(testCustomer);
 
-            //GroupSchedule.showActivities();
+            ////Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
+            //List<Equipment> testEquipmentList = new List<Equipment>();
+            //testEquipmentList.Add(Equipment.equipmentList[0]);
+
+            //GroupActivity temp = new GroupActivity(
+            //                PersonalTrainer.personalTrainers, //Personal Trainer
+            //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
+            //                23, //Unique ID set to an random number. Is this needed?
+            //                1, //Particpant Limit
+            //                GroupSchedule.TimeSlot[1], //Time Slot
+            //                null, //List of Participants. This is not added here but rather under another menu-choice
+            //                Space.spaceList[0], //What space is used for this session
+            //                testEquipmentList //What Equipment is used for this session
+            //                );
 
             //GroupSchedule.deleteActivity();
             //Console.WriteLine(Space.spaceList[0]);
 
             //GroupSchedule.groupScheduleList.Add(temp);
-            //Equipment.ShowAvailable("12:00");
+            //GroupSchedule.groupScheduleList.Add(temp2);
+            //Console.WriteLine(GroupSchedule.groupScheduleList[0]);
+
+            //CsvHandler csvHandler = new CsvHandler();
+            //csvHandler.WriteFile(GroupSchedule.groupScheduleList, "GroupActivity.txt");
+
 
             while (true)
             {
@@ -92,13 +112,13 @@ namespace Gym_Booking_Manager
 
 
         // Static methods for the program
-
+        
         public static void LoadFiles()
         {
             CsvHandler.ReadFile("Spaces.txt");
             CsvHandler.ReadFile("Equipment.txt");
             CsvHandler.ReadFile("PersonalTrainer.txt");
-            //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\GroupActivities.txt"); //???
+            CsvHandler.ReadFile("GroupActivity.txt");
 
             Console.WriteLine("---------------------SPACES LOADED---------------------");
             for (int i = 0; i < Space.spaceList.Count; i++)
@@ -120,6 +140,18 @@ namespace Gym_Booking_Manager
                 Console.WriteLine(PersonalTrainer.personalTrainers[i]);
             }
             Console.WriteLine("--------------------------------------------------------------------\n");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("----------------------GROUP ACTIVITIES LOADED------------------------");
+            for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
+            {
+                Console.WriteLine(GroupSchedule.groupScheduleList[i]);
+
+            }
+            Console.WriteLine("---------------------------------------------------------------------\n");
+            Console.ReadLine();
+            Console.Clear();
+
         }
     }
 }

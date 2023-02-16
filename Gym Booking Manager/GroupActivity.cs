@@ -1,31 +1,33 @@
-﻿using Gym_Booking_Manager.Interfaces;
+﻿using Gym_Booking_Manager;
+using Gym_Booking_Manager.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Gym_Booking_Manager.Equipment;
 
 namespace Gym_Booking_Manager
 {
-    internal class GroupActivity : Resources
+    internal class GroupActivity : Resources, ICSVable
     {
         public int activtyId { get; set; }
         public int participantLimit { get; set; }
         public string timeSlot { get; set; }
-        public List<User> participants { get; set; }
+        public List<Customer> participants { get; set; }
         public List<PersonalTrainer> personalTrainer { get; set; }
         public Space space { get; set; }
         public List<Equipment> equipment { get; set; }
         public string typeOfActivity { get; set; }
-
+        
         public GroupActivity(
-                    List<PersonalTrainer> personalTrainer,
+                    List<PersonalTrainer> personalTrainer = null,
                     string typeOfActivity = "",
                     int activtyId = 0,
                     int participantLimit = 0,
                     string timeSlot = "",
-                    User participants = null,
+                    List<Customer> participants = null,
                     Space space = null,
                     List<Equipment> equipment = null
                     )
@@ -34,16 +36,16 @@ namespace Gym_Booking_Manager
             this.activtyId = activtyId;
             this.participantLimit = participantLimit;
             this.timeSlot = timeSlot;
-            this.participants = new List<User>();
+            this.participants = participants;
             this.personalTrainer = personalTrainer;
             this.space = space;
             this.equipment = equipment;
         }
         public override string ToString()
         {
-
+            
             string participantNames = "";
-            if (participants.Count > 0)
+            if (participants != null && participants.Count > 0)
             {
                 foreach (var participant in participants)
                 {
@@ -51,7 +53,7 @@ namespace Gym_Booking_Manager
                 }
             }
             else
-                participantNames = "No one is booked for this activity\n";
+                participantNames = "No one is booked for this activity\n";            
 
             string equipmentNames = "";
             if (equipment.Count > 0)
@@ -89,6 +91,55 @@ namespace Gym_Booking_Manager
                 $"Personal Trainer: {personalTrainerName}\n" +
                 $"---------------------------------------------\n";
         }
+        public string CSVify()
+        {
+            var personalTrainerNames = "";
+            if (personalTrainer != null && personalTrainer.Count > 0)
+            {
+                for (int i = 0; i < personalTrainer.Count; i++)
+                {
+                    personalTrainerNames += personalTrainer[i].name;
+                    if (i != personalTrainer.Count - 1)
+                    {
+                        personalTrainerNames += ";";
+                    }
+                }
+            }
 
+            var participantNames = "";
+            if (participants != null && participants.Count > 0)
+            {
+                for (int i = 0; i < participants.Count; i++)
+                {
+                    participantNames += participants[i].name;
+                    if (i != participants.Count - 1)
+                    {
+                        participantNames += ";";
+                    }
+                }
+            }
+
+            var equipmentNames = "";
+            if (equipment != null && equipment.Count > 0)
+            {
+                for (int i = 0; i < equipment.Count; i++)
+                {
+                    equipmentNames += equipment[i].name;
+                    if (i != equipment.Count - 1)
+                    {
+                        equipmentNames += ";";
+                    }
+                }
+            }
+
+            return $"personalTrainer:{personalTrainerNames}," +
+                   $"typeOfActivity:{typeOfActivity}," +
+                   $"activtyId:{activtyId}," +
+                   $"participantLimit:{participantLimit}," +
+                   $"timeSlot:{timeSlot}," +
+                   $"participants:{participantNames}," +
+                   $"space:{space.name}," +
+                   $"equipment:{equipmentNames}";
+        }
     }
 }

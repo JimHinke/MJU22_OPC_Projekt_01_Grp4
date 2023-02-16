@@ -12,7 +12,7 @@ namespace Gym_Booking_Manager
     internal class PersonalTrainer : Resources, ICSVable
     {
         public IReservingEntity owner { get; set; }
-        private TrainerCategory trainerCategory { get; set; }
+        public TrainerCategory trainerCategory { get; set; }
         public Availability trainerAvailability { get; set; }
         public List<string> reservedTimeSlot { get; set; }
         public static int index = 0;
@@ -24,7 +24,6 @@ namespace Gym_Booking_Manager
             "13:00-14:00",
             "14:00-15:00"
         };
-
         public PersonalTrainer(string name = "", TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, IReservingEntity owner = null, string timeSlot = "")
         {
             this.owner = owner;
@@ -116,10 +115,10 @@ namespace Gym_Booking_Manager
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
                     temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-                    customer.reservedItems.Add(temp[n - 1]);
-                    // Save the equipment on the owner... Does the owners hava a list with reserved equipments?
-                    // Save in the Reserved list in Calendar?
-                    Console.Clear();
+					customer.reservedItems.Add(new PersonalTrainer(temp[n - 1].name, temp[n - 1].trainerCategory, 0, null, temp[n - 1].timeSlot));
+					// Save the equipment on the owner... Does the owners hava a list with reserved equipments?
+					// Save in the Reserved list in Calendar?
+					Console.Clear();
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
                     Console.Clear();
@@ -148,7 +147,7 @@ namespace Gym_Booking_Manager
 
         public string CSVify()
         {
-            return "";
-        }
-	}
+            return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name}";
+        }        
+    }
 }

@@ -132,6 +132,8 @@ namespace Gym_Booking_Manager
                 Console.WriteLine("---------------------------------");
                 Console.WriteLine("Activity is added to the Schedule");
                 Console.WriteLine("---------------------------------");
+
+                
             }
             else if (entryChoice == "n") //--CLEARAR ALLA VAL VID "N"
             {
@@ -147,7 +149,7 @@ namespace Gym_Booking_Manager
         }
 
         //--Metod för att lägga till en user/customer i en groupActivity
-        public static void addCustomerToActivity(User customer, GroupActivity groupActivity) 
+        public static void addCustomerToActivity(Customer customer, GroupActivity groupActivity) 
         {
 
             if (groupActivity.participants.Count < groupActivity.participantLimit)
@@ -215,7 +217,7 @@ namespace Gym_Booking_Manager
                             break;
                         case 5:
                             //--Ta port en perticipant från groupActivity
-                            List<User> participants = groupScheduleList[i].participants;
+                            List<Customer> participants = groupScheduleList[i].participants;
                             foreach (User participant in participants)
                             {
                                 Console.WriteLine(participant.name);
