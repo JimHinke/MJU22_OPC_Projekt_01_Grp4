@@ -122,18 +122,18 @@ namespace Gym_Booking_Manager
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
                     Console.Clear();
-                    User.ReserveMenu(accessLevel);
+                    Menutracker.ReserveMenu(accessLevel);
                 }
                 else if (confirm == "n")
                 {
-                    User.ReserveMenu(accessLevel);
+                    Menutracker.ReserveMenu(accessLevel);
                 }
 
             }
             else
             {
                 Console.WriteLine("There is no available trainer during your choosen time");
-                User.ReserveMenu(accessLevel);
+                Menutracker.ReserveMenu(accessLevel);
             }
 
 

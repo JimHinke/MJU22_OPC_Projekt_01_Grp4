@@ -114,7 +114,7 @@ namespace Gym_Booking_Manager
             GroupActivity temp = new GroupActivity(
                             personalTrainerList, //Personal Trainer
                             TypeOfActivity[typeOfActivityChoice - 1], //Type Of Activity
-                            23, //Unique ID set to an random number. Is this needed?
+                            new Random().Next(0, 1000), //Unique ID set to an random number. Is this needed?
                             Convert.ToInt32(limit), //Particpant Limit
                             TimeSlot[timeSlotChoice - 1], //Time Slot
                             null, //List of Participants. This is not added here but rather under another menu-choice
@@ -163,6 +163,7 @@ namespace Gym_Booking_Manager
         //--Metod för att visa alla groupActivites i groupScheduleList
         public static void showActivities()
         {
+            //Console.Clear();
             foreach (var activity in groupScheduleList)
             {
                 Console.WriteLine(activity);
@@ -180,7 +181,7 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("1: <Name> - Name of this Activity");
                     Console.WriteLine("2: <ActivityId> - The uniq ID for this Activity");
                     Console.WriteLine("3: <Particpanat Limit> - The number of participants for this Activity");
-                    Console.WriteLine("4: <Time Slot> - The timeslot for this Activity (NOT AVAILABLE AT THIS MOMENT");
+                    Console.WriteLine("4: <Time Slot> - Change the timeslot for this Activity (NOT AVAILABLE AT THIS MOMENT");
                     Console.WriteLine("5: <Remove Participants> - Remove a participant for this Activity");
                     Console.WriteLine("6: <Change Space> - Change the alocated space for this Activity");
                     Console.WriteLine("7: <Remove Equipment> - Remove equipments from this Activity");

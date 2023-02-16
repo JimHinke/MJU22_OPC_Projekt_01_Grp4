@@ -22,7 +22,7 @@ namespace Gym_Booking_Manager
 			"13:00-14:00",
 			"14:00-15:00"
 		};
-		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, Availability availability = Availability.Available, string timeSlot = "",IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, "" ,owner = null, calendar)
+		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, Availability availability = Availability.Available, string timeSlot = "",IReservingEntity owner = null) : base(name, TimeSlot, "" ,owner = null)
         {
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
@@ -210,14 +210,14 @@ namespace Gym_Booking_Manager
                 Console.WriteLine($"{temp[n - 1].name} - availability set to {temp[n - 1].equipmentAvailability}");
                 Console.WriteLine("Press enter...");
                 Console.ReadLine();
-                Staff.RestrictItem();
+                Menutracker.RestrictItem();
             }
             else if (temp.Count <= 0)
             {
                 Console.WriteLine("No available equipment!");
                 Console.WriteLine("Press enter to go back...");
                 Console.ReadKey();
-                Staff.RestrictItem();
+                Menutracker.RestrictItem();
             }
         }
         public int CompareTo(Equipment? other)
