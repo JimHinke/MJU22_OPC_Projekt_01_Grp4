@@ -42,7 +42,7 @@ namespace Gym_Booking_Manager
 			"14:00-15:00"
 		};
 
-		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "", Calendar calendar = null) :base(name,TimeSlot,null,calendar)
+		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "") :base(name,TimeSlot,null)
         {
             this.spaceCategory = spaceCategory;
             this.spaceAvailability = availability;
@@ -148,27 +148,20 @@ namespace Gym_Booking_Manager
                 Console.WriteLine($"{spaceList[n - 1].name} - set to {spaceList[n - 1].spaceAvailability}");
                 Console.WriteLine("Press enter...");
                 Console.ReadLine();
-                Staff.RestrictItem();
+                Menutracker.RestrictItem();
             }
             else
             {
                 Console.WriteLine("No available spaces!");
                 Console.WriteLine("Press enter to go back");
                 Console.ReadLine();
-                Staff.RestrictItem();
+                Menutracker.RestrictItem();
             }
             
 		}
 
         public void ViewTimeTable()
         {
-            // Fetch
-            List<Reservation> tableSlice = this.calendar.GetSlice();
-            // Show?
-            foreach (Reservation reservation in tableSlice)
-            {
-               // Do something?
-            }
         }
 
 		public void MakeReservation(IReservingEntity owner, Customer customer ,AccessLevels accessLevel)
@@ -212,18 +205,18 @@ namespace Gym_Booking_Manager
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
 					Console.Clear();
-					User.ReserveMenu(accessLevel);
+					Menutracker.ReserveMenu(accessLevel);
 				}
                 else if (confirm == "n")
                 {
-                    User.ReserveMenu(accessLevel);
+                    Menutracker.ReserveMenu(accessLevel);
                 }
 
             }
             else
             {
                 Console.WriteLine("There is no available space during your choosen time");
-				User.ReserveMenu(accessLevel);
+				Menutracker.ReserveMenu(accessLevel);
 			}
 
 

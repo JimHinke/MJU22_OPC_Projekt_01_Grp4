@@ -11,7 +11,6 @@ namespace Gym_Booking_Manager
     abstract class Resources
     {
         public string name { get; set; }
-        public Calendar calendar { get; set; }
         public IReservingEntity owner { get; set; }
 
         public static List<Equipment> availableEquipment = new List<Equipment>();
@@ -29,12 +28,11 @@ namespace Gym_Booking_Manager
             "13:00-14:00",
             "14:00-15:00"
         };
-        public Resources(string name = "", List<string> timeSlot = null, IReservingEntity owner = null ,Calendar calendar = null)
+        public Resources(string name = "", List<string> timeSlot = null, IReservingEntity owner = null)
         {
             this.name = name;
             TimeSlot = timeSlot;
             this.owner = owner;
-            this.calendar = calendar;
         }
 
     }
