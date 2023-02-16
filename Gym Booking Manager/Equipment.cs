@@ -1,4 +1,5 @@
 ﻿using Gym_Booking_Manager.Interfaces;
+using System.Reflection.Metadata.Ecma335;
 using static Gym_Booking_Manager.Space;
 
 namespace Gym_Booking_Manager
@@ -21,7 +22,7 @@ namespace Gym_Booking_Manager
 			"13:00-14:00",
 			"14:00-15:00"
 		};
-		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, Availability availability = Availability.Available, string timeSlot = "",IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner = null, calendar)
+		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, Availability availability = Availability.Available, string timeSlot = "",IReservingEntity owner = null) : base(name, TimeSlot, "" ,owner = null)
         {
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
@@ -159,13 +160,14 @@ namespace Gym_Booking_Manager
 
                 Console.WriteLine("Press a button...");
                 Console.ReadLine();
+                return;
             }
             else
             {
                 Console.WriteLine("No equipment in need of service!");
                 Console.WriteLine("Press enter to go back...");
                 Console.ReadLine();
-                Service.ServiceMenu();
+                return;
             }
         }
         public static void RestrictEquipment()
@@ -208,14 +210,14 @@ namespace Gym_Booking_Manager
                 Console.WriteLine($"{temp[n - 1].name} - availability set to {temp[n - 1].equipmentAvailability}");
                 Console.WriteLine("Press enter...");
                 Console.ReadLine();
-                Staff.RestrictItem();
+                Menutracker.RestrictItem();
             }
             else if (temp.Count <= 0)
             {
                 Console.WriteLine("No available equipment!");
                 Console.WriteLine("Press enter to go back...");
                 Console.ReadKey();
-                Staff.RestrictItem();
+                Menutracker.RestrictItem();
             }
         }
         public int CompareTo(Equipment? other)
@@ -300,7 +302,7 @@ namespace Gym_Booking_Manager
                         Console.WriteLine("There are no Large Equipments available");
                         Console.WriteLine("Press enter to go back");
                         Console.ReadLine();
-                        User.ReserveMenu(accessLevel);
+                        return;
                     }
 				}
                 else if (equip == 2)
@@ -321,7 +323,7 @@ namespace Gym_Booking_Manager
 						Console.WriteLine("There are no Sport Equipments available");
 						Console.WriteLine("Press enter to go back");
 						Console.ReadLine();
-						User.ReserveMenu(accessLevel);
+                        return;
 					};
 				}
 				n = Convert.ToInt32(input("What equipment would you like to reserve?\n"));
@@ -335,33 +337,33 @@ namespace Gym_Booking_Manager
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
 					temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-					customer.reservedItems.Add(temp[n - 1]);
+                     
+					customer.reservedItems.Add(new Equipment(temp[n - 1].name, temp[n-1].equipmentType , temp[n-1].equipmentCategory, 0,temp[n-1].timeSlot, temp[n-1].owner));
                     // TBD? Save in the Reserved list in Calendar?
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
+
+                    Console.WriteLine($"{temp[n-1].name}, {temp[n - 1].reservedTimeSlot[0]}, {temp[n-1].timeSlot}, {temp[n-1].owner.ToString}");
+                    Console.WriteLine($"{customer.reservedItems[0].name}, {customer.reservedItems[0].timeslot}, {customer.reservedItems[0].owner}");
+                    Console.WriteLine(customer.reservedItems.Count);
+                    Console.WriteLine(customer.reservedItems[0]);
+
                     input("Press enter...");
                     Console.Clear();
-                    User.ReserveMenu(accessLevel);
+                    return;
                 }
                 else if (confirm == "n")
                 {
-                    User.ReserveMenu(accessLevel);
+                    return;
                 }
             }
             else
             {
                 Console.WriteLine("There is no available equipment during your choosen time.");
-				User.ReserveMenu(accessLevel);
+                return;
 			}
         }
 
-        public void CancelReservation()
-        {
-            // Takes the list of the "logged in" users "Reserved items" and shows it
-            // or of the person hte staff chooses.
-            // the choosen item.owner = null
-            // item.equipmentAailability = Availability.Available
-            // the "time slot" for the item should also be made available again.
-        }
+        
 
         // Consider how and when to add a new Space to the database.
         // Maybe define a method to persist it? Any other reasonable schemes?

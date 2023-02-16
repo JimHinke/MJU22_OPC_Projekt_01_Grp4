@@ -28,7 +28,7 @@ namespace Gym_Booking_Manager
     internal class Space : Resources, IReservable, ICSVable, IComparable<Space>
     {
         //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
-        private SpaceCategory spaceCategory;
+        public SpaceCategory spaceCategory { get; set; }
         private Availability spaceAvailability;
         public string timeSlot;
 		
@@ -42,7 +42,7 @@ namespace Gym_Booking_Manager
 			"14:00-15:00"
 		};
 
-		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "", Calendar calendar = null) :base(name,TimeSlot,null,calendar)
+		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "") :base(name,TimeSlot,"",null)
         {
             this.spaceCategory = spaceCategory;
             this.spaceAvailability = availability;
@@ -148,27 +148,20 @@ namespace Gym_Booking_Manager
                 Console.WriteLine($"{spaceList[n - 1].name} - set to {spaceList[n - 1].spaceAvailability}");
                 Console.WriteLine("Press enter...");
                 Console.ReadLine();
-                Staff.RestrictItem();
+                Menutracker.RestrictItem();
             }
             else
             {
                 Console.WriteLine("No available spaces!");
                 Console.WriteLine("Press enter to go back");
                 Console.ReadLine();
-                Staff.RestrictItem();
+                Menutracker.RestrictItem();
             }
             
 		}
 
         public void ViewTimeTable()
         {
-            // Fetch
-            List<Reservation> tableSlice = this.calendar.GetSlice();
-            // Show?
-            foreach (Reservation reservation in tableSlice)
-            {
-               // Do something?
-            }
         }
 
 		public void MakeReservation(IReservingEntity owner, Customer customer ,AccessLevels accessLevel)
@@ -205,25 +198,25 @@ namespace Gym_Booking_Manager
 				    temp[n - 1].owner = owner;
 					temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
                     temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-					customer.reservedItems.Add(temp[n - 1]);
+					customer.reservedItems.Add(new Space(temp[n - 1].name, temp[n - 1].spaceCategory, 0, null, temp[n - 1].timeSlot));
 					// Save the equipment on the owner... Does the owners hava a list with reserved equipments?
 					// Save in the Reserved list in Calendar?
 					Console.Clear();
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
                     input("Press enter...");
 					Console.Clear();
-					User.ReserveMenu(accessLevel);
+					Menutracker.ReserveMenu(accessLevel);
 				}
                 else if (confirm == "n")
                 {
-                    User.ReserveMenu(accessLevel);
+                    Menutracker.ReserveMenu(accessLevel);
                 }
 
             }
             else
             {
                 Console.WriteLine("There is no available space during your choosen time");
-				User.ReserveMenu(accessLevel);
+				Menutracker.ReserveMenu(accessLevel);
 			}
 
 
@@ -233,10 +226,6 @@ namespace Gym_Booking_Manager
 
 		}
 
-		public void CancelReservation()
-        {
-
-        }
 
 		// Consider how and when to add a new Space to the database.
 		// Maybe define a method to persist it? Any other reasonable schemes?
