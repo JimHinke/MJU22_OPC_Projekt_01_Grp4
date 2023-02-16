@@ -17,7 +17,7 @@ namespace Gym_Booking_Manager
             Console.WriteLine(logedInUser);
             List<string> menuOptions = new List<string>()
                 {
-                    "View Logs (NYI)",
+                    "View Logs (TBD)",
                     "Purchase Membership",
                     "Manage Account (NYI)",
                     "Purchase Day Pass(INTE KLAR)",
@@ -35,7 +35,7 @@ namespace Gym_Booking_Manager
 
             if (logedInUser != null && logedInUser.accessLevels == AccessLevels.PayingMember)
             {
-                menuOptions.Remove("View Logs (NYI)");
+                menuOptions.Remove("View Logs (TBD)");
                 menuOptions.Remove("Purchase Membership");
                 menuOptions.Remove("Purchase Day Pass(INTE KLAR)");
                 menuOptions.Remove("Manage group Schedule");
@@ -45,18 +45,19 @@ namespace Gym_Booking_Manager
             }
             else if (logedInUser != null && logedInUser.accessLevels == AccessLevels.Member)
             {
-                menuOptions.Remove("View Logs (NYI)");
+                menuOptions.Remove("View Logs (TBD)");
                 menuOptions.Remove("Manage group Schedule");
                 menuOptions.Remove("Add item");
                 menuOptions.Remove("Restrict item");
                 menuOptions.Remove("Make Reservation");
                 menuOptions.Remove("View Item");
-                menuOptions.Remove("Group Activity");
+                menuOptions.Remove("Equipment(NYI/?)");
+                menuOptions.Remove("Group Activity(NYI/?)");    
             }
 
             else if (logedInUser != null && logedInUser.accessLevels == AccessLevels.DayPassUser)
             {
-                menuOptions.Remove("View Logs (NYI)");
+                menuOptions.Remove("View Logs (TBD)");
                 menuOptions.Remove("Purchase Day Pass(INTE KLAR)");
                 menuOptions.Remove("Add item(NYI)");
                 menuOptions.Remove("Restrict item(NYI)");
@@ -72,7 +73,7 @@ namespace Gym_Booking_Manager
 
             else if (logedInUser.accessLevels == AccessLevels.NonPayingNonMember)
             {
-                menuOptions.Remove("View Logs (NYI)");
+                menuOptions.Remove("View Logs (TBD)");
                 menuOptions.Remove("Manage Account (NYI)");
                 menuOptions.Remove("Manage group Schedule");
                 menuOptions.Remove("Restrict item(NYI)");
