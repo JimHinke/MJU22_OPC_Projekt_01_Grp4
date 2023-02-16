@@ -17,7 +17,6 @@ namespace Gym_Booking_Manager
         public List<string> reservedTimeSlot { get; set; }
         public static int index = 0;
         public string timeSlot;
-
         public static List<string> TimeSlot = new List<string>()
         {
             "12:00-13:00",
@@ -37,7 +36,6 @@ namespace Gym_Booking_Manager
             GymInstructor,
             TennisTeacher
         }
-
         public enum Availability
         {
             Available,
@@ -45,12 +43,11 @@ namespace Gym_Booking_Manager
             PlannedPurchase,
             Reserved
         }
-
         public Availability SetAvailability(Availability availability)
         {
             return this.trainerAvailability = availability;
         }
-        public static void ShowAvailable(string timeslot)
+        public static void ShowAvailable(string timeslot = "")
         {
             personalTrainers = personalTrainers.OrderBy(x => x.trainerAvailability != Availability.Available).ToList();
             personalTrainers = personalTrainers.OrderBy(x => x.reservedTimeSlot.Contains(timeslot)).ToList();
@@ -81,7 +78,9 @@ namespace Gym_Booking_Manager
         {
             return $"Namn: {name}, Category: {trainerCategory}, Avilability: {trainerAvailability}";
         }
-        public void MakeReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevel)
+
+		// Make reservation | Saving is scuffed on the item
+		public void MakeReservation(IReservingEntity owner, User customer, AccessLevels accessLevel)
         {
             Console.Clear();
             int index = 1;
@@ -144,10 +143,9 @@ namespace Gym_Booking_Manager
             Console.Write(prompt);
             return Console.ReadLine();
         }
-
         public string CSVify()
         {
-            return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name}";
+            return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name}, {nameof(trainerAvailability)}:{trainerAvailability.ToString()}";
         }        
     }
 }

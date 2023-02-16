@@ -7,7 +7,7 @@ namespace Gym_Booking_Manager
     internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>
     {
 
-        public string timeSlot { get; set; } //Hur fungerar detta i Julias kod? Kan man utgå från reservedTimeSlot istället? Känns dubbelt med info?
+        public string timeSlot { get; set; }
         public List <string> reservedTimeSlot { get; set; }
         private EquipmentType equipmentType;
         public EquipmentCategory equipmentCategory { get; set; }
@@ -33,12 +33,10 @@ namespace Gym_Booking_Manager
             Large,
             Sport
         }
-
         public enum EquipmentCategory
         {
             Treadmill, TennisRacket, RowingMachine
         }
-
         public enum Availability
         {
             Available,
@@ -54,7 +52,6 @@ namespace Gym_Booking_Manager
         {
             return $"Namn: {name}, Category: {equipmentCategory}, Availability: {equipmentAvailability}";
         }
-
         public static void ShowService()
         {
             for (int i = 0; i < equipmentList.Count; i++)
@@ -103,7 +100,6 @@ namespace Gym_Booking_Manager
                 Console.WriteLine("This Equipment is not available for reservation during that timeslot.");
             }
         }
-
         public static void ShowAvailableSport(string timeSlot = null)
         {
 			equipmentList = equipmentList.OrderBy(x => x.equipmentAvailability != Availability.Available).ToList();
@@ -133,7 +129,6 @@ namespace Gym_Booking_Manager
 				}
             }
         }
-
         public static void RepairEquipment()
         {
             // Catch when n is out of bounds
@@ -228,21 +223,11 @@ namespace Gym_Booking_Manager
         // Every class C to be used for DbSet<C> should have the ICSVable interface and the following implementation.
         public string CSVify()
         {
-            return $"{nameof(equipmentCategory)}:{equipmentCategory.ToString()},{nameof(name)}:{name}";
+            return $"{nameof(equipmentCategory)}:{equipmentCategory.ToString()},{nameof(equipmentType)}:{equipmentType.ToString()},{nameof(name)}:{name},{nameof(equipmentAvailability)}:{equipmentAvailability.ToString()}";
         }
 
-        public void ViewTimeTable()
-        {
-            //// Fetch
-            //List<Reservation> tableSlice = this.calendar.GetSlice();
-            //// Show?
-            //foreach (Reservation reservation in tableSlice)
-            //{
-            //    // Do something?
-            //}
-        }
-
-        public void MakeReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevel)
+		// Make reservation | Saving is scuffed on the item
+		public void MakeReservation(IReservingEntity owner, User customer, AccessLevels accessLevel)
         {
 			Console.Clear();
 			int index = 1;
@@ -283,7 +268,7 @@ namespace Gym_Booking_Manager
 				List<Equipment> temp = new List<Equipment>();
 				if (equip == 1)
                 {
-                    foreach (var equipment in temp)
+                    foreach (var equipment in tempAll)
                     {
                         if (equipment.equipmentType == EquipmentType.Large)
                         {
@@ -331,18 +316,16 @@ namespace Gym_Booking_Manager
 				
                 if (confirm == "y")
                 {
+
+                    // TBD: Somthing is not quite right in the saving...
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
 					temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
                      
 					customer.reservedItems.Add(new Equipment(temp[n - 1].name, temp[n-1].equipmentType , temp[n-1].equipmentCategory, 0,temp[n-1].timeSlot, temp[n-1].owner));
-                    // TBD? Save in the Reserved list in Calendar?
-                    Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
-
-                    Console.WriteLine($"{temp[n-1].name}, {temp[n - 1].reservedTimeSlot[0]}, {temp[n-1].timeSlot}, {temp[n-1].owner.ToString}");
-                    Console.WriteLine($"{customer.reservedItems[0].name}, {customer.reservedItems[0].timeslot}, {customer.reservedItems[0].owner}");
-                    Console.WriteLine(customer.reservedItems.Count);
-                    Console.WriteLine(customer.reservedItems[0]);
+					
+					// TBD? Save in the Reserved list in Calendar?
+					Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
 
                     input("Press enter...");
                     Console.Clear();
@@ -359,30 +342,11 @@ namespace Gym_Booking_Manager
                 return;
 			}
         }
-
-        
-
-        // Consider how and when to add a new Space to the database.
-        // Maybe define a method to persist it? Any other reasonable schemes?
-
-        //private static List<Tuple<Category, int>> InitializeHourlyCosts()
-        //{
-        //    // TODO: fetch from "database"
-        //    var hourlyCosts = new List<Tuple<Category, int>>
-        //    {
-        //        Tuple.Create(Category.Hall, 500),
-        //        Tuple.Create(Category.Lane, 100),
-        //        Tuple.Create(Category.Studio, 400)
-        //    };
-        //    return hourlyCosts;
-        //}
-
         static public string input(string prompt)
         {
             Console.Write(prompt);
             return Console.ReadLine();
         }
-
         public static Equipment FindByName(List<Equipment> equipmentList, string name)
         {
             // Look for an existing Equipment object with the same name

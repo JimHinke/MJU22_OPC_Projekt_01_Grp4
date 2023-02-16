@@ -10,8 +10,11 @@
 
   <ItemGroup>
     <Compile Remove="CSV\**" />
+    <Compile Remove="Database\**" />
     <EmbeddedResource Remove="CSV\**" />
+    <EmbeddedResource Remove="Database\**" />
     <None Remove="CSV\**" />
+    <None Remove="Database\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,10 +25,6 @@
     <None Update="LocalDB\Spaces.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\" />
   </ItemGroup>
 
 </Project>

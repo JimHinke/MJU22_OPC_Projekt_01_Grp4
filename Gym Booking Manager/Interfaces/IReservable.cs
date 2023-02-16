@@ -13,7 +13,7 @@ namespace Gym_Booking_Manager
 {
     internal interface IReservable
     {
-        void MakeReservation(IReservingEntity owner, Customer customer , AccessLevels accessLevels);
-        void ViewTimeTable(); // start and end as arguments?
+        void MakeReservation(IReservingEntity owner, User customer , AccessLevels accessLevels);
+        //void ViewTimeTable(); // start and end as arguments?
     }
 }
