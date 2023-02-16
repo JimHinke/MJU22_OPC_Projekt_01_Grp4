@@ -12,13 +12,10 @@ namespace Gym_Booking_Manager
     {
         public string name { get; set; }
         public IReservingEntity owner { get; set; }
-
         public static List<Equipment> availableEquipment = new List<Equipment>();
         private static List<Equipment> _equipmentList = new List<Equipment>();
         public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
-
         public static List<PersonalTrainer> personalTrainers = new List<PersonalTrainer>();
-
 		private static List<Space> _spaceList = new List<Space>();
 		public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
         public string timeslot;

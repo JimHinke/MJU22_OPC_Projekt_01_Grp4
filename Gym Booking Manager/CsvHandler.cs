@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Gym_Booking_Manager.Interfaces;
 using static Gym_Booking_Manager.Space;
-
+using System.ComponentModel;
 
 namespace Gym_Booking_Manager
 {
@@ -64,6 +64,9 @@ namespace Gym_Booking_Manager
                         Equipment.EquipmentCategory equipmentCategory = 0;
                         Equipment.EquipmentType equipmentType = 0;
                         Equipment.Availability availability = 0;
+
+                        var reservedTimeSlot = "";
+                        
                         foreach (string value in values)
                         {
                             string[] parts = value.Split(':');
@@ -79,8 +82,17 @@ namespace Gym_Booking_Manager
                             {
                                 Enum.TryParse(parts[1], out availability);
                             }
+                            else if (parts[0] == "equipmentType")
+                            {
+                                Enum.TryParse(parts[1], out equipmentType);
+                            }
+                            else if (parts[0] == "reservedTimeSlot")
+                            {
+                                reservedTimeSlot = parts[1];
+                            }
+
                         }
-                        Equipment.equipmentList.Add(new Equipment(name, equipmentType, equipmentCategory, availability));
+                        Equipment.equipmentList.Add(new Equipment(name, equipmentType, equipmentCategory, availability, reservedTimeSlot));
                     }
                 }
 
@@ -135,12 +147,21 @@ namespace Gym_Booking_Manager
                         {
                             var key = "";
                             var val = "";
+                            var val2 = "";
+                            var val3 = "";
                             var parts = value.Split(':');
-                            if (parts.Length >= 2)
+                            if (parts.Length == 2)
+                            {
+                                key = parts[0];
+                                val = parts[1];                                                                
+                            }
+                            else if (parts.Length > 2)
                             {
                                 key = parts[0];
                                 val = parts[1];
-                            }
+                                val2 = parts[2];
+                                val3 = parts[3];
+                            }                               
 
                             switch (key)
                             {
@@ -154,7 +175,7 @@ namespace Gym_Booking_Manager
                                     participantLimit = int.Parse(val);
                                     break;
                                 case "timeSlot":
-                                    timeSlot = val;
+                                    timeSlot = $"{val}:{val2}:{val3}";
                                     break;
                                 case "space":
                                     space = Space.FindByName(val);
@@ -162,11 +183,9 @@ namespace Gym_Booking_Manager
                                 case "personalTrainer":
                                     var trainerNames = val.Split(';');
                                     foreach (var trainerName in trainerNames)
-                                    {
-                                        // Look for an existing PersonalTrainer object with the same name
+                                    {                                       
                                         var existingTrainer = personalTrainers.FirstOrDefault(t => t.name == trainerName);
-
-                                        // If an existing trainer was not found, create a new PersonalTrainer object and add it to the list
+                                        
                                         if (existingTrainer == null)
                                         {
                                             existingTrainer = new PersonalTrainer(trainerName);
@@ -174,26 +193,23 @@ namespace Gym_Booking_Manager
                                         }
                                     }
                                     break;
-                                case "equipment":
-                                    var existingEquipment = Equipment.FindByName(Equipment.equipmentList, val);
-                                    if (existingEquipment != null)
-                                    {
-                                        // An existing equipment with the same name was found
-                                        // Add the existing equipment object to a list
-                                        equipment.Add(existingEquipment);
+                                case "equipment":                                    
+                                    var EQ = val.Split(';');
+                                    foreach (var input in EQ)
+                                    {                                       
+                                        var existingEquipment = equipment.FirstOrDefault(t => t.name == input);
+                                        
+                                        if (existingEquipment == null)
+                                        {
+                                            existingEquipment = new Equipment(input);
+                                            equipment.Add(existingEquipment);
+                                        }
                                     }
-                                    else
-                                    {
-                                        // An existing equipment with the same name was not found
-                                        // Create a new Equipment object and add it to the list
-                                        var newEquipment = new Equipment(val);
-                                        equipment.Add(newEquipment);
-                                    }
+                                    
                                     break;
                                 case "participants":                                    
 
-                                    string [] participantNames = new string[participantLimit];
-                                    
+                                    string [] participantNames = new string[participantLimit];                                    
                                     
                                     if (val.Contains(";"))
                                     {

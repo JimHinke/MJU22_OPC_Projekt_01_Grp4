@@ -25,11 +25,9 @@ namespace Gym_Booking_Manager
         public string phone { get; set; }
         public string email { get; set; }
         public AccessLevels accessLevels { get; set; }
-
         public static User logedInUser = null;
         public ReservingEntity ID { get; set; }
 		public List<Resources> reservedItems { get; set; }
-
 		protected User(string name = "", string phone = "", string email = "", AccessLevels accessLevels = 0)
         {
             this.uniqueID = new Random().Next(0, 1000);
@@ -40,20 +38,16 @@ namespace Gym_Booking_Manager
 			ID = new ReservingEntity(uniqueID);
 		}
         public static List<Customer> userList = new List<Customer>();
-
         public override string ToString()
         {
-            return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email + " AccessLevel:" + accessLevels;
+            return "ID: " + uniqueID + "\nName: " + name + "\nPhone: " + phone + "\nEmail: " + email + "\nAccessLevel: " + accessLevels;
         }
-
 		static public string input(string prompt)
 		{
 			Console.Write(prompt);
 			return Console.ReadLine();
 		}
-
 	}
-
     public enum AccessLevels
     {
         PayingMember,
@@ -92,38 +86,13 @@ namespace Gym_Booking_Manager
         public static List<string> logs = new List<string>();
         DateTime createdAt;
         public DateTime dayPassDate { get; set; }
-        
-        public Customer(string name, string phone, string email, AccessLevels accessLevels = 0) : base(name, phone, email, accessLevels)
+		public Customer(string name, string phone, string email, AccessLevels accessLevels = 0) : base(name, phone, email, accessLevels)
         {
             this.createdAt = DateTime.Now;
             //this.AccessLevel = accessLevel;
             customerList.Add(this);
             this.reservedItems = new List<Resources>();
             uniqueID = new Random().Next(0, 1000);
-        }
-        public static void AddLog(string log)
-        {
-            logs.Add(log);
-        }
-        public static void ShowLogs()
-        {
-            Console.WriteLine("Logs:");
-            foreach (string log in logs)
-            {
-                Console.WriteLine(log);
-            }
-        }
-        public static void ListAllLogs()
-        {
-            Console.WriteLine("Available Logs: ");
-            for (int i = 0; i < Customer.logs.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {Customer.logs[i]}");
-            }
-        }
-        public static void ViewLog(int logIndex)
-        {
-            Console.WriteLine(Customer.logs[logIndex - 1]);
         }
         public static void SendNotification(Customer customer, string message, bool useSMS)
         {
@@ -137,7 +106,6 @@ namespace Gym_Booking_Manager
                 log += " email to " + customer.email + ": " + message;
             }
             Console.WriteLine(log);
-            Customer.AddLog(log);
         }
 		public static void ViewReservedItemList(User customer)
 		{
@@ -164,8 +132,10 @@ namespace Gym_Booking_Manager
 				}
 			}
 		}
-		// Not quite done
-        public static void CancelReservation(IReservingEntity owner, User customer, AccessLevels accessLevels)
+
+		// Cancel reservation | Not quite functional, removes item from customer but not customer from item.
+		// Probably due to problem i saving in MakeReservation()
+		public static void CancelReservation(IReservingEntity owner, User customer, AccessLevels accessLevels)
 		{
 			while (customer.reservedItems.Count > 0)
 			{
@@ -268,12 +238,6 @@ namespace Gym_Booking_Manager
 				Console.Clear();
 			}
 		}
-		public static void PayingMemberReservation()
-        {
-            Console.Clear();
-            Menutracker.ReserveMenu(AccessLevels.PayingMember);
-        }
-
     }
     internal class Staff : User
     {
