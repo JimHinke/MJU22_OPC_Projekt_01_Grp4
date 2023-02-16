@@ -231,7 +231,7 @@ namespace Gym_Booking_Manager
         // Every class C to be used for DbSet<C> should have the ICSVable interface and the following implementation.
         public string CSVify()
         {
-            return $"{nameof(equipmentCategory)}:{equipmentCategory.ToString()},{nameof(name)}:{name}";
+            return $"{nameof(equipmentCategory)}:{equipmentCategory.ToString()},{nameof(equipmentType)}:{equipmentType.ToString()},{nameof(name)}:{name},{nameof(equipmentAvailability)}:{equipmentAvailability.ToString()}";
         }
 
         public void ViewTimeTable()
@@ -286,7 +286,7 @@ namespace Gym_Booking_Manager
 				List<Equipment> temp = new List<Equipment>();
 				if (equip == 1)
                 {
-                    foreach (var equipment in temp)
+                    foreach (var equipment in tempAll)
                     {
                         if (equipment.equipmentType == EquipmentType.Large)
                         {

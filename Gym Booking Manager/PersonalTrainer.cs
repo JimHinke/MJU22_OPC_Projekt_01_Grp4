@@ -147,7 +147,7 @@ namespace Gym_Booking_Manager
 
         public string CSVify()
         {
-            return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name}";
+            return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name}, {nameof(trainerAvailability)}:{trainerAvailability.ToString()}";
         }        
     }
 }

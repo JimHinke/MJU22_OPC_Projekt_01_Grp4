@@ -40,7 +40,7 @@ namespace Gym_Booking_Manager
 
         public override string ToString()
         {
-            return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email + " AccessLevel:" + accessLevels;
+            return "ID: " + uniqueID + "\nName: " + name + "\nPhone: " + phone + "\nEmail: " + email + "\nAccessLevel: " + accessLevels;
         }
 
 		static public string input(string prompt)
