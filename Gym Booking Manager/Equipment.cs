@@ -383,5 +383,20 @@ namespace Gym_Booking_Manager
             Console.Write(prompt);
             return Console.ReadLine();
         }
+
+        public static Equipment FindByName(List<Equipment> equipmentList, string name)
+        {
+            // Look for an existing Equipment object with the same name
+            var existingEquipment = equipmentList.FirstOrDefault(e => e.name == name);
+
+            // If an existing equipment was found, return it
+            if (existingEquipment != null)
+            {
+                return existingEquipment;
+            }
+            
+            // If not, return null
+            return null;
+        }
     }
 }

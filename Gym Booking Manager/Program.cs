@@ -16,6 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
+using System.ComponentModel;
+using System.Reflection.PortableExecutable;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Tests")]
@@ -24,50 +26,54 @@ namespace Gym_Booking_Manager
 {
     internal class Program
     {
-		static void Main(string[] args)
-		{
+        static void Main(string[] args)
+        {
             CsvHandler.CreateCSV();
-            LoadFiles();            
+            LoadFiles();
 
-            // FUL TESTAR!	
-            //Equipment.equipmentList.Add(new Equipment("Test1", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-            //Equipment.equipmentList.Add(new Equipment("Test2", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
-            //Equipment.equipmentList.Add(new Equipment("Test3", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
-            Customer.customerList.Add(new Customer("Current Customer", "0987321", "CurrentCustomer@test.se") { uniqueID = 10, AccessLevel = AccessLevels.DayPassUser });
-                    Customer.customerList.Add(new Customer("TestCustomer 1", "1234", "test1@gmail.com") { uniqueID = 20, AccessLevel = AccessLevels.DayPassUser});
-            //         Customer.customerList.Add(new Customer("TestCustomer 2", "1234", "test2@gmail.com") { uniqueID = 30 });
-                     //Customer.customerList.Add(new Customer("TestCustomer 3", "1234", "test3@gmail.com") { uniqueID = 40 });
-   //         Customer.customerList.Add(testCustomer1);
-   //         Customer.customerList.Add(testCustomer2);
-            PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke", PersonalTrainer.TrainerCategory.GymInstructor);
-            PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
-            List<PersonalTrainer> testPersonalTrainerList = new List<PersonalTrainer>();
+            //Customer.customerList.Add(new Customer("Current Customer", "0987321", "CurrentCustomer@test.se") { uniqueID = 10, AccessLevel = AccessLevels.DayPassUser });
+            //Customer.customerList.Add(new Customer("TestCustomer 1", "1234", "test1@gmail.com") { uniqueID = 20, AccessLevel = AccessLevels.DayPassUser });
 
-            Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
-            List<Equipment> testEquipmentList = new List<Equipment>();
-            testEquipmentList.Add(Equipment.equipmentList[0]);
 
-            GroupActivity temp = new GroupActivity(
-                            testPersonalTrainerList, //Personal Trainer
-                            GroupSchedule.TypeOfActivity[0], //Type Of Activity
-                            23, //Unique ID set to an random number. Is this needed?
-                            1, //Particpant Limit
-                            GroupSchedule.TimeSlot[0], //Time Slot
-                            null, //List of Participants. This is not added here but rather under another menu-choice
-                            Space.spaceList[0], //What space is used for this session
-                            testEquipmentList //What Equipment is used for this session
-                            );
-            //List<PersonalTrainer> personalTrainerList = new List<PersonalTrainer>();
-            GroupSchedule.groupScheduleList.Add(temp);
+            //PersonalTrainer testAvPersonalTrainer = new PersonalTrainer("Jimmie Hinke", PersonalTrainer.TrainerCategory.GymInstructor);
+            //PersonalTrainer.personalTrainers.Add(testAvPersonalTrainer);
+            //List<PersonalTrainer> testPersonalTrainerList = new List<PersonalTrainer>();
+            //testPersonalTrainerList.Add(testAvPersonalTrainer);
 
-            //GroupSchedule.showActivities();
+            ////Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
+            //List<Equipment> testEquipmentList = new List<Equipment>();
+            //testEquipmentList.Add(Equipment.equipmentList[0]);
 
-            //GroupSchedule.deleteActivity();
-            Console.WriteLine(Space.spaceList[0]);
+            //GroupActivity temp = new GroupActivity(
+            //                PersonalTrainer.personalTrainers, //Personal Trainer
+            //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
+            //                23, //Unique ID set to an random number. Is this needed?
+            //                1, //Particpant Limit
+            //                GroupSchedule.TimeSlot[1], //Time Slot
+            //                null, //List of Participants. This is not added here but rather under another menu-choice
+            //                Space.spaceList[0], //What space is used for this session
+            //                testEquipmentList //What Equipment is used for this session
+            //                );
+
+            //GroupActivity temp2 = new GroupActivity(
+            //                PersonalTrainer.personalTrainers, //Personal Trainer
+            //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
+            //                23, //Unique ID set to an random number. Is this needed?
+            //                1, //Particpant Limit
+            //                GroupSchedule.TimeSlot[1], //Time Slot
+            //                null, //List of Participants. This is not added here but rather under another menu-choice
+            //                Space.spaceList[0], //What space is used for this session
+            //                                    //testEquipmentList //What Equipment is used for this session
+            //                Equipment.equipmentList //What Equipment is used for this session
             //                );
 
             //GroupSchedule.groupScheduleList.Add(temp);
-            //Equipment.ShowAvailable("12:00");
+            //GroupSchedule.groupScheduleList.Add(temp2);
+            //Console.WriteLine(GroupSchedule.groupScheduleList[0]);
+
+            //CsvHandler csvHandler = new CsvHandler();
+            //csvHandler.WriteFile(GroupSchedule.groupScheduleList, "GroupActivity.txt");
+
 
             while (true)
             {
@@ -77,13 +83,13 @@ namespace Gym_Booking_Manager
 
 
         // Static methods for the program
-
+        
         public static void LoadFiles()
         {
-            CsvHandler.ReadFile("Spaces.txt");           
+            CsvHandler.ReadFile("Spaces.txt");
             CsvHandler.ReadFile("Equipment.txt");
             CsvHandler.ReadFile("PersonalTrainer.txt");
-            //CsvHandler.ReadFile("C:\\Users\\Gusta\\source\\repos\\MJU22_OPC_Projekt_01_Grp4\\Gym Booking Manager\\CSV\\GroupActivities.txt"); //???
+            CsvHandler.ReadFile("GroupActivity.txt");
 
             Console.WriteLine("---------------------SPACES LOADED---------------------");
             for (int i = 0; i < Space.spaceList.Count; i++)
@@ -105,6 +111,18 @@ namespace Gym_Booking_Manager
                 Console.WriteLine(PersonalTrainer.personalTrainers[i]);
             }
             Console.WriteLine("--------------------------------------------------------------------\n");
+            Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("----------------------GROUP ACTIVITIES LOADED------------------------");
+            for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
+            {
+                Console.WriteLine(GroupSchedule.groupScheduleList[i]);
+
+            }
+            Console.WriteLine("---------------------------------------------------------------------\n");
+            Console.ReadLine();
+            Console.Clear();
+
         }
         public static void MainMenu()
         {
@@ -136,16 +154,16 @@ namespace Gym_Booking_Manager
                         csvHandler.WriteFile(Space.spaceList, "Spaces.txt");
                         csvHandler.WriteFile(Equipment.equipmentList, "Equipment.txt");
                         csvHandler.WriteFile(PersonalTrainer.personalTrainers, "PersonalTrainer.txt");
-                        //csvHandler.WriteFile(Space.spaceList, "GroupActivity.txt");
+                        csvHandler.WriteFile(GroupSchedule.groupScheduleList, "GroupActivity.txt");
 
                         Environment.Exit(0);
                         break;
                     default:
                         Console.WriteLine("Invalid input, type a number");
                         break;
-
                 }
-            }catch(Exception ex) { Console.WriteLine(ex.ToString()); }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
         }
     }
 }

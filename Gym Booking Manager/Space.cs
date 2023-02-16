@@ -259,5 +259,10 @@ namespace Gym_Booking_Manager
 			return Console.ReadLine();
 		}
 
-	}
+        public static Space FindByName(string name)
+        {
+            var space = spaceList.FirstOrDefault(s => s.name == name);            
+            return space;
+        }
+    }
 }

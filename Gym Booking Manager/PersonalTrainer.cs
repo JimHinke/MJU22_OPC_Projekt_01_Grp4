@@ -12,7 +12,7 @@ namespace Gym_Booking_Manager
     internal class PersonalTrainer : Resources, ICSVable
     {
         public IReservingEntity owner { get; set; }
-        private TrainerCategory trainerCategory { get; set; }
+        public TrainerCategory trainerCategory { get; set; }
         public Availability trainerAvailability { get; set; }
         public List<string> reservedTimeSlot { get; set; }
         public static int index = 0;
@@ -148,7 +148,7 @@ namespace Gym_Booking_Manager
 
         public string CSVify()
         {
-            return "";
-        }
-	}
+            return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name}";
+        }        
+    }
 }

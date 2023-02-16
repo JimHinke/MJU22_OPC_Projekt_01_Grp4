@@ -30,7 +30,7 @@ namespace Gym_Booking_Manager
             this.phone = phone;
             this.email = email;
         }
-        public static List<User> userList = new List<User>();
+        public static List<Customer> userList = new List<Customer>();
         public override string ToString()
         {
             return "ID: " + uniqueID + " Name: " + name + " Phone: " + phone + " Email: " + email;
@@ -949,6 +949,8 @@ namespace Gym_Booking_Manager
                     case 5:// View group Schedule
                         Console.Clear();
                         GroupSchedule.showActivities();
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                     case 6:
                         // TODO: Manage group schedule
@@ -973,6 +975,7 @@ namespace Gym_Booking_Manager
                     case 12://TODO Group Activity
                         break;
                     case 13:
+                        Program.MainMenu();
                         break;
                     default:
                         Console.WriteLine("Invalid input, type a number");
@@ -1043,6 +1046,7 @@ namespace Gym_Booking_Manager
                     case 1:
                         // View logs 
                         ListAllLogs();
+                        Console.ReadLine();
                         break;
                     case 2:
                         // Purchase membership
