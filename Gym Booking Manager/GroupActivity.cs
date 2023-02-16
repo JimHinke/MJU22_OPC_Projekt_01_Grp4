@@ -10,7 +10,7 @@ using static Gym_Booking_Manager.Equipment;
 
 namespace Gym_Booking_Manager
 {
-    internal class GroupActivity : Resources, ICSVable
+    internal class GroupActivity : ICSVable
     {
         public int activtyId { get; set; }
         public int participantLimit { get; set; }

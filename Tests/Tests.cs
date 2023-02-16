@@ -11,7 +11,7 @@ namespace Tests
         [TestMethod]
         public void GroupActivityAdded()
         {
-            GymDatabaseContext db = new GymDatabaseContext();
+            //GymDatabaseContext db = new GymDatabaseContext();
             GroupSchedule schedule = new GroupSchedule(); // Do we need constructor arguments? Maybe GroupSchedule is static - meaning we don't need to call 'new'.
 
             // // Some examples - or maybe even overloading of AddActivity()?

@@ -72,14 +72,21 @@ namespace Gym_Booking_Manager
                     personalTrainerList.Add(PersonalTrainer.personalTrainers[InstructorChoice - 1]);
 
                 }
-                else if (InstructorChoice == 0)
+                else if (InstructorChoice == 0 && personalTrainerList.Count == 0)
                 {
+                    Console.WriteLine("You need atleast one personal trainer for this activity\n");
+                    //break;
+                }
+                else if(InstructorChoice == 0 && personalTrainerList != null)
+                {
+                    Console.WriteLine("inte är null");
                     break;
                 }
                 else
                 {
                     Console.WriteLine("Not a valid personal trainer. Try again.");
                 }
+
             }
 
             //--SPACE
@@ -155,7 +162,8 @@ namespace Gym_Booking_Manager
             if (groupActivity.participants.Count < groupActivity.participantLimit)
             {
                 groupActivity.participants.Add(customer);
-                Console.WriteLine($"Added '{customer.name}' to the activity");
+                Console.Clear();
+                Console.WriteLine($"Added '{customer.name}' to the activity\n");
             }
             else
             {
@@ -175,11 +183,20 @@ namespace Gym_Booking_Manager
         public static void editActivity()
         {
             showActivities();
+
+            List<GroupActivity> tempList = new List<GroupActivity>();
+            if (tempList[0] != groupScheduleList[i])
+            {
+                Console.WriteLine("TEST");
+                Customer.SendNotification(groupScheduleList[i].participants, "Changes where made in your group activity session", true);
+            }
+
             string editActivityChoice = input("Whats activity do you want to edit?\n>");
             for (int i = 0; i < groupScheduleList.Count; i++)
             {
                 if (editActivityChoice.ToLower() == groupScheduleList[i].typeOfActivity.ToLower())
                 {
+                    tempList.Add(groupScheduleList[i]);
                     Console.WriteLine("1: <Name> - Name of this Activity");
                     Console.WriteLine("2: <ActivityId> - The uniq ID for this Activity");
                     Console.WriteLine("3: <Particpanat Limit> - The number of participants for this Activity");

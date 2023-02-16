@@ -116,7 +116,6 @@ namespace Gym_Booking_Manager
                         break;
                     case 4:
                         Console.WriteLine("\nExiting program...");
-
                         CsvHandler csvHandler = new CsvHandler();
                         csvHandler.WriteFile(Space.spaceList, "Spaces.txt");
                         csvHandler.WriteFile(Equipment.equipmentList, "Equipment.txt");
@@ -138,7 +137,7 @@ namespace Gym_Booking_Manager
             //As the loginsystem is not complete we have to set an given user on what login-type you are using.
 
             //This can be changed betewen PayingMember/DayPassUser
-            User testCustomer = new Customer("Test Customer", "0987321", "testCustomer@test.se", AccessLevels.PayingMember) { uniqueID = 10 };
+            Customer testCustomer = new Customer("Test Customer", "0987321", "testCustomer@test.se", AccessLevels.PayingMember) { uniqueID = 10 };
 
             User testStaff = new Staff("Test Staff 1", "1234", "test1@gmail.com", AccessLevels.Staff) { uniqueID = 20 };
             User testAdmin = new Admin("Test Admin", "098873", "testAdmin@gmail.com", AccessLevels.Admin);
@@ -298,7 +297,6 @@ namespace Gym_Booking_Manager
                         email = Console.ReadLine();
                         string message = "The Reservation was cancelled.";
                         customer = new Customer(name, phone, email);
-                        Customer.SendNotification(customer, message, false);
                         Console.WriteLine("Press Enter to return to Admin Menu");
                         Console.ReadKey();
                         AdminMenu();
@@ -434,7 +432,6 @@ namespace Gym_Booking_Manager
                         email = Console.ReadLine();
                         string message = "The Reservation was cancelled.";
                         customer = new Customer(name, phone, email);
-                        Customer.SendNotification(customer, message, false);
                         Console.WriteLine("Press Enter to return to User Menu");
                         Console.ReadKey();
                         StaffMenu();
@@ -586,7 +583,6 @@ namespace Gym_Booking_Manager
                         email = Console.ReadLine();
                         string message = "The Reservation was cancelled.";
                         customer = new Customer(name, phone, email);
-                        Customer.SendNotification(customer, message, false);
                         DayPassMenu();
                         break;
                     case 4:
@@ -656,7 +652,6 @@ namespace Gym_Booking_Manager
                         string email = Console.ReadLine();
                         string message = "The Reservation was cancelled.";
                         Customer customer = new Customer(name, phone, email);
-                        Customer.SendNotification(customer, message, false);
                         Console.WriteLine("Press Enter to return to Paying Member Menu");
                         Console.ReadKey();
                         break;
@@ -667,7 +662,7 @@ namespace Gym_Booking_Manager
                     case 4:
                         Console.Clear();
                         //TODO Make reservation
-                        Customer.PayingMemberReservation();
+                        ReserveMenu(AccessLevels.PayingMember);
                         break;
                     case 5:
                         Console.Clear();
@@ -725,7 +720,6 @@ namespace Gym_Booking_Manager
         }
 
 
-
         //OTHER MENU OPTIONS
         public static void manageSchedule()
         {
@@ -749,7 +743,7 @@ namespace Gym_Booking_Manager
                     case 2:
                         //TODO Edit Group Activity
                         GroupSchedule.editActivity();
-                        Console.Clear();
+                        
                         break;
                     case 3:
                         //TODO Delete Group Activity
@@ -1043,13 +1037,14 @@ namespace Gym_Booking_Manager
                     case 4:
                         Console.Clear();
                         GroupSchedule.showActivities();
-                        Console.WriteLine("What group activity do you want to participate in? ");
+                        Console.WriteLine("What group activity do you want to participate in? (Enter the type of activity)");
                         string activityChoice = Console.ReadLine();
                         for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
                         {
-                            if (GroupSchedule.groupScheduleList[i].typeOfActivity.Contains(activityChoice))
+                            if (GroupSchedule.groupScheduleList[i].typeOfActivity.ToLower().Contains(activityChoice.ToLower()))
                             {
-                                GroupSchedule.addCustomerToActivity(userList[0], GroupSchedule.groupScheduleList[i]);
+                                Customer addToAcitivy = new Customer(logedInUser.name, logedInUser.phone, logedInUser.email, logedInUser.accessLevels);
+                                GroupSchedule.addCustomerToActivity(addToAcitivy, GroupSchedule.groupScheduleList[i]);
                             }
                         }
                         //PayingMemberMenu();
@@ -1065,7 +1060,6 @@ namespace Gym_Booking_Manager
             }
 
         }
-
         public static void RestrictItem()
         {
             Console.Clear();

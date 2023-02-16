@@ -125,19 +125,21 @@ namespace Gym_Booking_Manager
         {
             Console.WriteLine(Customer.logs[logIndex - 1]);
         }
-        public static void SendNotification(Customer customer, string message, bool useSMS)
+        public static void SendNotification(List <Customer> participant, string message, bool useSMS)
         {
             string log = "Sending";
-            if (useSMS)
+            foreach (User participants in participant)
             {
-                log += " SMS to " + customer.phone + ": " + message;
-            }
-            else
-            {
-                log += " email to " + customer.email + ": " + message;
+                if (useSMS)
+                {
+                    log += " SMS to " + participants.phone + ": " + message;
+                }
+                else
+                {
+                    log += " email to " + participants.email + ": " + message;
+                }
             }
             Console.WriteLine(log);
-            Customer.AddLog(log);
         }
 		public static void ViewReservedItemList(Customer customer)
 		{
@@ -267,11 +269,6 @@ namespace Gym_Booking_Manager
 				Console.Clear();
 			}
 		}
-		public static void PayingMemberReservation()
-        {
-            Console.Clear();
-            Menutracker.ReserveMenu(AccessLevels.PayingMember);
-        }
 
     }
     internal class Staff : User

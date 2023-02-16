@@ -12,9 +12,6 @@ namespace Gym_Booking_Manager
         private EquipmentType equipmentType;
         public EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
-        //private static List<Equipment> _equipmentList = new List<Equipment>();
-        //public static List<Equipment> availableEquipment = new List<Equipment>();
-        //public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
         public static int index = 0;
 		public static List<string> TimeSlot = new List<string>()
 		{
