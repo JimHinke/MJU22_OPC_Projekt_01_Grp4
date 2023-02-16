@@ -164,7 +164,7 @@ namespace Gym_Booking_Manager
         {
         }
 
-		public void MakeReservation(IReservingEntity owner, Customer customer ,AccessLevels accessLevel)
+		public void MakeReservation(IReservingEntity owner, User customer ,AccessLevels accessLevel)
 		{
 			Console.Clear();
 			int index = 1;
@@ -199,11 +199,11 @@ namespace Gym_Booking_Manager
 					temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
                     temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
 					customer.reservedItems.Add(new Space(temp[n - 1].name, temp[n - 1].spaceCategory, 0, null, temp[n - 1].timeSlot));
-					// Save the equipment on the owner... Does the owners hava a list with reserved equipments?
-					// Save in the Reserved list in Calendar?
+
 					Console.Clear();
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
-                    input("Press enter...");
+
+					input("Press enter...");
 					Console.Clear();
 					Menutracker.ReserveMenu(accessLevel);
 				}

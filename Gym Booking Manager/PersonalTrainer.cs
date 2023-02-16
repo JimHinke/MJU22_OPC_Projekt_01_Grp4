@@ -50,7 +50,7 @@ namespace Gym_Booking_Manager
         {
             return this.trainerAvailability = availability;
         }
-        public static void ShowAvailable(string timeslot)
+        public static void ShowAvailable(string timeslot = "")
         {
             personalTrainers = personalTrainers.OrderBy(x => x.trainerAvailability != Availability.Available).ToList();
             personalTrainers = personalTrainers.OrderBy(x => x.reservedTimeSlot.Contains(timeslot)).ToList();
@@ -81,7 +81,7 @@ namespace Gym_Booking_Manager
         {
             return $"Namn: {name}, Category: {trainerCategory}, Avilability: {trainerAvailability}";
         }
-        public void MakeReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevel)
+        public void MakeReservation(IReservingEntity owner, User customer, AccessLevels accessLevel)
         {
             Console.Clear();
             int index = 1;

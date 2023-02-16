@@ -27,15 +27,18 @@ namespace Gym_Booking_Manager
         public AccessLevels accessLevels { get; set; }
 
         public static User logedInUser = null;
+        public ReservingEntity ID { get; set; }
+		public List<Resources> reservedItems { get; set; }
 
-        protected User(string name = "", string phone = "", string email = "", AccessLevels accessLevels = 0)
+		protected User(string name = "", string phone = "", string email = "", AccessLevels accessLevels = 0)
         {
             this.uniqueID = new Random().Next(0, 1000);
             this.name = name;
             this.phone = phone;
             this.email = email;
             this.accessLevels = accessLevels;
-        }
+			ID = new ReservingEntity(uniqueID);
+		}
         public static List<Customer> userList = new List<Customer>();
 
         public override string ToString()
@@ -61,7 +64,6 @@ namespace Gym_Booking_Manager
         Member,
         Admin
     }
-
     public class ReservingEntity : IReservingEntity
     {
         public string owner { get; set; }
@@ -90,8 +92,7 @@ namespace Gym_Booking_Manager
         public static List<string> logs = new List<string>();
         DateTime createdAt;
         public DateTime dayPassDate { get; set; }
-        public List<Resources> reservedItems { get; set; }
-        public static IReservingEntity ID;
+        
         public Customer(string name, string phone, string email, AccessLevels accessLevels = 0) : base(name, phone, email, accessLevels)
         {
             this.createdAt = DateTime.Now;
@@ -99,7 +100,6 @@ namespace Gym_Booking_Manager
             customerList.Add(this);
             this.reservedItems = new List<Resources>();
             uniqueID = new Random().Next(0, 1000);
-            ID = new ReservingEntity(uniqueID);
         }
         public static void AddLog(string log)
         {
@@ -139,7 +139,7 @@ namespace Gym_Booking_Manager
             Console.WriteLine(log);
             Customer.AddLog(log);
         }
-		public static void ViewReservedItemList(Customer customer)
+		public static void ViewReservedItemList(User customer)
 		{
 			var reservedItemsList = customer.reservedItems
 				.OrderBy(x => x.GetType() == typeof(Equipment) ? 0 :
@@ -164,7 +164,8 @@ namespace Gym_Booking_Manager
 				}
 			}
 		}
-		public static void CancelReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevels)
+		// Not quite done
+        public static void CancelReservation(IReservingEntity owner, User customer, AccessLevels accessLevels)
 		{
 			while (customer.reservedItems.Count > 0)
 			{

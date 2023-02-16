@@ -245,7 +245,7 @@ namespace Gym_Booking_Manager
             //}
         }
 
-        public void MakeReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevel)
+        public void MakeReservation(IReservingEntity owner, User customer, AccessLevels accessLevel)
         {
 			Console.Clear();
 			int index = 1;
@@ -286,7 +286,7 @@ namespace Gym_Booking_Manager
 				List<Equipment> temp = new List<Equipment>();
 				if (equip == 1)
                 {
-                    foreach (var equipment in temp)
+                    foreach (var equipment in tempAll)
                     {
                         if (equipment.equipmentType == EquipmentType.Large)
                         {
@@ -334,18 +334,16 @@ namespace Gym_Booking_Manager
 				
                 if (confirm == "y")
                 {
+
+                    // TBD: Somthing is not quite right in the saving...
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
 					temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
                      
 					customer.reservedItems.Add(new Equipment(temp[n - 1].name, temp[n-1].equipmentType , temp[n-1].equipmentCategory, 0,temp[n-1].timeSlot, temp[n-1].owner));
-                    // TBD? Save in the Reserved list in Calendar?
-                    Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
-
-                    Console.WriteLine($"{temp[n-1].name}, {temp[n - 1].reservedTimeSlot[0]}, {temp[n-1].timeSlot}, {temp[n-1].owner.ToString}");
-                    Console.WriteLine($"{customer.reservedItems[0].name}, {customer.reservedItems[0].timeslot}, {customer.reservedItems[0].owner}");
-                    Console.WriteLine(customer.reservedItems.Count);
-                    Console.WriteLine(customer.reservedItems[0]);
+					
+					// TBD? Save in the Reserved list in Calendar?
+					Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
 
                     input("Press enter...");
                     Console.Clear();
