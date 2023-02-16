@@ -250,7 +250,7 @@ namespace Gym_Booking_Manager
                             string removeEquipment = input("What equipment do you want to remove? (Full name)\n>");
                             for (int y = 0; y< equipmentAcitivy.Count; y++)
                             {
-                                if (equipmentAcitivy[y].name == removeEquipment)
+                                if (equipmentAcitivy[y].name.ToLower() == removeEquipment.ToLower())
                                 {
                                     equipmentAcitivy.RemoveAt(y);
                                     Console.WriteLine($"Removed {removeEquipment} from this Activity");
