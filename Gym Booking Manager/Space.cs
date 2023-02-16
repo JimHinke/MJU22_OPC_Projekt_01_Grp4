@@ -42,7 +42,7 @@ namespace Gym_Booking_Manager
 			"14:00-15:00"
 		};
 
-		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "", Calendar calendar = null) :base(name,TimeSlot,null,calendar)
+		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "", Calendar calendar = null) :base(name,TimeSlot,"",null,calendar)
         {
             this.spaceCategory = spaceCategory;
             this.spaceAvailability = availability;

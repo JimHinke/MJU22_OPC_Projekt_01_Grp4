@@ -503,10 +503,9 @@ namespace Gym_Booking_Manager
         }
 		
         
-        // HOW TO MAKE IT SHOW IN AVAILBALE AGAIN????
+        // Not quiiiite there yet
         public static void CancelReservation(IReservingEntity owner, Customer customer, AccessLevels accessLevels)
 		{
-
 			while (customer.reservedItems.Count > 0)
 			{
                 Console.Clear();
@@ -526,7 +525,6 @@ namespace Gym_Booking_Manager
 				{
 					confirm = input($"You want to cancel your reservation of {equipment.name} at {equipment.timeSlot}\n" +
 						$"Is this correct? Y / N\n").ToLower();
-					
 
 					if (confirm == "y")
 					{	
@@ -537,9 +535,14 @@ namespace Gym_Booking_Manager
 								equip.reservedTimeSlot.Remove(equipment.timeSlot);
                                 equip.owner = null;
                                 equip.timeSlot = "";
+                                customer.reservedItems.Remove(equipment);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Something is wrong");
+                                Console.ReadLine();
                             }
                         }
-                        customer.reservedItems.Remove(equipment);
 						Console.WriteLine($"You have canceled your reservation of {equipment.name} at {equipment.timeSlot}");
 						input("Press enter...");
 						return;
@@ -601,8 +604,7 @@ namespace Gym_Booking_Manager
 						return;
 					}
 				}
-                Console.Clear();
-				
+                Console.Clear();		
 			}
 		}
 		static public string input(string prompt)
@@ -670,6 +672,11 @@ namespace Gym_Booking_Manager
         {
             owner = id;
         }
+
+		public override string ToString()
+		{
+            return $"{owner}";
+		}
 	}
 	internal class Customer : User
     {

@@ -22,7 +22,7 @@ namespace Gym_Booking_Manager
 			"13:00-14:00",
 			"14:00-15:00"
 		};
-		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, Availability availability = Availability.Available, string timeSlot = "",IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, owner = null, calendar)
+		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, Availability availability = Availability.Available, string timeSlot = "",IReservingEntity owner = null, Calendar calendar = null) : base(name, TimeSlot, "" ,owner = null, calendar)
         {
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
@@ -323,7 +323,7 @@ namespace Gym_Booking_Manager
 						Console.WriteLine("There are no Sport Equipments available");
 						Console.WriteLine("Press enter to go back");
 						Console.ReadLine();
-						User.ReserveMenu(accessLevel);
+                        return;
 					};
 				}
 				n = Convert.ToInt32(input("What equipment would you like to reserve?\n"));
@@ -337,9 +337,16 @@ namespace Gym_Booking_Manager
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
 					temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-					customer.reservedItems.Add(new Equipment(temp[n - 1].name, temp[n-1].equipmentType , temp[n-1].equipmentCategory, 0,temp[n-1].timeSlot));
+                     
+					customer.reservedItems.Add(new Equipment(temp[n - 1].name, temp[n-1].equipmentType , temp[n-1].equipmentCategory, 0,temp[n-1].timeSlot, temp[n-1].owner));
                     // TBD? Save in the Reserved list in Calendar?
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
+
+                    Console.WriteLine($"{temp[n-1].name}, {temp[n - 1].reservedTimeSlot[0]}, {temp[n-1].timeSlot}, {temp[n-1].owner.ToString}");
+                    Console.WriteLine($"{customer.reservedItems[0].name}, {customer.reservedItems[0].timeslot}, {customer.reservedItems[0].owner}");
+                    Console.WriteLine(customer.reservedItems.Count);
+                    Console.WriteLine(customer.reservedItems[0]);
+
                     input("Press enter...");
                     Console.Clear();
                     return;
