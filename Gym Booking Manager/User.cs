@@ -111,11 +111,11 @@ namespace Gym_Booking_Manager
 				}
 				else if (reservedItemsList[i] is Space space)
 				{
-					Console.WriteLine($"{i + 1}. {space.name}, {space.spaceCategory}, {space.timeSlot}");
+					Console.WriteLine($"{i + 1}. {space.name}, {space.spaceCategory}, {space.timeslot}");
 				}
 				else if (reservedItemsList[i] is PersonalTrainer trainer)
 				{
-					Console.WriteLine($"{i + 1}. {trainer.name}, {trainer.trainerCategory}, {trainer.timeSlot}");
+					Console.WriteLine($"{i + 1}. {trainer.name}, {trainer.trainerCategory}, {trainer.timeslot}");
 				}
 			}
 		}
@@ -172,22 +172,22 @@ namespace Gym_Booking_Manager
 				}
 				else if (customer.reservedItems[i - 1] is Space space)
 				{
-					confirm = input($"You want to cancel your reservation of {space.name} at {space.timeSlot}\n" +
+					confirm = input($"You want to cancel your reservation of {space.name} at {space.timeslot}\n" +
 						$"Is this correct? Y / N\n").ToLower();
 
 					if (confirm == "y")
 					{
 						foreach (Space OSpace in Space.spaceList)
 						{
-							if (OSpace.name == space.name && OSpace.owner == space.owner && OSpace.reservedTimeSlot.Contains(space.timeSlot))
+							if (OSpace.name == space.name && OSpace.owner == space.owner && OSpace.reservedTimeSlot.Contains(space.timeslot))
 							{
-								OSpace.reservedTimeSlot.Remove(space.timeSlot);
+								OSpace.reservedTimeSlot.Remove(space.timeslot);
 								OSpace.owner = null;
-								OSpace.timeSlot = "";
+								OSpace.timeslot = "";
 							}
 						}
 						customer.reservedItems.Remove(space);
-						Console.WriteLine($"You have canceled your reservation of {space.name} at {space.timeSlot}");
+						Console.WriteLine($"You have canceled your reservation of {space.name} at {space.timeslot}");
 						input("Press enter...");
 						return;
 					}
@@ -198,22 +198,22 @@ namespace Gym_Booking_Manager
 				}
 				else if (customer.reservedItems[i - 1] is PersonalTrainer personalTrainer)
 				{
-					confirm = input($"You want to cancel your reservation of {personalTrainer.name} at {personalTrainer.timeSlot}\n" +
+					confirm = input($"You want to cancel your reservation of {personalTrainer.name} at {personalTrainer.timeslot}\n" +
 						$"Is this correct? Y / N\n").ToLower();
 
 					if (confirm == "y")
 					{
 						foreach (PersonalTrainer PT in PersonalTrainer.personalTrainers)
 						{
-							if (PT.name == personalTrainer.name && PT.owner == personalTrainer.owner && PT.reservedTimeSlot.Contains(personalTrainer.timeSlot))
+							if (PT.name == personalTrainer.name && PT.owner == personalTrainer.owner && PT.reservedTimeSlot.Contains(personalTrainer.timeslot))
 							{
-								PT.reservedTimeSlot.Remove(personalTrainer.timeSlot);
+								PT.reservedTimeSlot.Remove(personalTrainer.timeslot);
 								PT.owner = null;
-								PT.timeSlot = "";
+								PT.timeslot = "";
 							}
 						}
 						customer.reservedItems.Remove(personalTrainer);
-						Console.WriteLine($"You have canceled your reservation of {personalTrainer.name} at {personalTrainer.timeSlot}");
+						Console.WriteLine($"You have canceled your reservation of {personalTrainer.name} at {personalTrainer.timeslot}");
 						input("Press enter...");
 						return;
 					}
