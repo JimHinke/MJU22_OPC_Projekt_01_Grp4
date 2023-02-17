@@ -15,7 +15,9 @@ namespace Gym_Booking_Manager
 {
     internal class GroupSchedule : Resources
     {
-        public static List<GroupActivity> groupScheduleList = new List<GroupActivity>();
+        private static List<GroupActivity> _groupScheduleList = new List<GroupActivity>();
+        public static List<GroupActivity> groupScheduleList { get { return _groupScheduleList; } set { _groupScheduleList = value; } }
+
 
         public static List<string> TypeOfActivity = new List<string>()
         {
@@ -23,7 +25,6 @@ namespace Gym_Booking_Manager
             "Group Gym Training",
             "Yoga Class"
         };
-        public List<GroupActivity> Activity { get; set; }
 
         //--Metod för att skapa en ny groupActivity
         public static void addActivity()
