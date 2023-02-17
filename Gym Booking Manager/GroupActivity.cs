@@ -89,7 +89,7 @@ namespace Gym_Booking_Manager
                 $"Space: {space.name}\n" +
                 $"Equipment: {equipmentNames}\n" +
                 $"Personal Trainer: {personalTrainerName}\n" +
-                $"---------------------------------------------\n";
+                $"---------------------------------------------";
         }
         public string CSVify()
         {

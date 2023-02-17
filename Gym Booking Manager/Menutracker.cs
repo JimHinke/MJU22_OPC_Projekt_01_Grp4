@@ -94,6 +94,7 @@ namespace Gym_Booking_Manager
                 switch (command)
                 {
                     case 1:
+                        Console.Clear();
                         LoginMenu();
                         break;
                     case 2:
@@ -122,17 +123,10 @@ namespace Gym_Booking_Manager
                         UserMenu();
                         break;
                                             
-                    case 3:
-						if (logedInUser == null)
-						{
-							logedInUser = new Customer("No member", "No Phone", "No Email", AccessLevels.NonPayingNonMember);
-							UserMenu();
-							break;
-						}
-						else
-						{
-							Console.WriteLine("You cannot reach this page, since you are a member.");
-						}
+                    case 3:						
+						logedInUser = new Customer("No member", "No Phone", "No Email", AccessLevels.NonPayingNonMember);
+                        Console.Clear();
+						UserMenu();	
 						break;
 					case 4:
                         Console.WriteLine("\nExiting program...");
@@ -145,11 +139,13 @@ namespace Gym_Booking_Manager
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.WriteLine("Invalid input, type a number");
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
             }
-            catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+            catch { Console.WriteLine("Invalid input. Press Enter to try again!"); Console.ReadLine(); Console.Clear(); }
         }
         public static void LoginMenu()
         {
@@ -211,19 +207,17 @@ namespace Gym_Booking_Manager
                         }
                         break;
                     case 5:
+                        Console.Clear();
                         MainMenu();
                         break;
                     default:
-                        Console.WriteLine("Invalid input, type a number");
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
             }
-            catch (FormatException e)
-            {
-                //FormatException error message
-                Console.WriteLine("Error: Please enter a valid number.");
-                LoginMenu();
-            }
+            catch { Console.WriteLine("Invalid input. Press Enter to try again!"); Console.ReadLine(); Console.Clear(); }
         }
 
         //ADMIN
@@ -239,74 +233,75 @@ namespace Gym_Booking_Manager
                 try
                 {
                     command = int.Parse(Console.ReadLine());
+                    switch (command)
+                    {
+                        case 1:
+                            Console.Clear();
+                            // View logs 
+                            //ListAllLogs();
+                            break;
+                        case 2:
+						    // Purchase membership
+						    PurchaseMembershipForCustomer();
+						    break;
+                        case 3:
+                            Console.Clear();
+                            // Manage Account
+                            //Console.WriteLine("Enter the log index to view: ");
+                            //int logIndex = int.Parse(Console.ReadLine());
+                            //ViewLog(logIndex);
+                            break;
+                        case 4:
+                            Console.Clear();
+						    // Purchase daypass
+						    PurchaseDayPassForCustomer();
+						    break;
+                        case 5:
+                            Console.Clear();
+						    // Cancel reservation
+						    CancelReservationForCustomer();
+						    break;
+                        case 6:
+                            Console.Clear();
+                            GroupSchedule.showActivities();
+                            Console.WriteLine("Press Enter to continue!");
+                            Console.ReadLine();
+                            Console.Clear();                            
+                            break;
+                        case 7:
+                            Console.Clear();
+                            manageSchedule();
+                            break;
+                        case 8:
+                            Console.Clear();
+						    // Make reservation
+						    MakeReservationForCustomer();
+						    break;
+                        case 9:
+                            Console.Clear();
+                            // View items
+                            ViewItems();
+                            break;
+                        case 10:
+                            Console.Clear();
+                            RestrictItem();
+                            break;
+                        case 11:
+                            Console.Clear();
+                            // TODO: Add item
+                            break;
+                        case 12:
+                            Console.Clear();
+						    Menutracker.MainMenu();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid input. Press Enter to try again!");
+                            Console.ReadLine();
+                            Console.Clear();
+                            break;
+                    }
                 }
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid input, please enter a valid number.");
-                    continue;
-                }
-                switch (command)
-                {
-                    case 1:
-                        Console.Clear();
-                        // View logs 
-                        //ListAllLogs();
-                        break;
-                    case 2:
-						// Purchase membership
-						PurchaseMembershipForCustomer();
-						break;
-                    case 3:
-                        Console.Clear();
-                        // Manage Account
-                        //Console.WriteLine("Enter the log index to view: ");
-                        //int logIndex = int.Parse(Console.ReadLine());
-                        //ViewLog(logIndex);
-                        break;
-                    case 4:
-                        Console.Clear();
-						// Purchase daypass
-						PurchaseDayPassForCustomer();
-						break;
-                    case 5:
-                        Console.Clear();
-						// Cancel reservation
-						CancelReservationForCustomer();
-						break;
-                    case 6:
-                        Console.Clear();
-                        GroupSchedule.showActivities();
-                        break;
-                    case 7:
-                        Console.Clear();
-                        manageSchedule();
-                        break;
-                    case 8:
-                        Console.Clear();
-						// Make reservation
-						MakeReservationForCustomer();
-						break;
-                    case 9:
-                        Console.Clear();
-                        // View items
-                        ViewItems();
-                        break;
-                    case 10:
-                        Console.Clear();
-                        RestrictItem();
-                        break;
-                    case 11:
-                        Console.Clear();
-                        // TODO: Add item
-                        break;
-                    case 12:
-                        Console.Clear();
-						Menutracker.MainMenu();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input, type a number");
-                        break;
-                }
+                catch { Console.WriteLine("Invalid input. Press Enter to try again!"); Console.ReadLine(); Console.Clear(); }
             }
         }
 
@@ -350,7 +345,9 @@ namespace Gym_Booking_Manager
                     case 5:
                         Console.Clear();
                         GroupSchedule.showActivities();
-                        Console.Clear();
+                        Console.WriteLine("Press Enter to continue!");
+                        Console.ReadLine();
+                        Console.Clear();                        
                         break;
                     case 6:
                         Console.Clear();
@@ -380,7 +377,9 @@ namespace Gym_Booking_Manager
 						MainMenu();
                         break;
                     default:
-                        Console.WriteLine("Invalid input, type a number");
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
             }
@@ -389,8 +388,7 @@ namespace Gym_Booking_Manager
         //CUSTOMER
         public static void UserMenu()
         {
-
-            Console.Clear();
+            //Console.Clear();
             if (logedInUser.accessLevels == AccessLevels.NonPayingNonMember)
             {
                 Console.WriteLine("-------------None Member Access Menu-------------");                
@@ -432,8 +430,12 @@ namespace Gym_Booking_Manager
 						// Probably due to problem i saving in MakeReservatio
                         Customer.CancelReservation(logedInUser.ID, logedInUser, logedInUser.accessLevels);
                            break;
-                    case 4:                      
-                        GroupSchedule.showActivities();
+                    case 4:
+                        Console.Clear();
+                        GroupSchedule.showActivities();                        
+                        Console.WriteLine("Press Enter to continue!");
+                        Console.ReadLine();
+                        Console.Clear();
                         UserMenu();
                         break;
                     case 5:
@@ -465,16 +467,13 @@ namespace Gym_Booking_Manager
                         MainMenu();
                         break;
                     default:
-                        Console.WriteLine("Logged out");
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
             }
-            catch (FormatException e)
-            {
-                //FormatException error message
-                Console.WriteLine("Error: Please enter a valid number.");
-                UserMenu();
-            }
+            catch { Console.WriteLine("Invalid input. Press Enter to try again!"); Console.ReadLine(); Console.Clear(); }
         }
         public static void DayPassMenu()
         {
@@ -510,6 +509,9 @@ namespace Gym_Booking_Manager
                         // View Group Schedule
                         Console.Clear();
                         GroupSchedule.showActivities();
+                        Console.WriteLine("Press Enter to continue!");
+                        Console.ReadLine();
+                        Console.Clear();                        
                         break;
                     case 5:
 						// Make reservation | Saving is scuffed on the item
@@ -526,16 +528,13 @@ namespace Gym_Booking_Manager
 						MainMenu();
                         break;
                     default:
-                        Console.WriteLine("Invalid input, type a number");
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
             }
-            catch (FormatException e)
-            {
-                //FormatException error message
-                Console.WriteLine("Error: Please enter a valid number.");
-                DayPassMenu();
-            }
+            catch { Console.WriteLine("Invalid input. Press Enter to try again!"); Console.ReadLine(); Console.Clear(); }
 
         }
         public static void PayingMemberMenu()
@@ -550,50 +549,49 @@ namespace Gym_Booking_Manager
                 try
                 {
                     command = int.Parse(Console.ReadLine());
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("Invalid input, please enter a valid number.");
-                    continue;
-                }
+                    switch (command)
+                    {
 
-                switch (command)
-                {
-
-                    case 1:
-                        Console.Clear();
-                        // TODO: Manage Account
-                        break;
-                    case 2:
-                        Console.Clear();
-                        // Cancel reservation | Not quite functional, removes item from customer but not customer from item.
-                        // Probably due to problem i saving in MakeReservation()
-                        Customer.CancelReservation(logedInUser.ID, logedInUser, logedInUser.accessLevels);
-                        break;
-                    case 3:
-                        Console.Clear();
-                        GroupSchedule.showActivities();
-                        break;
-                    case 4:
-                        Console.Clear();
-                        // Make reservation | Saving is scuffed on the item
-                        ReserveMenu(logedInUser.accessLevels);
-                        break;
-                    case 5:
-                        Console.Clear();
-                        // View items
-                        ViewItems();
-                        Console.Clear();
-                        break;
-                    case 6:
-                        Console.Clear();
-						MainMenu();
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input, type a number");
-                        break;
+                        case 1:
+                            Console.Clear();
+                            // TODO: Manage Account
+                            break;
+                        case 2:
+                            Console.Clear();
+                            // Cancel reservation | Not quite functional, removes item from customer but not customer from item.
+                            // Probably due to problem i saving in MakeReservation()
+                            Customer.CancelReservation(logedInUser.ID, logedInUser, logedInUser.accessLevels);
+                            break;
+                        case 3:
+                            Console.Clear();
+                            GroupSchedule.showActivities();
+                            Console.WriteLine("Press Enter to continue!");
+                            Console.ReadLine();
+                            Console.Clear();                            
+                            break;
+                        case 4:
+                            Console.Clear();
+                            // Make reservation | Saving is scuffed on the item
+                            ReserveMenu(logedInUser.accessLevels);
+                            break;
+                        case 5:
+                            Console.Clear();
+                            // View items
+                            ViewItems();
+                            Console.Clear();
+                            break;
+                        case 6:
+                            Console.Clear();
+						    MainMenu();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid input. Press Enter to try again!");
+                            Console.ReadLine();
+                            Console.Clear();
+                            break;
+                    }
                 }
-
+                catch { Console.WriteLine("Invalid input. Press Enter to try again!"); Console.ReadLine(); Console.Clear(); }
             }
         }
 
@@ -621,15 +619,13 @@ namespace Gym_Booking_Manager
                         MainMenu();
                         break;
                     default:
-                        Console.WriteLine("Invalid input, type a number");
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
             }
-            catch (FormatException e)
-            {
-                //FormatException error message
-                Console.WriteLine("Error: Please enter a valid number.");
-            }
+            catch { Console.WriteLine("Invalid input. Press Enter to try again!"); Console.ReadLine(); Console.Clear(); }
         }
 
         //OTHER MENU OPTIONS
@@ -667,15 +663,13 @@ namespace Gym_Booking_Manager
                         //Program.MainMenu();
                         return;
                     default:
-                        Console.WriteLine("Invalid input, type a number");
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
             }
-            catch (FormatException e)
-            {
-                //FormatException error message
-                Console.WriteLine("Error: Please enter a valid number.");
-            }
+            catch { Console.WriteLine("Invalid input. Press Enter to try again!"); Console.ReadLine(); Console.Clear(); }
         }
         public static void ViewItems()
         {
@@ -750,7 +744,9 @@ namespace Gym_Booking_Manager
                         // Go Back
                         break;
                     default:
-                        Console.WriteLine("Not a valid choice");
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
             }
@@ -791,6 +787,9 @@ namespace Gym_Booking_Manager
                         // Go Back
                         break;
                     default:
+                        Console.WriteLine("Invalid input. Press Enter to try again!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                 }
 

@@ -30,6 +30,7 @@ namespace Gym_Booking_Manager
         {
             CsvHandler.CreateCSV();
             LoadFiles();
+
             while (true)
             {                
                 Menutracker.MainMenu();
@@ -70,7 +71,6 @@ namespace Gym_Booking_Manager
             for (int i = 0; i < GroupSchedule.groupScheduleList.Count; i++)
             {
                 Console.WriteLine(GroupSchedule.groupScheduleList[i]);
-
             }
             Console.WriteLine("---------------------------------------------------------------------\n");
             Console.ReadLine();
