@@ -600,8 +600,10 @@ namespace Gym_Booking_Manager
         //SERVICE
         public static void ServiceMenu()
         {
-            Console.WriteLine("--------------Service-------------");
-            Console.WriteLine("1. Item Repair");
+			Console.WriteLine("--------------Service-------------");
+			Console.WriteLine(logedInUser);
+			Console.WriteLine("__________________________________");
+			Console.WriteLine("1. Item Repair");
             Console.WriteLine("2. Log out");
             Console.WriteLine("----------------------------------\n");
             try
@@ -822,6 +824,7 @@ namespace Gym_Booking_Manager
         public static void ViewCustomers()
         {
             Console.Clear();
+			Console.WriteLine("--------------Customer List-------------");
 			if (Customer.customerList.Count > 0)
             {
                 for (int c = 0; c < Customer.customerList.Count; c++)
@@ -833,13 +836,17 @@ namespace Gym_Booking_Manager
             {
                 Console.WriteLine("There are no customers!");
                 Console.ReadLine();
-            }   
-            
-        }
+            }
+            Console.WriteLine("----------------------------------------");
+
+		}
         public static void MakeReservationForCustomer()
         {
-            ViewCustomers();
-            int c = int.Parse(Console.ReadLine());
+			Console.WriteLine("--------------Make Reservation-------------");
+			ViewCustomers();
+			Console.WriteLine("-------------------------------------------\n");
+			Console.WriteLine("For which customer does it concern?");
+			int c = int.Parse(Console.ReadLine());
 			User tempStaff = logedInUser;
 			logedInUser = Customer.customerList[c - 1];
 			ReserveMenu(logedInUser.accessLevels);
@@ -847,7 +854,10 @@ namespace Gym_Booking_Manager
 		}
         public static void CancelReservationForCustomer()
         {
+			Console.WriteLine("--------------Cancel Reservation-------------");
 			ViewCustomers();
+			Console.WriteLine("---------------------------------------------\n");
+			Console.WriteLine("For which customer does it concern?");
 			int c = int.Parse(Console.ReadLine());
 			User tempStaff = logedInUser;
             logedInUser = Customer.customerList[c - 1];
@@ -906,7 +916,7 @@ namespace Gym_Booking_Manager
         {
 			Console.WriteLine("--------------Purchase DayPass-------------");
 			ViewCustomers();
-			Console.WriteLine("----------------------------------------------\n");
+			Console.WriteLine("-------------------------------------------\n");
 
 			Console.WriteLine("For which customer does it concern?");
 			int c;

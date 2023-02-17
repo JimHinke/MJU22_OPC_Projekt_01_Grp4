@@ -23,7 +23,13 @@ namespace Gym_Booking_Manager
         
 		public List<string> reservedTimeSlot { get; set; }
         public static int index { get; set; } = 0;
-        public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "") :base(name,TimeSlot,"",null)
+		public static List<string> TimeSlot { get; set; } = new List<string>()
+		{
+			"12:00-13:00",
+			"13:00-14:00",
+			"14:00-15:00"
+		};
+		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "") :base(name,TimeSlot,"",null)
         {
             this.spaceCategory = spaceCategory;
             this.spaceAvailability = availability;

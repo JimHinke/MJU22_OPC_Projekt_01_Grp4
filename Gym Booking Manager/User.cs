@@ -125,104 +125,114 @@ namespace Gym_Booking_Manager
 		// Probably due to problem i saving in MakeReservation()
 		public static void CancelReservation(IReservingEntity owner, User customer, AccessLevels accessLevels)
 		{
-			while (customer.reservedItems.Count > 0)
+			if (customer.reservedItems.Count > 0)
 			{
-				Console.Clear();
-				Customer.ViewReservedItemList(customer);
-				string userInput = input("What reservation would you like to cancel?\n" +
-					"Or press 'Q' to go back\n");
-
-				if (userInput.ToUpper() == "Q")
+				while (customer.reservedItems.Count > 0)
 				{
-					return;
-				}
-				int i = int.Parse(userInput);
-				int x = 0;
-				string confirm = "";
-				Console.Clear();
-				if (customer.reservedItems[i - 1] is Equipment equipment)
-				{
-					confirm = input($"You want to cancel your reservation of {equipment.name} at {equipment.timeslot}\n" +
-						$"Is this correct? Y / N\n").ToLower();
+					Console.Clear();
+					Customer.ViewReservedItemList(customer);
+					string userInput = input("What reservation would you like to cancel?\n" +
+						"Or press 'Q' to go back\n");
 
-					if (confirm == "y")
+					if (userInput.ToUpper() == "Q")
 					{
-						foreach (Equipment equip in Equipment.equipmentList)
+						return;
+					}
+					int i = int.Parse(userInput);
+					int x = 0;
+					string confirm = "";
+					Console.Clear();
+					if (customer.reservedItems[i - 1] is Equipment equipment)
+					{
+						confirm = input($"You want to cancel your reservation of {equipment.name} at {equipment.timeslot}\n" +
+							$"Is this correct? Y / N\n").ToLower();
+
+						if (confirm == "y")
 						{
-							if (equip.name == equipment.name && equip.owner == equipment.owner && equip.reservedTimeSlot.Contains(equipment.timeslot))
+							foreach (Equipment equip in Equipment.equipmentList)
 							{
-								equip.reservedTimeSlot.Remove(equipment.timeslot);
-								equip.owner = null;
-								equip.timeslot = "";
-								customer.reservedItems.Remove(equipment);
+								if (equip.name == equipment.name && equip.owner == equipment.owner && equip.reservedTimeSlot.Contains(equipment.timeslot))
+								{
+									equip.reservedTimeSlot.Remove(equipment.timeslot);
+									equip.owner = null;
+									equip.timeslot = "";
+									customer.reservedItems.Remove(equipment);
+								}
+								else
+								{
+									Console.WriteLine("Something is wrong");
+									Console.ReadLine();
+								}
 							}
-							else
-							{
-								Console.WriteLine("Something is wrong");
-								Console.ReadLine();
-							}
+							Console.WriteLine($"You have canceled your reservation of {equipment.name} at {equipment.timeslot}");
+							input("Press enter...");
+							return;
 						}
-						Console.WriteLine($"You have canceled your reservation of {equipment.name} at {equipment.timeslot}");
-						input("Press enter...");
-						return;
-					}
-					else
-					{
-						return;
-					}
-				}
-				else if (customer.reservedItems[i - 1] is Space space)
-				{
-					confirm = input($"You want to cancel your reservation of {space.name} at {space.timeslot}\n" +
-						$"Is this correct? Y / N\n").ToLower();
-
-					if (confirm == "y")
-					{
-						foreach (Space OSpace in Space.spaceList)
+						else
 						{
-							if (OSpace.name == space.name && OSpace.owner == space.owner && OSpace.reservedTimeSlot.Contains(space.timeslot))
-							{
-								OSpace.reservedTimeSlot.Remove(space.timeslot);
-								OSpace.owner = null;
-								OSpace.timeslot = "";
-							}
+							return;
 						}
-						customer.reservedItems.Remove(space);
-						Console.WriteLine($"You have canceled your reservation of {space.name} at {space.timeslot}");
-						input("Press enter...");
-						return;
 					}
-					else
+					else if (customer.reservedItems[i - 1] is Space space)
 					{
-						return;
-					}
-				}
-				else if (customer.reservedItems[i - 1] is PersonalTrainer personalTrainer)
-				{
-					confirm = input($"You want to cancel your reservation of {personalTrainer.name} at {personalTrainer.timeslot}\n" +
-						$"Is this correct? Y / N\n").ToLower();
+						confirm = input($"You want to cancel your reservation of {space.name} at {space.timeslot}\n" +
+							$"Is this correct? Y / N\n").ToLower();
 
-					if (confirm == "y")
-					{
-						foreach (PersonalTrainer PT in PersonalTrainer.personalTrainers)
+						if (confirm == "y")
 						{
-							if (PT.name == personalTrainer.name && PT.owner == personalTrainer.owner && PT.reservedTimeSlot.Contains(personalTrainer.timeslot))
+							foreach (Space OSpace in Space.spaceList)
 							{
-								PT.reservedTimeSlot.Remove(personalTrainer.timeslot);
-								PT.owner = null;
-								PT.timeslot = "";
+								if (OSpace.name == space.name && OSpace.owner == space.owner && OSpace.reservedTimeSlot.Contains(space.timeslot))
+								{
+									OSpace.reservedTimeSlot.Remove(space.timeslot);
+									OSpace.owner = null;
+									OSpace.timeslot = "";
+								}
 							}
+							customer.reservedItems.Remove(space);
+							Console.WriteLine($"You have canceled your reservation of {space.name} at {space.timeslot}");
+							input("Press enter...");
+							return;
 						}
-						customer.reservedItems.Remove(personalTrainer);
-						Console.WriteLine($"You have canceled your reservation of {personalTrainer.name} at {personalTrainer.timeslot}");
-						input("Press enter...");
-						return;
+						else
+						{
+							return;
+						}
 					}
-					else
+					else if (customer.reservedItems[i - 1] is PersonalTrainer personalTrainer)
 					{
-						return;
+						confirm = input($"You want to cancel your reservation of {personalTrainer.name} at {personalTrainer.timeslot}\n" +
+							$"Is this correct? Y / N\n").ToLower();
+
+						if (confirm == "y")
+						{
+							foreach (PersonalTrainer PT in PersonalTrainer.personalTrainers)
+							{
+								if (PT.name == personalTrainer.name && PT.owner == personalTrainer.owner && PT.reservedTimeSlot.Contains(personalTrainer.timeslot))
+								{
+									PT.reservedTimeSlot.Remove(personalTrainer.timeslot);
+									PT.owner = null;
+									PT.timeslot = "";
+								}
+							}
+							customer.reservedItems.Remove(personalTrainer);
+							Console.WriteLine($"You have canceled your reservation of {personalTrainer.name} at {personalTrainer.timeslot}");
+							input("Press enter...");
+							return;
+						}
+						else
+						{
+							return;
+						}
 					}
+					Console.Clear();
 				}
+			}
+			else
+			{
+				Console.WriteLine("There are no reserved items.\n" +
+					"Press enter to continue!");
+				Console.ReadLine();
 				Console.Clear();
 			}
 		}
