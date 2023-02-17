@@ -155,7 +155,7 @@ namespace Gym_Booking_Manager
         {
             //As the loginsystem is not complete we have to set an given user on what login-type you are using.
 
-            // These all does get added everytime you log in, not great
+            //These all does get added everytime you log in, not great
             //This can be changed betewen PayingMember/DayPassUser
             Customer testCustomer = new Customer("Test Customer", "0987321", "testCustomer@test.se", AccessLevels.PayingMember) { uniqueID = 10 };
 
@@ -196,7 +196,7 @@ namespace Gym_Booking_Manager
                         break;
                     case 4:
                         Console.Clear();
-                        //User.logedInUser = testCustomer;
+                        User.logedInUser = testCustomer;
                         if (logedInUser != null && logedInUser.accessLevels == AccessLevels.DayPassUser)
                         {
                             DayPassMenu();

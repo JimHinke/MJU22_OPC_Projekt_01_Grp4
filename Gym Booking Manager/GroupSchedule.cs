@@ -9,7 +9,7 @@ using static Gym_Booking_Manager.Space;
 using static System.Collections.Specialized.BitVector32;
 
 #if DEBUG
-[assembly: InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo("GroupScheduleTests")]
 #endif
 namespace Gym_Booking_Manager
 {
@@ -22,12 +22,6 @@ namespace Gym_Booking_Manager
             "Spinning Class",
             "Group Gym Training",
             "Yoga Class"
-        };
-        public static List<string> TimeSlot = new List<string>()
-        {
-            "12:00-13:00",
-            "13:00-14:00",
-            "14:00-15:00"
         };
         public List<GroupActivity> Activity { get; set; }
 
@@ -77,7 +71,7 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("You need atleast one personal trainer for this activity\n");
                     //break;
                 }
-                else if(InstructorChoice == 0 && personalTrainerList != null)
+                else if (InstructorChoice == 0 && personalTrainerList != null)
                 {
                     Console.WriteLine("inte är null");
                     break;
@@ -140,7 +134,7 @@ namespace Gym_Booking_Manager
                 Console.WriteLine("Activity is added to the Schedule");
                 Console.WriteLine("---------------------------------");
 
-                
+
             }
             else if (entryChoice == "n") //--CLEARAR ALLA VAL VID "N"
             {
@@ -156,7 +150,7 @@ namespace Gym_Booking_Manager
         }
 
         //--Metod för att lägga till en user/customer i en groupActivity
-        public static void addCustomerToActivity(Customer customer, GroupActivity groupActivity) 
+        public static void addCustomerToActivity(Customer customer, GroupActivity groupActivity)
         {
 
             if (groupActivity.participants.Count < groupActivity.participantLimit)
@@ -184,19 +178,11 @@ namespace Gym_Booking_Manager
         {
             showActivities();
 
-            List<GroupActivity> tempList = new List<GroupActivity>();
-            if (tempList[0] != groupScheduleList[i])
-            {
-                Console.WriteLine("TEST");
-                Customer.SendNotification(groupScheduleList[i].participants, "Changes where made in your group activity session", true);
-            }
-
             string editActivityChoice = input("Whats activity do you want to edit?\n>");
             for (int i = 0; i < groupScheduleList.Count; i++)
             {
                 if (editActivityChoice.ToLower() == groupScheduleList[i].typeOfActivity.ToLower())
                 {
-                    tempList.Add(groupScheduleList[i]);
                     Console.WriteLine("1: <Name> - Name of this Activity");
                     Console.WriteLine("2: <ActivityId> - The uniq ID for this Activity");
                     Console.WriteLine("3: <Particpanat Limit> - The number of participants for this Activity");
@@ -208,25 +194,40 @@ namespace Gym_Booking_Manager
                     Console.WriteLine("9: <Go Back> - Go back");
 
                     int command = int.Parse(Console.ReadLine());
+                    bool changesMade = false;
                     switch (command)
                     {
                         case 1:
                             //--Ändradet av "namnet" (typeOfActivity) 
                             string newName = input("Whats the new name for this Activity?\n>");
-                            groupScheduleList[i].typeOfActivity = newName;
-                            Console.WriteLine($"The new name for this activity is: {newName}");
+                            if (groupScheduleList[i].typeOfActivity != newName)
+                            {
+                                groupScheduleList[i].typeOfActivity = newName;
+                                changesMade = true;
+                                Console.WriteLine($"The new name for this activity is: {newName}");
+                            }
                             break;
                         case 2:
                             //--Ändrandet av uniqID
                             int newID = Convert.ToInt32(input("Whats the new uniqID for this Activity?\n>"));
-                            groupScheduleList[i].activtyId = newID;
-                            Console.WriteLine($"The new uniqID for this activity is: {newID}");
+                            if (groupScheduleList[i].activtyId != newID)
+                            {
+                                groupScheduleList[i].activtyId = newID;
+                                Console.WriteLine($"The new uniqID for this activity is: {newID}");
+                                changesMade = true;
+                            }
+
                             break;
                         case 3:
                             //--Ändra participant limit
                             int newParticipantLimit = Convert.ToInt32(input("Whats the new participant limit?\n>"));
-                            groupScheduleList[i].participantLimit = newParticipantLimit;
-                            Console.WriteLine($"The new participation limit is: {newParticipantLimit}");
+                            if (groupScheduleList[i].participantLimit != newParticipantLimit)
+                            {
+                                groupScheduleList[i].participantLimit = newParticipantLimit;
+                                Console.WriteLine($"The new participation limit is: {newParticipantLimit}");
+                                changesMade = true;
+                            }
+
                             break;
                         case 4:
                             //--TBD Då denna påverkar Spaces,Equipment och PersonalTrainers så är denna satt som TBD
@@ -242,10 +243,12 @@ namespace Gym_Booking_Manager
                             string removeParticipant = input("What participant do you want to remove? (Full name)\n>");
                             for (int j = 0; j < participants.Count; j++)
                             {
+
                                 if (participants[j].name == removeParticipant)
                                 {
                                     participants.RemoveAt(j);
                                     Console.WriteLine($"Removed {removeParticipant} from this Activity");
+                                    Console.WriteLine($"Sent a message to {participants[j].name}");
                                     break;
                                 }
                             }
@@ -254,8 +257,12 @@ namespace Gym_Booking_Manager
                             //--Ändra Space i groupActivity till en annan space
                             Space.ShowAvailable();
                             int changeSpace = Convert.ToInt32(input($"What space would you like to add instead of '{groupScheduleList[i].space.name}'?\n>"));
-                            groupScheduleList[i].space = Space.spaceList[changeSpace-1];
-                            Console.WriteLine($"Changed to location to {Space.spaceList[changeSpace-1].name}");
+                            if (groupScheduleList[i].space != Space.spaceList[changeSpace - 1])
+                            {
+                                groupScheduleList[i].space = Space.spaceList[changeSpace - 1];
+                                Console.WriteLine($"Changed to location to {Space.spaceList[changeSpace - 1].name}");
+                                changesMade = true;
+                            }
                             break;
                         case 7:
                             //--Tar bort Equipment från groupActivity. Körs enbart en gång så man får gå in i denna menyn igen om man vill ta bort flera
@@ -265,18 +272,18 @@ namespace Gym_Booking_Manager
                                 Console.WriteLine(equipment.name);
                             }
                             string removeEquipment = input("What equipment do you want to remove? (Full name)\n>");
-                            for (int y = 0; y< equipmentAcitivy.Count; y++)
+                            for (int y = 0; y < equipmentAcitivy.Count; y++)
                             {
                                 if (equipmentAcitivy[y].name.ToLower() == removeEquipment.ToLower())
                                 {
                                     equipmentAcitivy.RemoveAt(y);
                                     Console.WriteLine($"Removed {removeEquipment} from this Activity");
-                                    //equipmentAcitivy[y].reservedTimeSlot.Remove(groupScheduleList[i].timeSlot);
                                     for (int x = 0; x < equipmentAcitivy.Count; x++)
                                     {
                                         if (equipmentAcitivy[x].reservedTimeSlot.Contains(groupScheduleList[i].timeSlot))
                                         {
                                             equipmentAcitivy[x].reservedTimeSlot.RemoveAt(x);
+                                            changesMade = true;
                                         }
                                     }
                                     break;
@@ -287,17 +294,35 @@ namespace Gym_Booking_Manager
                             //--Lägg till ETT equipment i groupActivity. Samma princip som att ta bort equipment
                             Equipment.ShowAvailable(groupScheduleList[i].timeSlot);
                             int addEquipment = Convert.ToInt32(input("What equipment do you want to add?"));
-                            groupScheduleList[i].equipment.Add(Equipment.equipmentList[addEquipment - 1]);
-                            Equipment.ReservEquipment(Equipment.equipmentList[addEquipment - 1], groupScheduleList[i].timeSlot, groupScheduleList[i].typeOfActivity);
+                            if (!groupScheduleList[i].equipment.Contains(Equipment.equipmentList[addEquipment - 1]))
+                            {
+                                groupScheduleList[i].equipment.Add(Equipment.equipmentList[addEquipment - 1]);
+                                Equipment.ReservEquipment(Equipment.equipmentList[addEquipment - 1], groupScheduleList[i].timeSlot, groupScheduleList[i].typeOfActivity);
+                                changesMade = true;
+                            }
                             break;
                         default:
                             Console.WriteLine("Invalid input, type a number");
                             break;
                     }
+                    if (changesMade)
+                    {
+                        // Send message to participants if changes was made
+                        Console.Clear();
+                        string message = $"The {groupScheduleList[i].typeOfActivity} activity has been updated. Please check the details.";
+                        Console.WriteLine("------------------------------------------");
+                        Console.WriteLine(message);
+                        Console.WriteLine("------------------------------------------");
+                        foreach (Customer participant in groupScheduleList[i].participants)
+                        {
+                            Console.WriteLine($"This message has been sent to the following affected customer: {participant.name} \n");
+                        }
+                    }
                 }
             }
         }
         //--Metod för att ta bort groupActivity
+        //--TBD deleteActivity återställer inte timeSlot på de object som ligger inne på groupActivityn
         public static void deleteActivity()
         {
             showActivities();

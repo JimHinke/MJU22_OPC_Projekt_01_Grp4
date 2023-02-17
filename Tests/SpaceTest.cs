@@ -39,8 +39,8 @@ namespace Tests
                     spaceCategory: (SpaceCategory)Enum.Parse(typeof(SpaceCategory), constructionArgs["category"]),
                     availability: 0,
                     owner: null,
-                    timeSlot: "",
-                    calendar: null);
+                    timeSlot: ""
+                    );
             }
             catch (Exception e)
             {

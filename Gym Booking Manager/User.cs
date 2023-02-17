@@ -94,22 +94,6 @@ namespace Gym_Booking_Manager
             this.reservedItems = new List<Resources>();
             uniqueID = new Random().Next(0, 1000);
         }
-        public static void SendNotification(Customer customer, string message, bool useSMS)
-        {
-            string log = "Sending";
-            foreach (User participants in participant)
-            {
-                if (useSMS)
-                {
-                    log += " SMS to " + participants.phone + ": " + message;
-                }
-                else
-                {
-                    log += " email to " + participants.email + ": " + message;
-                }
-            }
-            Console.WriteLine(log);
-        }
 		public static void ViewReservedItemList(User customer)
 		{
 			var reservedItemsList = customer.reservedItems
