@@ -339,11 +339,6 @@ namespace Gym_Booking_Manager
         }
 
         //--Refaktorerad input prompt
-        static public string input(string prompt)
-        {
-            Console.Write(prompt);
-            return Console.ReadLine();
-        }
     }
 }
 

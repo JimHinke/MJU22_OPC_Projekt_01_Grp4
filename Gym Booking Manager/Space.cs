@@ -15,7 +15,7 @@ using static Gym_Booking_Manager.Space;
 #endif
 namespace Gym_Booking_Manager
 {
-    internal class Space : Resources, IReservable, ICSVable, IComparable<Space>
+    internal class Space : Resources, IReservable, ICSVable
     {
        
         public SpaceCategory spaceCategory { get; set; }
@@ -37,15 +37,7 @@ namespace Gym_Booking_Manager
             this.owner = owner;
             this.reservedTimeSlot= new List<string>();
         }
-        public int CompareTo(Space? other)
-        {
-            // If other is not a valid object reference, this instance is greater.
-            if (other == null) return 1;
-            // Sort primarily on category.
-            if (this.spaceCategory != other.spaceCategory) return this.spaceCategory.CompareTo(other.spaceCategory);
-            // When category is the same, sort on name.
-            return this.name.CompareTo(other.name);
-        }
+
         public override string ToString()
         {
             return $"Namn: {name}, Category: {spaceCategory}, Availability: {spaceAvailability}"; // TODO: Don't use CSVify. Make it more readable.
@@ -57,7 +49,7 @@ namespace Gym_Booking_Manager
         }        
         public enum SpaceCategory
         {
-            Hall = 1,
+            Hall,
             Lane,
             Studio
         }
@@ -188,11 +180,6 @@ namespace Gym_Booking_Manager
 			}
 		}
 
-		static public string input(string prompt)
-		{
-			Console.Write(prompt);
-			return Console.ReadLine();
-		}
         public static Space FindByName(string name)
         {
             var space = spaceList.FirstOrDefault(s => s.name == name);            
