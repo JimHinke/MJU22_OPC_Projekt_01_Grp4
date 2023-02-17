@@ -126,6 +126,7 @@ namespace Gym_Booking_Manager
 						if (logedInUser == null)
 						{
 							logedInUser = new Customer("No member", "No Phone", "No Email", AccessLevels.NonPayingNonMember);
+                            Console.Clear();
 							UserMenu();
 							break;
 						}
@@ -350,7 +351,6 @@ namespace Gym_Booking_Manager
                     case 5:
                         Console.Clear();
                         GroupSchedule.showActivities();
-                        Console.Clear();
                         break;
                     case 6:
                         Console.Clear();
@@ -390,7 +390,7 @@ namespace Gym_Booking_Manager
         public static void UserMenu()
         {
 
-            Console.Clear();
+            //Console.Clear();
             if (logedInUser.accessLevels == AccessLevels.NonPayingNonMember)
             {
                 Console.WriteLine("-------------None Member Access Menu-------------");                
@@ -660,7 +660,7 @@ namespace Gym_Booking_Manager
                     case 3:
                         //TODO Delete Group Activity
                         Console.Clear();
-                        GroupSchedule.addActivity();
+                        GroupSchedule.deleteActivity();
                         break;
                     case 4:
                         //Console.Clear();
