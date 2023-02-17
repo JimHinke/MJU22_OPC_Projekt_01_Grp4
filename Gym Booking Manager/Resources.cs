@@ -20,14 +20,15 @@ namespace Gym_Booking_Manager
         public static List<PersonalTrainer> personalTrainers { get { return _personalTrainers; } set { _personalTrainers = value; } }
         private static List<Space> _spaceList = new List<Space>();
 		public static List<Space> spaceList { get { return _spaceList; } set { _spaceList = value; } }
-
-        public static List<string> TimeSlot = new List<string>()
+		
+        // Equipment, Personal Trainer and Space can for some reason only access this occationally.
+        public static List<string> TimeSlot { get; set; } = new List<string>()
         {
-            "12:00-13:00",
-            "13:00-14:00",
-            "14:00-15:00"
+	        "12:00-13:00",
+	        "13:00-14:00",
+	        "14:00-15:00"
         };
-        public Resources(string name = "", List<string> timeSlot = null, string timeslot = "" ,IReservingEntity owner = null)
+		public Resources(string name = "", List<string> timeSlot = null, string timeslot = "" ,IReservingEntity owner = null)
         {
             this.name = name;
             TimeSlot = timeSlot;

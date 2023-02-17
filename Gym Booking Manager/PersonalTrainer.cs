@@ -15,8 +15,14 @@ namespace Gym_Booking_Manager
         public TrainerCategory trainerCategory { get; set; }
         public Availability trainerAvailability { get; set; }
         public List<string> reservedTimeSlot { get; set; }
-        public static int index { get; set; } = 0;      
-        public PersonalTrainer(string name = "", TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, IReservingEntity owner = null, string timeSlot = "")
+        public static int index { get; set; } = 0;
+		public static List<string> TimeSlot { get; set; } = new List<string>()
+		{
+			"12:00-13:00",
+			"13:00-14:00",
+			"14:00-15:00"
+		};
+		public PersonalTrainer(string name = "", TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, IReservingEntity owner = null, string timeSlot = "")
         {
             this.owner = owner;
             this.name = name;
