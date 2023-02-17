@@ -6,19 +6,24 @@ namespace Gym_Booking_Manager
 {
     internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>
     {
-
-        public string timeSlot { get; set; }
-        public List <string> reservedTimeSlot { get; set; }
-        private EquipmentType equipmentType;
+        private List <string> _reservedTimeSlot = new List<string>();
+		public List<string> reservedTimeSlot { get { return _reservedTimeSlot; } set { _reservedTimeSlot = value; } }
+		private EquipmentType equipmentType;
         public EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
-        public static int index = 0;
+        public static int index { get; set; } = 0;
+		public static List<string> TimeSlot { get; set; } = new List<string>()
+		{
+			"12:00-13:00",
+			"13:00-14:00",
+			"14:00-15:00"
+		};
+
 		public Equipment(string name = "", EquipmentType equipmentType = 0, EquipmentCategory equipmentCategory = 0, Availability availability = Availability.Available, string timeSlot = "",IReservingEntity owner = null) : base(name, TimeSlot, "" ,owner = null)
         {
             this.equipmentAvailability = availability;
             this.equipmentType = equipmentType;
             this.equipmentCategory = equipmentCategory;
-			this.timeSlot = timeSlot;
 			this.reservedTimeSlot = new List<string>();
 			this.owner = owner;
 		}
@@ -314,9 +319,9 @@ namespace Gym_Booking_Manager
                     // TBD: Somthing is not quite right in the saving...
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
-					temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
+					temp[n - 1].timeslot = TimeSlot[timeSlotChoice - 1];
                      
-					customer.reservedItems.Add(new Equipment(temp[n - 1].name, temp[n-1].equipmentType , temp[n-1].equipmentCategory, 0,temp[n-1].timeSlot, temp[n-1].owner));
+					customer.reservedItems.Add(new Equipment(temp[n - 1].name, temp[n-1].equipmentType , temp[n-1].equipmentCategory, 0,temp[n-1].timeslot, temp[n-1].owner));
 					
 					// TBD? Save in the Reserved list in Calendar?
 					Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
