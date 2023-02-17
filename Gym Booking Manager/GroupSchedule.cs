@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -134,7 +135,7 @@ namespace Gym_Booking_Manager
                 Console.WriteLine("---------------------------------");
                 Console.WriteLine("Activity is added to the Schedule");
                 Console.WriteLine("---------------------------------");
-
+                DBStorage.saveNewGroupActivity(personalTrainerList,activityEquipmentList,temp);
 
             }
             else if (entryChoice == "n") //--CLEARAR ALLA VAL VID "N"
@@ -168,11 +169,26 @@ namespace Gym_Booking_Manager
         //--Metod för att visa alla groupActivites i groupScheduleList
         public static void showActivities()
         {
-            //Console.Clear();
+            Console.Clear();
             foreach (var activity in groupScheduleList)
             {
                 Console.WriteLine(activity);
             }
+            //var cs = "Host=localhost;Username=postgres;Password=Jim861223;Database=gym_db";
+            //using var con = new NpgsqlConnection(cs); 
+            //con.Open();
+            //string sql = "SELECT * FROM GroupActivities " +
+            //    "INNER JOIN Equipments_GroupActivity ON EquipmentID = Equipments_GroupActivity.EquipmentID " +
+            //    "INNER JOIN Equipments ON Equipments.ID = Equipments_GroupActivity.EquipmentID;";
+
+            //using var cmd = new NpgsqlCommand(sql, con);
+
+            //using NpgsqlDataReader rdr = cmd.ExecuteReader();
+            //while (rdr.Read()) 
+            //{
+            //    Console.WriteLine($"{rdr.GetInt32(0),-4} {rdr.GetString(1),-10} {rdr.GetInt32(2),10}");
+            //}
+
         }
         //--Metod för att editera befintliga groupActivites
         public static void editActivity()
@@ -339,11 +355,6 @@ namespace Gym_Booking_Manager
         }
 
         //--Refaktorerad input prompt
-        static public string input(string prompt)
-        {
-            Console.Write(prompt);
-            return Console.ReadLine();
-        }
     }
 }
 

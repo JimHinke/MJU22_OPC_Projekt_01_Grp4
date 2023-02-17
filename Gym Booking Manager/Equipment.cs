@@ -4,11 +4,11 @@ using static Gym_Booking_Manager.Space;
 
 namespace Gym_Booking_Manager
 {
-    internal class Equipment : Resources, IReservable, ICSVable, IComparable<Equipment>
+    internal class Equipment : Resources, IReservable, ICSVable
     {
         private List <string> _reservedTimeSlot = new List<string>();
 		public List<string> reservedTimeSlot { get { return _reservedTimeSlot; } set { _reservedTimeSlot = value; } }
-		private EquipmentType equipmentType;
+		public EquipmentType equipmentType { get; set; }
         public EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
         public static int index { get; set; } = 0;
@@ -211,15 +211,6 @@ namespace Gym_Booking_Manager
                 Menutracker.RestrictItem();
             }
         }
-        public int CompareTo(Equipment? other)
-        {
-            // If other is not a valid object reference, this instance is greater.
-            if (other == null) return 1;
-            if (this.equipmentCategory != other.equipmentCategory) return this.equipmentCategory.CompareTo(other.equipmentCategory);
-            return this.name.CompareTo(other.name);
-        }
-
-        // Every class C to be used for DbSet<C> should have the ICSVable interface and the following implementation.
         public string CSVify()
         {
             return $"{nameof(equipmentCategory)}:{equipmentCategory.ToString()},{nameof(equipmentType)}:{equipmentType.ToString()},{nameof(name)}:{name},{nameof(equipmentAvailability)}:{equipmentAvailability.ToString()}";
@@ -340,11 +331,6 @@ namespace Gym_Booking_Manager
                 Console.WriteLine("There is no available equipment during your choosen time.");
                 return;
 			}
-        }
-        static public string input(string prompt)
-        {
-            Console.Write(prompt);
-            return Console.ReadLine();
         }
         public static Equipment FindByName(List<Equipment> equipmentList, string name)
         {

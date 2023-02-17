@@ -35,5 +35,10 @@ namespace Gym_Booking_Manager
             this.owner = owner;
             this.timeslot = timeslot;
         }
+        static public string input(string prompt)
+        {
+            Console.Write(prompt);
+            return Console.ReadLine();
+        }
     }
 }

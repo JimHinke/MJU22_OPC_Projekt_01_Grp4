@@ -28,6 +28,7 @@ namespace Gym_Booking_Manager
         public static User logedInUser { get; set; } = null;
         public ReservingEntity ID { get; set; }
 		public List<Resources> reservedItems { get; set; }
+		public static List<Customer> userList { get; set; } = new List<Customer>();
 		protected User(string name = "", string phone = "", string email = "", AccessLevels accessLevels = 0)
         {
             this.uniqueID = new Random().Next(0, 1000);
@@ -37,7 +38,7 @@ namespace Gym_Booking_Manager
             this.accessLevels = accessLevels;
 			ID = new ReservingEntity(uniqueID);
 		}
-        public static List<Customer> userList = new List<Customer>();
+        
         public override string ToString()
         {
             return "ID: " + uniqueID + "\nName: " + name + "\nPhone: " + phone + "\nEmail: " + email + "\nAccessLevel: " + accessLevels;
@@ -83,8 +84,6 @@ namespace Gym_Booking_Manager
     {
         private static List<Customer> _customerList = new List<Customer>();
 		public static List<Customer> customerList { get { return _customerList; } set { _customerList = value; } }
-        public AccessLevels AccessLevel { get; set; }
-        public static List<string> logs = new List<string>();
         DateTime createdAt;
         public DateTime dayPassDate { get; set; }
 		public Customer(string name, string phone, string email, AccessLevels accessLevels = 0) : base(name, phone, email, accessLevels)
@@ -249,18 +248,6 @@ namespace Gym_Booking_Manager
         public Admin(string name, string phone, string email, AccessLevels accessLevels = AccessLevels.Admin) : base(name, phone, email, accessLevels)
         {
 
-        }
-        public static void ListAllLogs()
-        {
-            Console.WriteLine("Available Logs: ");
-            for (int i = 0; i < Customer.logs.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {Customer.logs[i]}");
-            }
-        }
-        public static void ViewLog(int logIndex)
-        {
-            Console.WriteLine(Customer.logs[logIndex - 1]);
         }
     }
 }

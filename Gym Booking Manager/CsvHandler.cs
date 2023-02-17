@@ -92,7 +92,7 @@ namespace Gym_Booking_Manager
                             }
 
                         }
-                        Equipment.equipmentList.Add(new Equipment(name, equipmentType, equipmentCategory, availability, reservedTimeSlot));
+                        Resources.equipmentList.Add(new Equipment(name, equipmentType, equipmentCategory, availability, reservedTimeSlot));
                     }
                 }
 
@@ -283,30 +283,30 @@ namespace Gym_Booking_Manager
             {
                 Directory.CreateDirectory("CSV");
 
-                Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
-                Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
-                Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
+                //Space.spaceList.Add(new Space("Hall", Space.SpaceCategory.Hall, Space.Availability.Available));
+                //Space.spaceList.Add(new Space("Lane", Space.SpaceCategory.Lane, Space.Availability.Available));
+                //Space.spaceList.Add(new Space("Studio", Space.SpaceCategory.Studio, Space.Availability.Available));
 
-                Equipment.equipmentList.Add(new Equipment("Treadmill", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
-                Equipment.equipmentList.Add(new Equipment("TennisRacket", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
-                Equipment.equipmentList.Add(new Equipment("RowingMachine", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
+                //Equipment.equipmentList.Add(new Equipment("Treadmill", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.Treadmill));
+                //Equipment.equipmentList.Add(new Equipment("TennisRacket", Equipment.EquipmentType.Sport, Equipment.EquipmentCategory.TennisRacket));
+                //Equipment.equipmentList.Add(new Equipment("RowingMachine", Equipment.EquipmentType.Large, Equipment.EquipmentCategory.RowingMachine));
 
-                PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Yanus Yoga", PersonalTrainer.TrainerCategory.YogaInstructor));
-                PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Gurra Gymbro", PersonalTrainer.TrainerCategory.GymInstructor));
-                PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Tomas Tennis", PersonalTrainer.TrainerCategory.TennisTeacher));
+                //PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Yanus Yoga", PersonalTrainer.TrainerCategory.YogaInstructor));
+                //PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Gurra Gymbro", PersonalTrainer.TrainerCategory.GymInstructor));
+                //PersonalTrainer.personalTrainers.Add(new PersonalTrainer("Tomas Tennis", PersonalTrainer.TrainerCategory.TennisTeacher));
 
-                GroupActivity temp = new GroupActivity(
-                                PersonalTrainer.personalTrainers, //Personal Trainer
-                                GroupSchedule.TypeOfActivity[0], //Type Of Activity
-                                23, //Unique ID set to an random number. Is this needed?
-                                1, //Particpant Limit
-                                GroupSchedule.TimeSlot[1], //Time Slot
-                                null, //List of Participants. This is not added here but rather under another menu-choice
-                                Space.spaceList[0], //What space is used for this session
-                                Equipment.equipmentList //What Equipment is used for this session
-                                );
+                //GroupActivity temp = new GroupActivity(
+                //                PersonalTrainer.personalTrainers, //Personal Trainer
+                //                GroupSchedule.TypeOfActivity[0], //Type Of Activity
+                //                23, //Unique ID set to an random number. Is this needed?
+                //                1, //Particpant Limit
+                //                GroupSchedule.TimeSlot[1], //Time Slot
+                //                null, //List of Participants. This is not added here but rather under another menu-choice
+                //                Space.spaceList[0], //What space is used for this session
+                //                Equipment.equipmentList //What Equipment is used for this session
+                //                );
 
-                GroupSchedule.groupScheduleList.Add(temp);
+                //GroupSchedule.groupScheduleList.Add(temp);
 
 
                 CsvHandler csvHandler = new CsvHandler();

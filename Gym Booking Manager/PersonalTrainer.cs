@@ -9,7 +9,7 @@ using static Gym_Booking_Manager.Space;
 
 namespace Gym_Booking_Manager
 {
-    internal class PersonalTrainer : Resources, ICSVable
+    internal class PersonalTrainer : Resources, ICSVable, IReservable
     {
         public IReservingEntity owner { get; set; }
         public TrainerCategory trainerCategory { get; set; }
@@ -136,11 +136,7 @@ namespace Gym_Booking_Manager
 
 
         }
-        static public string input(string prompt)
-        {
-            Console.Write(prompt);
-            return Console.ReadLine();
-        }
+
         public string CSVify()
         {
             return $"{nameof(trainerCategory)}:{trainerCategory.ToString()},{nameof(name)}:{name}, {nameof(trainerAvailability)}:{trainerAvailability.ToString()}";

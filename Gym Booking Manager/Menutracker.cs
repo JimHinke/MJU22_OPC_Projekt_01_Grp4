@@ -135,7 +135,6 @@ namespace Gym_Booking_Manager
                         csvHandler.WriteFile(Equipment.equipmentList, "Equipment.txt");
                         csvHandler.WriteFile(PersonalTrainer.personalTrainers, "PersonalTrainer.txt");
                         csvHandler.WriteFile(GroupSchedule.groupScheduleList, "GroupActivity.txt");
-
                         Environment.Exit(0);
                         break;
                     default:
