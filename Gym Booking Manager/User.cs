@@ -25,7 +25,7 @@ namespace Gym_Booking_Manager
         public string phone { get; set; }
         public string email { get; set; }
         public AccessLevels accessLevels { get; set; }
-        public static User logedInUser = null;
+        public static User logedInUser { get; set; } = null;
         public ReservingEntity ID { get; set; }
 		public List<Resources> reservedItems { get; set; }
 		protected User(string name = "", string phone = "", string email = "", AccessLevels accessLevels = 0)
@@ -61,7 +61,7 @@ namespace Gym_Booking_Manager
     public class ReservingEntity : IReservingEntity
     {
         public string owner { get; set; }
-        public AccessLevels AccessLevel;
+        public AccessLevels AccessLevel { get; set; }
 
         public ReservingEntity(int id, AccessLevels accessLevels = 0)
         {
@@ -81,7 +81,8 @@ namespace Gym_Booking_Manager
     }
     internal class Customer : User
     {
-        public static List<Customer> customerList = new List<Customer>();
+        private static List<Customer> _customerList = new List<Customer>();
+		public static List<Customer> customerList { get { return _customerList; } set { _customerList = value; } }
         public AccessLevels AccessLevel { get; set; }
         public static List<string> logs = new List<string>();
         DateTime createdAt;
@@ -107,7 +108,7 @@ namespace Gym_Booking_Manager
 			{
 				if (reservedItemsList[i] is Equipment equipment)
 				{
-					Console.WriteLine($"{i + 1}. {equipment.name}, {equipment.equipmentCategory}, {equipment.timeSlot}");
+					Console.WriteLine($"{i + 1}. {equipment.name}, {equipment.equipmentCategory}, {equipment.timeslot}");
 				}
 				else if (reservedItemsList[i] is Space space)
 				{
@@ -141,18 +142,18 @@ namespace Gym_Booking_Manager
 				Console.Clear();
 				if (customer.reservedItems[i - 1] is Equipment equipment)
 				{
-					confirm = input($"You want to cancel your reservation of {equipment.name} at {equipment.timeSlot}\n" +
+					confirm = input($"You want to cancel your reservation of {equipment.name} at {equipment.timeslot}\n" +
 						$"Is this correct? Y / N\n").ToLower();
 
 					if (confirm == "y")
 					{
 						foreach (Equipment equip in Equipment.equipmentList)
 						{
-							if (equip.name == equipment.name && equip.owner == equipment.owner && equip.reservedTimeSlot.Contains(equipment.timeSlot))
+							if (equip.name == equipment.name && equip.owner == equipment.owner && equip.reservedTimeSlot.Contains(equipment.timeslot))
 							{
-								equip.reservedTimeSlot.Remove(equipment.timeSlot);
+								equip.reservedTimeSlot.Remove(equipment.timeslot);
 								equip.owner = null;
-								equip.timeSlot = "";
+								equip.timeslot = "";
 								customer.reservedItems.Remove(equipment);
 							}
 							else
@@ -161,7 +162,7 @@ namespace Gym_Booking_Manager
 								Console.ReadLine();
 							}
 						}
-						Console.WriteLine($"You have canceled your reservation of {equipment.name} at {equipment.timeSlot}");
+						Console.WriteLine($"You have canceled your reservation of {equipment.name} at {equipment.timeslot}");
 						input("Press enter...");
 						return;
 					}
@@ -172,16 +173,16 @@ namespace Gym_Booking_Manager
 				}
 				else if (customer.reservedItems[i - 1] is Space space)
 				{
-					confirm = input($"You want to cancel your reservation of {space.name} at {space.timeSlot}\n" +
+					confirm = input($"You want to cancel your reservation of {space.name} at {space.timeslot}\n" +
 						$"Is this correct? Y / N\n").ToLower();
 
 					if (confirm == "y")
 					{
 						foreach (Space OSpace in Space.spaceList)
 						{
-							if (OSpace.name == space.name && OSpace.owner == space.owner && OSpace.reservedTimeSlot.Contains(space.timeSlot))
+							if (OSpace.name == space.name && OSpace.owner == space.owner && OSpace.reservedTimeSlot.Contains(space.timeslot))
 							{
-								OSpace.reservedTimeSlot.Remove(space.timeSlot);
+								OSpace.reservedTimeSlot.Remove(space.timeslot);
 								OSpace.owner = null;
 								OSpace.timeSlot = "";
 							}
