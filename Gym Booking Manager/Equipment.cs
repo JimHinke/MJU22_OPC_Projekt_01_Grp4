@@ -8,15 +8,15 @@ namespace Gym_Booking_Manager
     {
 
         public string timeSlot { get; set; } //Hur fungerar detta i Julias kod? Kan man utgå från reservedTimeSlot istället? Känns dubbelt med info?
-        public List <string> reservedTimeSlot { get; set; }
+        public List<string> reservedTimeSlot { get; set; }
         private EquipmentType equipmentType;
         public EquipmentCategory equipmentCategory { get; set; }
         public Availability equipmentAvailability { get; set; }
         //private static List<Equipment> _equipmentList = new List<Equipment>();
         //public static List<Equipment> availableEquipment = new List<Equipment>();
         //public static List<Equipment> equipmentList { get { return _equipmentList; } set { _equipmentList = value; } }
-        public static int index = 0;
-		public static List<string> TimeSlot = new List<string>()
+        public static int index { get; set; } = 0;
+		public static List<string> TimeSlot { get; private set; } = new List<string>()
 		{
 			"12:00-13:00",
 			"13:00-14:00",
