@@ -37,7 +37,6 @@ namespace Gym_Booking_Manager
         }
 
         // Static methods for the program
-        
         public static void LoadFiles()
         {
             CsvHandler.ReadFile("Spaces.txt");

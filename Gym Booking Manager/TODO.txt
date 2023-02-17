@@ -1,0 +1,7 @@
+﻿TODO
+
+GroupSchedule.deleteActivity - återställer inte timeSlot på de object som ligger inne på groupActivityn
+Menutracker.ReserveMenu - Case 4 - Lägg till customer till groupActitivy. ATM så är input groupScheduleList.typeOfActivity. Skall ändras till groupScheduleList.activtyId
+PersonalTrainer.MakeReservation -  Save the equipment on the owner... Does the owners hava a list with reserved equipments?
+Space - Missing a unrestrict method
+GroupSchedule.addActivity - skapar activtyId med "new Random().Next(0, 1000)". Skapa metod som kontrollerar så ingen annan "ITEM" använder samma activityId 

@@ -11,37 +11,18 @@ using static Gym_Booking_Manager.Space;
 
 
 #if DEBUG
-[assembly: InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo("SpaceTest")]
 #endif
 namespace Gym_Booking_Manager
 {
-    // IComparable<T> interface requires implementing the CompareTo(T other) method.
-    // This interface/method is used by for instance SortedSet<T>.Add(T) (and other sorted collections).
-    // There is also the non-generic IComparable interface for a CompareTo(Object obj) implementation.
-    //
-    // The current database class implementation uses SortedSet, and thus classes and objects that we want to store
-    // in it should inherit the IComparable<T> interface.
-    //
-    // As alluded to from previous paragraphs, implementing IComparable<T> is not exhaustive to cover all "comparisons".
-    // Refer to official C# documentation to determine what interface to implement to allow use with
-    // the class/method/operator that you want.
     internal class Space : Resources, IReservable, ICSVable, IComparable<Space>
     {
-        //private static readonly List<Tuple<Category, int>> hourlyCosts = InitializeHourlyCosts(); // Costs may not be relevant for the prototype. Let's see what the time allows.
+       
         public SpaceCategory spaceCategory { get; set; }
         private Availability spaceAvailability;
-        public string timeSlot;
-		
+        public string timeSlot;	
 		public List<string> reservedTimeSlot { get; set; }
         int index = 0;
-
-		public static List<string> TimeSlot = new List<string>()
-		{
-			"12:00-13:00",
-			"13:00-14:00",
-			"14:00-15:00"
-		};
-
 		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "") :base(name,TimeSlot,"",null)
         {
             this.spaceCategory = spaceCategory;
@@ -50,19 +31,6 @@ namespace Gym_Booking_Manager
             this.owner = owner;
             this.reservedTimeSlot= new List<string>();
         }
-
-        // Every class T to be used for DbSet<T> needs a constructor with this parameter signature. Make sure the object is properly initialized.
-        //public Space(Dictionary<String, String> constructionArgs)
-        //{
-        //    this.name = constructionArgs[nameof(name)];
-        //    if (!SpaceCategory.TryParse(constructionArgs[nameof(spaceCategory)], out this.spaceCategory))
-        //    {
-        //        throw new ArgumentException("Couldn't parse a valid Space.Category value.", nameof(spaceCategory));
-        //    }
-
-        //    this.calendar = new Calendar();
-        //}
-
         public int CompareTo(Space? other)
         {
             // If other is not a valid object reference, this instance is greater.
@@ -72,18 +40,15 @@ namespace Gym_Booking_Manager
             // When category is the same, sort on name.
             return this.name.CompareTo(other.name);
         }
-
         public override string ToString()
         {
             return $"Namn: {name}, Category: {spaceCategory}, Availability: {spaceAvailability}"; // TODO: Don't use CSVify. Make it more readable.
         }
 
-        // Every class C to be used for DbSet<C> should have the ICSVable interface and the following implementation.
         public string CSVify()
         {
             return $"{nameof(spaceCategory)}:{spaceCategory.ToString()},{nameof(name)}:{name},{nameof(spaceAvailability)}:{spaceAvailability.ToString()}";
         }        
-
         public enum SpaceCategory
         {
             Hall = 1,
@@ -160,11 +125,8 @@ namespace Gym_Booking_Manager
             
 		}
 
-        public void ViewTimeTable()
-        {
-        }
-
-		public void MakeReservation(IReservingEntity owner, Customer customer ,AccessLevels accessLevel)
+		// Make reservation | Saving is scuffed on the item
+		public void MakeReservation(IReservingEntity owner, User customer ,AccessLevels accessLevel)
 		{
 			Console.Clear();
 			int index = 1;
@@ -199,11 +161,11 @@ namespace Gym_Booking_Manager
 					temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
                     temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
 					customer.reservedItems.Add(new Space(temp[n - 1].name, temp[n - 1].spaceCategory, 0, null, temp[n - 1].timeSlot));
-					// Save the equipment on the owner... Does the owners hava a list with reserved equipments?
-					// Save in the Reserved list in Calendar?
+
 					Console.Clear();
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
-                    input("Press enter...");
+
+					input("Press enter...");
 					Console.Clear();
 					Menutracker.ReserveMenu(accessLevel);
 				}
@@ -227,27 +189,11 @@ namespace Gym_Booking_Manager
 		}
 
 
-		// Consider how and when to add a new Space to the database.
-		// Maybe define a method to persist it? Any other reasonable schemes?
-
-		//private static List<Tuple<Category, int>> InitializeHourlyCosts()
-		//{
-		//    // TODO: fetch from "database"
-		//    var hourlyCosts = new List<Tuple<Category, int>>
-		//    {
-		//        Tuple.Create(Category.Hall, 500),
-		//        Tuple.Create(Category.Lane, 100),
-		//        Tuple.Create(Category.Studio, 400)
-		//    };
-		//    return hourlyCosts;
-		//}
-
 		static public string input(string prompt)
 		{
 			Console.Write(prompt);
 			return Console.ReadLine();
 		}
-
         public static Space FindByName(string name)
         {
             var space = spaceList.FirstOrDefault(s => s.name == name);            
