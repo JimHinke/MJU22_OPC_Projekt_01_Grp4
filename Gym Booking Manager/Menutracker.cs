@@ -658,7 +658,7 @@ namespace Gym_Booking_Manager
                     case 3:
                         //TODO Delete Group Activity
                         Console.Clear();
-                        GroupSchedule.addActivity();
+                        GroupSchedule.deleteActivity();
                         break;
                     case 4:
                         //Console.Clear();
