@@ -33,6 +33,5 @@ namespace Gym_Booking_Manager
             this.owner = owner;
             this.timeslot = timeslot;
         }
-
     }
 }
