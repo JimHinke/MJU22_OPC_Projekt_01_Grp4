@@ -15,7 +15,7 @@ namespace Gym_Booking_Manager
 {
     public class CsvHandler
     {
-        static int initialized = 0;
+        private static int initialized = 0;
 
         public static void ReadFile(string fileName)
         { 

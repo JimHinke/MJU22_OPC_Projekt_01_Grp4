@@ -19,15 +19,15 @@ namespace Gym_Booking_Manager
     {
        
         public SpaceCategory spaceCategory { get; set; }
-        private Availability spaceAvailability;
-        public string timeSlot;	
+        public Availability spaceAvailability { get; set; }
+        
 		public List<string> reservedTimeSlot { get; set; }
-        int index = 0;
-		public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "") :base(name,TimeSlot,"",null)
+        public static int index { get; set; } = 0;
+        public Space(string name = "", SpaceCategory spaceCategory = 0, Availability availability = 0, IReservingEntity owner = null, string timeSlot = "") :base(name,TimeSlot,"",null)
         {
             this.spaceCategory = spaceCategory;
             this.spaceAvailability = availability;
-            this.timeSlot = timeSlot;
+            this.timeslot = timeSlot;
             this.owner = owner;
             this.reservedTimeSlot= new List<string>();
         }
@@ -159,8 +159,8 @@ namespace Gym_Booking_Manager
 			    {
 				    temp[n - 1].owner = owner;
 					temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
-                    temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-					customer.reservedItems.Add(new Space(temp[n - 1].name, temp[n - 1].spaceCategory, 0, null, temp[n - 1].timeSlot));
+                    temp[n - 1].timeslot = TimeSlot[timeSlotChoice - 1];
+					customer.reservedItems.Add(new Space(temp[n - 1].name, temp[n - 1].spaceCategory, 0, null, temp[n - 1].timeslot));
 
 					Console.Clear();
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
@@ -180,14 +180,7 @@ namespace Gym_Booking_Manager
                 Console.WriteLine("There is no available space during your choosen time");
 				Menutracker.ReserveMenu(accessLevel);
 			}
-
-
-
-         
-
-
 		}
-
 
 		static public string input(string prompt)
 		{

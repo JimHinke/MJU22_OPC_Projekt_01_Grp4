@@ -15,8 +15,7 @@ namespace Gym_Booking_Manager
         public TrainerCategory trainerCategory { get; set; }
         public Availability trainerAvailability { get; set; }
         public List<string> reservedTimeSlot { get; set; }
-        public static int index = 0;
-        public string timeSlot;
+        public static int index { get; set; } = 0;      
         public PersonalTrainer(string name = "", TrainerCategory trainerCategory = 0, Availability availability = Availability.Available, IReservingEntity owner = null, string timeSlot = "")
         {
             this.owner = owner;
@@ -107,8 +106,8 @@ namespace Gym_Booking_Manager
                 {
                     temp[n - 1].owner = owner;
                     temp[n - 1].reservedTimeSlot.Add(TimeSlot[timeSlotChoice - 1]);
-                    temp[n - 1].timeSlot = TimeSlot[timeSlotChoice - 1];
-					customer.reservedItems.Add(new PersonalTrainer(temp[n - 1].name, temp[n - 1].trainerCategory, 0, null, temp[n - 1].timeSlot));
+                    temp[n - 1].timeslot = TimeSlot[timeSlotChoice - 1];
+					customer.reservedItems.Add(new PersonalTrainer(temp[n - 1].name, temp[n - 1].trainerCategory, 0, null, temp[n - 1].timeslot));
 					// Save the equipment on the owner... Does the owners hava a list with reserved equipments?
 					Console.Clear();
                     Console.WriteLine($"You have reserved {temp[n - 1].name} during {TimeSlot[timeSlotChoice - 1]}");
